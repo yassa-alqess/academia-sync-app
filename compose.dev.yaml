@@ -1,0 +1,21 @@
+services:
+  # load-balancer:
+  #   image: nginx:alpine
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./nginx/default.conf:/etc/nginx/nginx.conf
+  #     # - ./dist:/usr/share/nginx/html
+  #   depends_on:
+  #     - server
+
+  postgres: 
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+
+  kafka:
+    volumes:
+      - ./data/kafka:/var/run/docker.sock
+  
+
+# run: docker-compose -f compose.dev.yml up --build -d

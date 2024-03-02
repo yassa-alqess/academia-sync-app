@@ -1,0 +1,9 @@
+# services:
+
+#   postgres:
+#     env_file: 
+#       - .env.testing
+
+
+# run: docker-compose -f docker-compose.testing.yml up --build && docker-compose rm -fsv
+# I think I can just replace this whole file with command ling argument `--env-file .env.testing` to override the default .env file I will check this later
