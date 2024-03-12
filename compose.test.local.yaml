@@ -1,6 +1,6 @@
 # services:
 
-#   postgres:
+#   sql-db:
 #     env_file: 
 #       - .env.testing
 

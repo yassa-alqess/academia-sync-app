@@ -16,8 +16,10 @@ try {
     dotenv.config({
       path: _path,
     });
+
   }
 } catch (err) {
+
   console.error('Error loading proper .env file'); // can't use logger here, as it's not properly configured yet.
   process.exit(1);
 }

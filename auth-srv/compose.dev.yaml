@@ -1,0 +1,11 @@
+services:
+  auth-srv:
+    build:
+      target: development
+      args:
+        - NODE_ENV=dev
+    environment:
+      - NODE_ENV=dev
+    volumes:
+      - ./src:/usr/app/src/
+      - /node_modules

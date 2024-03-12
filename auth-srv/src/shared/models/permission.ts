@@ -1,26 +1,22 @@
-import { Table, Model, Column, HasMany, DataType } from 'sequelize-typescript';
-
-//many to many
+import { Table, Model, Column, DataType, BelongsToMany } from 'sequelize-typescript';
 import RolePermission from './role-permission';
+import Role from './role';
 
-@Table({
-  tableName: 'permissions',
-  modelName: 'Permission',
-})
+@Table({ schema: process.env.SCHEMA })
 class Permission extends Model {
   @Column({
     primaryKey: true,
     type: DataType.STRING,
   })
-  declare permission_id: string;
+  declare permissionId: string;
 
   @Column({
     type: DataType.STRING,
   })
-  declare permission_name: string;
+  declare name: string;
 
-  @HasMany(() => RolePermission)
-  declare rolePermission: RolePermission[];
+  @BelongsToMany(() => Role, () => RolePermission)
+  declare roles: Role[];
 }
 
 export default Permission;

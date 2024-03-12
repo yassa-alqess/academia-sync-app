@@ -1,24 +1,22 @@
-import { Table, Model, Column, HasMany, DataType } from 'sequelize-typescript';
+import { Table, Model, Column, HasMany, DataType, BelongsToMany } from 'sequelize-typescript';
 
 //many to many
 import UserRole from './user-role';
 import Preference from './preferences';
 import RefreshToken from './refresh-token';
 import ResetToken from './reset-token';
+import Role from './role';
 
-@Table({
-  tableName: 'users',
-  modelName: 'User',
-})
+@Table({ schema: 'public' })
 class User extends Model {
   @Column({
     primaryKey: true,
     type: DataType.STRING(50),
   })
-  declare user_id: string;
+  declare userId: string;
 
-  @HasMany(() => UserRole)
-  declare userRole: UserRole[];
+  @BelongsToMany(() => Role, () => UserRole)
+  declare roles: Role[];
 
   @HasMany(() => Preference)
   declare preference: Preference[];

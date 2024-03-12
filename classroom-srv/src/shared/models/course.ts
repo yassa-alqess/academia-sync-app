@@ -1,23 +1,17 @@
-import { Column, Table, Model, HasOne, HasMany, DataType } from 'sequelize-typescript';
-
-//one to one
+import { Column, Table, Model, HasOne, DataType, BelongsToMany } from 'sequelize-typescript';
 import Room from './room';
-
-// one to many
-import Exam from './exam';
 import LawCourse from './law-course';
 import UserCourse from './user-course';
+import User from './user';
+import Law from './law';
 
-@Table({
-  tableName: 'courses',
-  modelName: 'Course',
-})
+@Table({ schema: 'public' })
 class Course extends Model {
   @Column({
     primaryKey: true,
     type: DataType.STRING(50),
   })
-  declare course_id: string;
+  declare courseId: string;
 
   @Column({
     type: DataType.STRING(75),
@@ -34,22 +28,15 @@ class Course extends Model {
   })
   declare creditHours: number;
 
-  // @Column({
-  //   type: DataType.STRING(50),
-  // })
-  // declare prerequisites: string;
-
   @HasOne(() => Room)
   declare room: Room;
 
-  @HasMany(() => Exam)
-  declare exam: Exam[];
+  @BelongsToMany(() => User, () => UserCourse)
+  declare users: User[];
 
-  @HasMany(() => LawCourse)
-  declare lawCourse: LawCourse[];
+  @BelongsToMany(() => Law, () => LawCourse)
+  declare laws: User[];
 
-  @HasMany(() => UserCourse)
-  declare userCourse: UserCourse[];
 }
 
 export default Course;

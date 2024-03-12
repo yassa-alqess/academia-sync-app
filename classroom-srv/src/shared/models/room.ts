@@ -1,22 +1,17 @@
-import { Column, Table, Model, ForeignKey, BelongsTo, HasMany, DataType } from 'sequelize-typescript';
-
-//one to one
+import { Column, Table, Model, ForeignKey, BelongsTo, HasMany, DataType, BelongsToMany } from 'sequelize-typescript';
 import Course from './course';
-
-//one to many
-import UserRoom from './user-room';
 import CourseWork from './coursework';
+import Announcment from './announcment';
+import User from './user';
+import UserRoom from './user-room';
 
-@Table({
-  tableName: 'rooms',
-  modelName: 'Room',
-})
+@Table({ schema: process.env.SCHEMA })
 class Room extends Model {
   @Column({
     primaryKey: true,
     type: DataType.STRING(50),
   })
-  declare room_id: string;
+  declare roomId: string;
 
   @Column({
     type: DataType.STRING(20),
@@ -27,33 +22,38 @@ class Room extends Model {
     type: DataType.DATE,
     defaultValue: DataType.NOW,
   })
-  declare created_at: Date;
+  declare createdAt: Date;
 
   @Column({
     type: DataType.DATE,
     defaultValue: DataType.NOW,
   })
-  declare updated_at: Date;
+  declare updatedAt: Date;
 
   @Column({
     type: DataType.STRING(200),
   })
   declare description: string;
 
+
+
   @ForeignKey(() => Course)
   @Column({
     type: DataType.STRING(50),
   })
-  declare course_id: string;
+  declare courseId: string;
 
   @BelongsTo(() => Course, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   declare course: Course;
 
-  @HasMany(() => UserRoom)
-  declare userRoom: UserRoom[];
-
   @HasMany(() => CourseWork)
-  declare courseWork: CourseWork[];
+  declare courseWorks: CourseWork[];
+
+  @HasMany(() => Announcment)
+  declare announcments: Announcment[];
+
+  @BelongsToMany(() => User, () => UserRoom)
+  declare users: User[];
 }
 
 export default Room;

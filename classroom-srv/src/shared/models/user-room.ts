@@ -1,21 +1,20 @@
 import { Column, Table, Model, ForeignKey, DataType } from 'sequelize-typescript';
-import Course from './course';
+import Room from './room';
 import User from './user';
 
-@Table({ schema: 'public' })
-class UserCourse extends Model {
-
+@Table({ schema: process.env.SCHEMA })
+class UserRoom extends Model {
   @Column({
+    type: DataType.STRING(50),
     primaryKey: true,
-    type: DataType.STRING(50),
   })
-  declare userCourseId: string;
+  declare userRoomId: string;
 
-  @ForeignKey(() => Course)
+  @ForeignKey(() => Room)
   @Column({
     type: DataType.STRING(50),
   })
-  declare courseId: string;
+  declare roomId: string;
 
   @ForeignKey(() => User)
   @Column({
@@ -23,5 +22,4 @@ class UserCourse extends Model {
   })
   declare userId: string;
 }
-
-export default UserCourse;
+export default UserRoom;

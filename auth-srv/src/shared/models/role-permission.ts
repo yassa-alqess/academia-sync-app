@@ -1,37 +1,26 @@
-import { Table, Model, Column, ForeignKey, BelongsTo, DataType } from 'sequelize-typescript';
-
-//many to many
+import { Table, Model, Column, ForeignKey, DataType } from 'sequelize-typescript';
 import Role from './role';
 import Permission from './permission';
 
-@Table({
-  tableName: 'rolePermissions',
-  modelName: 'RolePermission',
-})
+@Table({ schema: process.env.SCHEMA })
 class RolePermission extends Model {
   @Column({
     primaryKey: true,
     type: DataType.STRING(50),
   })
-  declare rolePermission_id: string;
+  declare rolePermissionId: string;
 
   @ForeignKey(() => Role)
   @Column({
     type: DataType.STRING(50),
   })
-  declare role_id: string;
-
-  @BelongsTo(() => Role, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  declare role: Role;
+  declare roleId: string;
 
   @ForeignKey(() => Permission)
   @Column({
     type: DataType.STRING(50),
   })
-  declare permission_id: string;
-
-  @BelongsTo(() => Permission, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  declare permission: Permission;
+  declare permissionId: string;
 }
 
 export default RolePermission;

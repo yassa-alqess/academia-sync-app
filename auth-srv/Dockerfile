@@ -4,7 +4,7 @@
 # If you need more help, visit the Dockerfile reference guide at
 # https://docs.docker.com/engine/reference/builder/
 
-ARG NODE_VERSION=y
+ARG NODE_VERSION=16
 
 ################################################################################
 # Use node image for base image for all stages.
@@ -68,3 +68,23 @@ EXPOSE 8085
 
 # Run the application.
 CMD npm run start
+
+
+
+################################################################################
+FROM base as development
+WORKDIR /usr/app
+
+RUN mkdir -p /usr/app/.logs && chown -R node:node /usr/app
+
+COPY package*.json ./
+
+RUN npm install
+RUN npm install -g ts-node
+
+ARG NODE_ENV
+
+COPY . .
+
+CMD [ "npm", "run", "dev" ]
+USER node

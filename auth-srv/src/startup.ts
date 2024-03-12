@@ -26,7 +26,6 @@ APP.set('trust proxy', 1); // trust nginx
 
 // startup script
 let server: Server | null = null;
-
 (async () => {
   try {
     await syncDatabase(); // sync db & catch errors

@@ -1,32 +1,25 @@
 import { Column, Table, Model, ForeignKey, BelongsTo, HasMany, DataType } from 'sequelize-typescript';
-
-// one to one
 import CourseWork from './coursework';
-import Student from './student';
-
-//one to many
 import Matiral from './matiral';
+import User from './user';
 
-@Table({
-  tableName: 'courseworksubmissions',
-  modelName: 'CourseWorkSubmission',
-})
+@Table({ schema: process.env.SCHEMA })
 class CourseWorkSubmission extends Model {
   @Column({
     primaryKey: true,
     type: DataType.STRING(50),
   })
-  declare submission_id: string;
+  declare submissionId: string;
 
   @Column({
     type: DataType.INTEGER,
   })
-  declare draft_grade: number;
+  declare draftGrade: number;
 
   @Column({
     type: DataType.INTEGER,
   })
-  declare assigned_grade: number;
+  declare assignedGrade: number;
 
   @Column({
     type: DataType.BOOLEAN,
@@ -42,34 +35,34 @@ class CourseWorkSubmission extends Model {
     type: DataType.DATE,
     defaultValue: DataType.NOW,
   })
-  declare created_at: Date;
+  declare createdAt: Date;
 
   @Column({
     type: DataType.DATE,
     defaultValue: DataType.NOW,
   })
-  declare updated_at: Date;
+  declare updatedAt: Date;
 
-  @ForeignKey(() => Student)
+  @ForeignKey(() => User)
   @Column({
     type: DataType.STRING(50),
   })
-  declare user_id: string;
+  declare userId: string;
+
+  @BelongsTo(() => User, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  declare student: User;
 
   @ForeignKey(() => CourseWork)
   @Column({
     type: DataType.STRING(50),
   })
-  declare coursework_id: string;
-
-  @BelongsTo(() => Student, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  declare student: Student;
+  declare courseworkId: string;
 
   @BelongsTo(() => CourseWork, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   declare courseWork: CourseWork;
 
   @HasMany(() => Matiral)
-  declare material: Matiral[];
+  declare materials: Matiral[];
 }
 
 export default CourseWorkSubmission;

@@ -1,33 +1,76 @@
-import { Table, Model, Column, HasMany, DataType } from 'sequelize-typescript';
+import { Table, Model, Column, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
+import Law from './law';
 
-//many to many
-import UserRole from './user-role';
-import Preference from './preferences';
-import RefreshToken from './refresh-token';
-import ResetToken from './reset-token';
-
-@Table({
-  tableName: 'users',
-  modelName: 'User',
-})
+@Table({ schema: 'public' })
 class User extends Model {
+
   @Column({
     primaryKey: true,
     type: DataType.STRING(50),
   })
-  declare user_id: string;
+  declare userId: string;
 
-  @HasMany(() => UserRole)
-  declare userRole: UserRole[];
+  @Column({
+    type: DataType.STRING(200),
+  })
+  declare email: string;
 
-  @HasMany(() => Preference)
-  declare preference: Preference[];
+  @Column({
+    type: DataType.STRING(20),
+  })
+  declare academicId: string;
 
-  @HasMany(() => RefreshToken)
-  declare refreshToken: RefreshToken[];
+  @Column({
+    type: DataType.STRING(200),
+  })
+  declare displayName: string;
 
-  @HasMany(() => ResetToken) // I think we should cache those tokens not to store them
-  declare resetToken: ResetToken[];
+  @Column({
+    type: DataType.STRING(200),
+  })
+  declare arabicName: string;
+
+  @Column({
+    type: DataType.BOOLEAN,
+  })
+  declare gender: boolean;
+
+  @Column({
+    type: DataType.STRING(200),
+  })
+  declare hashedPassowrd: string;
+
+  @Column({
+    type: DataType.BOOLEAN,
+  })
+  declare isLocked: boolean;
+
+  @Column({
+    type: DataType.BOOLEAN,
+  })
+  declare idDeleted: boolean;
+
+  @Column({
+    type: DataType.STRING(50),
+  })
+  declare departmentName: string;
+
+  @Column({
+    type: DataType.STRING(2),
+  })
+  declare group: string;
+
+  @Column({
+    type: DataType.BOOLEAN,
+  })
+  declare role: boolean;
+
+  @ForeignKey(() => Law)
+  @Column
+  declare lawId: string;
+
+  @BelongsTo(() => Law)
+  declare law: Law;
 }
 
 export default User;

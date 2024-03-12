@@ -1,20 +1,15 @@
 import { Model, Column, Table, HasMany, ForeignKey, BelongsTo, DataType } from 'sequelize-typescript';
-
-// one to many
 import Matiral from './matiral';
-import Instructor from './instructor';
 import Room from './room';
+import User from './user';
 
-@Table({
-  tableName: 'announcments',
-  modelName: 'Announcment',
-})
+@Table({ schema: process.env.SCHEMA })
 class Announcment extends Model {
   @Column({
     primaryKey: true,
     type: DataType.STRING(50),
   })
-  declare announcment_id: string;
+  declare announcmentId: string;
 
   @Column({
     type: DataType.STRING,
@@ -30,13 +25,13 @@ class Announcment extends Model {
     type: DataType.DATE,
     defaultValue: DataType.NOW,
   })
-  declare updated_at: Date;
+  declare updatedAt: Date;
 
   @Column({
     type: DataType.DATE,
     defaultValue: DataType.NOW,
   })
-  declare created_at: Date;
+  declare createdAt: Date;
 
   @Column({
     type: DataType.BOOLEAN,
@@ -47,22 +42,22 @@ class Announcment extends Model {
   @Column({
     type: DataType.STRING(50),
   })
-  declare room_id: string;
+  declare roomId: string;
 
   @BelongsTo(() => Room, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   declare room: Room;
 
-  @ForeignKey(() => Instructor)
+  @ForeignKey(() => User)
   @Column({
     type: DataType.STRING(50),
   })
-  declare instructor_id: string;
+  declare userId: string;
 
-  @BelongsTo(() => Instructor, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  declare instructor: Instructor;
+  @BelongsTo(() => User, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  declare user: User;
 
   @HasMany(() => Matiral)
-  declare material: Matiral[];
+  declare materials: Matiral[];
 }
 
 export default Announcment;

@@ -1,18 +1,13 @@
 import { Table, Model, Column, ForeignKey, BelongsTo, DataType } from 'sequelize-typescript';
-
-//many to many
 import User from './user';
 
-@Table({
-  tableName: 'resetTokens',
-  modelName: 'ResetToken',
-})
+@Table({ schema: process.env.SCHEMA })
 class ResetToken extends Model {
   @Column({
     primaryKey: true,
     type: DataType.STRING(50),
   })
-  declare token_id: string;
+  declare tokenId: string;
 
   @Column({
     type: DataType.STRING(20),
@@ -22,13 +17,13 @@ class ResetToken extends Model {
   @Column({
     type: DataType.DATE,
   })
-  declare expired_at: Date;
+  declare expiredAt: Date;
 
   @ForeignKey(() => User)
   @Column({
     type: DataType.STRING(50),
   })
-  declare user_id: string;
+  declare userId: string;
 
   @BelongsTo(() => User, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   declare user: User;

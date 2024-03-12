@@ -1,19 +1,15 @@
-import { Column, Table, Model, HasMany, DataType } from 'sequelize-typescript';
-
-//one to many
+import { Column, Table, Model, HasMany, DataType, BelongsToMany } from 'sequelize-typescript';
 import LawCourse from './law-course';
-import Student from './student';
+import Course from './course';
+import User from './user';
 
-@Table({
-  tableName: 'law',
-  modelName: 'Law',
-})
+@Table({ schema: process.env.SCHEMA })
 class Law extends Model {
   @Column({
     primaryKey: true,
     type: DataType.STRING(50),
   })
-  declare law_id: string;
+  declare lawId: string;
 
   @Column({
     type: DataType.STRING(200),
@@ -28,12 +24,13 @@ class Law extends Model {
   @Column({
     type: DataType.INTEGER,
   })
-  declare enrolled_students: number;
+  declare enrolledStudents: number;
 
-  @HasMany(() => LawCourse)
-  declare Lawcourse: LawCourse[];
 
-  @HasMany(() => Student)
-  declare student: Student[];
+  @BelongsToMany(() => Course, () => LawCourse)
+  declare courses: Course[];
+
+  @HasMany(() => User)
+  declare users: User[];
 }
 export default Law;

@@ -143,4 +143,9 @@ upload/
 
 
 # local data
-data/
+/data
+
+
+
+# logs
+.logs

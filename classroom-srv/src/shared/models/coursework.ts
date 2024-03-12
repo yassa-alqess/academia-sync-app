@@ -1,22 +1,15 @@
-import { Column, Table, Model, BelongsTo, HasOne, HasMany, ForeignKey, DataType } from 'sequelize-typescript';
-
-//one to one
+import { Column, Table, Model, BelongsTo, HasMany, ForeignKey, DataType } from 'sequelize-typescript';
 import CourseWorkSubmission from './coursework-submission';
-
-//one to many
 import Matiral from './matiral';
 import Room from './room';
 
-@Table({
-  tableName: 'courseWorks',
-  modelName: 'CoursWork',
-})
+@Table({ schema: process.env.SCHEMA })
 class CourseWork extends Model {
   @Column({
     primaryKey: true,
     type: DataType.STRING(50),
   })
-  declare courseWork_id: string;
+  declare courseWorkId: string;
 
   @Column({
     type: DataType.STRING(20),
@@ -31,7 +24,7 @@ class CourseWork extends Model {
   @Column({
     type: DataType.DATE,
   })
-  declare due_date: Date;
+  declare dueDate: Date;
 
   @Column({
     type: DataType.BOOLEAN,
@@ -42,27 +35,27 @@ class CourseWork extends Model {
     type: DataType.DATE,
     defaultValue: DataType.NOW,
   })
-  declare created_at: Date;
+  declare createdAt: Date;
 
   @Column({
     type: DataType.DATE,
     defaultValue: DataType.NOW,
   })
-  declare updated_at: Date;
+  declare updatedAt: Date;
 
   @ForeignKey(() => Room)
   @Column({
     type: DataType.STRING(50),
   })
-  declare room_id: string;
+  declare roomId: string;
 
   @BelongsTo(() => Room, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   declare room: Room;
 
   @HasMany(() => Matiral)
-  declare material: Matiral[];
+  declare materials: Matiral[];
 
-  @HasOne(() => CourseWorkSubmission)
-  declare courseWorkSubmission: CourseWorkSubmission;
+  @HasMany(() => CourseWorkSubmission)
+  declare courseWorkSubmissions: CourseWorkSubmission;
 }
 export default CourseWork;
