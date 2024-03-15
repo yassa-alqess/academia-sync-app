@@ -1,13 +1,14 @@
 import { Model, Column, Table, HasMany, ForeignKey, BelongsTo, DataType } from 'sequelize-typescript';
-import Matiral from './matiral';
 import Room from './room';
 import User from './user';
+import Material from './material';
 
 @Table({ schema: process.env.SCHEMA })
 class Announcment extends Model {
   @Column({
     primaryKey: true,
-    type: DataType.STRING(50),
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
   })
   declare announcmentId: string;
 
@@ -40,7 +41,7 @@ class Announcment extends Model {
 
   @ForeignKey(() => Room)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare roomId: string;
 
@@ -49,15 +50,15 @@ class Announcment extends Model {
 
   @ForeignKey(() => User)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare userId: string;
 
   @BelongsTo(() => User, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   declare user: User;
 
-  @HasMany(() => Matiral)
-  declare materials: Matiral[];
+  @HasMany(() => Material)
+  declare materials: Material[];
 }
 
 export default Announcment;

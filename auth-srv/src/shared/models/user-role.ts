@@ -6,19 +6,20 @@ import User from './user';
 class UserRole extends Model {
   @Column({
     primaryKey: true,
-    type: DataType.STRING(50),
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
   })
   declare userRoleId: string;
 
   @ForeignKey(() => Role)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare roleId: string;
 
   @ForeignKey(() => User)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare userId: string;
 

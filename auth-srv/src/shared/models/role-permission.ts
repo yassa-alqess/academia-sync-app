@@ -6,19 +6,20 @@ import Permission from './permission';
 class RolePermission extends Model {
   @Column({
     primaryKey: true,
-    type: DataType.STRING(50),
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
   })
   declare rolePermissionId: string;
 
   @ForeignKey(() => Role)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare roleId: string;
 
   @ForeignKey(() => Permission)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare permissionId: string;
 }

@@ -6,7 +6,8 @@ import Role from './role';
 class Permission extends Model {
   @Column({
     primaryKey: true,
-    type: DataType.STRING,
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
   })
   declare permissionId: string;
 

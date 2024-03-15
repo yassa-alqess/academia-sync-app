@@ -9,22 +9,27 @@ import Law from './law';
 class Course extends Model {
   @Column({
     primaryKey: true,
-    type: DataType.STRING(50),
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
   })
   declare courseId: string;
 
   @Column({
     type: DataType.STRING(75),
+    unique: true,
+    allowNull: false,
   })
   declare name: string;
 
   @Column({
     type: DataType.INTEGER,
+    allowNull: false,
   })
   declare grades: number;
 
   @Column({
     type: DataType.INTEGER,
+    allowNull: false,
   })
   declare creditHours: number;
 

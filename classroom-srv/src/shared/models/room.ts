@@ -9,7 +9,8 @@ import UserRoom from './user-room';
 class Room extends Model {
   @Column({
     primaryKey: true,
-    type: DataType.STRING(50),
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
   })
   declare roomId: string;
 
@@ -35,11 +36,9 @@ class Room extends Model {
   })
   declare description: string;
 
-
-
   @ForeignKey(() => Course)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare courseId: string;
 

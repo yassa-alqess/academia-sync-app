@@ -7,7 +7,8 @@ import User from './user';
 class Law extends Model {
   @Column({
     primaryKey: true,
-    type: DataType.STRING(50),
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
   })
   declare lawId: string;
 
@@ -26,6 +27,10 @@ class Law extends Model {
   })
   declare enrolledStudents: number;
 
+  @Column({
+    type: DataType.BOOLEAN,
+  })
+  declare isDeleted: boolean;
 
   @BelongsToMany(() => Course, () => LawCourse)
   declare courses: Course[];
@@ -33,4 +38,5 @@ class Law extends Model {
   @HasMany(() => User)
   declare users: User[];
 }
+
 export default Law;

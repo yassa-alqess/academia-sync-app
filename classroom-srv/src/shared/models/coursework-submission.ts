@@ -1,13 +1,14 @@
 import { Column, Table, Model, ForeignKey, BelongsTo, HasMany, DataType } from 'sequelize-typescript';
 import CourseWork from './coursework';
-import Matiral from './matiral';
+import Material from './material';
 import User from './user';
 
 @Table({ schema: process.env.SCHEMA })
 class CourseWorkSubmission extends Model {
   @Column({
     primaryKey: true,
-    type: DataType.STRING(50),
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
   })
   declare submissionId: string;
 
@@ -45,24 +46,24 @@ class CourseWorkSubmission extends Model {
 
   @ForeignKey(() => User)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare userId: string;
 
   @BelongsTo(() => User, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  declare student: User;
+  declare user: User;
 
   @ForeignKey(() => CourseWork)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare courseworkId: string;
 
   @BelongsTo(() => CourseWork, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   declare courseWork: CourseWork;
 
-  @HasMany(() => Matiral)
-  declare materials: Matiral[];
+  @HasMany(() => Material)
+  declare materials: Material[];
 }
 
 export default CourseWorkSubmission;

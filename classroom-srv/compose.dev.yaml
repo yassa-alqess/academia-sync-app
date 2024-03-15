@@ -9,3 +9,4 @@ services:
     volumes:
       - ./src:/usr/app/src/
       - /node_modules
+      - /.logs

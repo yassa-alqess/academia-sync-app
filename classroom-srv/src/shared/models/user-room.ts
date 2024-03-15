@@ -5,21 +5,23 @@ import User from './user';
 @Table({ schema: process.env.SCHEMA })
 class UserRoom extends Model {
   @Column({
-    type: DataType.STRING(50),
     primaryKey: true,
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
   })
   declare userRoomId: string;
 
   @ForeignKey(() => Room)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare roomId: string;
 
   @ForeignKey(() => User)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare userId: string;
 }
+
 export default UserRoom;

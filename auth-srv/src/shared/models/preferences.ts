@@ -6,7 +6,8 @@ class Preference extends Model {
 
   @Column({
     primaryKey: true,
-    type: DataType.STRING(50),
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
   })
   declare preferenceId: string;
 
@@ -23,11 +24,11 @@ class Preference extends Model {
   @Column({
     type: DataType.STRING(100),
   })
-  declare preference_type: string;
+  declare preferenceType: string;
 
   @ForeignKey(() => User)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare userId: string;
 

@@ -6,19 +6,20 @@ import Course from './course';
 class LawCourse extends Model {
   @Column({
     primaryKey: true,
-    type: DataType.STRING(50),
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
   })
   declare lawCourseId: string;
 
   @ForeignKey(() => Course)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare courseId: string;
 
   @ForeignKey(() => Law)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare lawId: string;
 }

@@ -4,22 +4,22 @@ import User from './user';
 
 @Table({ schema: 'public' })
 class UserCourse extends Model {
-
   @Column({
     primaryKey: true,
-    type: DataType.STRING(50),
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
   })
   declare userCourseId: string;
 
   @ForeignKey(() => Course)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare courseId: string;
 
   @ForeignKey(() => User)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare userId: string;
 }

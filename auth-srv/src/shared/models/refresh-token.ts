@@ -5,7 +5,8 @@ import User from './user';
 class RefreshToken extends Model {
   @Column({
     primaryKey: true,
-    type: DataType.STRING(50),
+    type: DataType.UUID,
+    defaultValue: DataType.UUIDV4,
   })
   declare tokenId: string;
 
@@ -21,7 +22,7 @@ class RefreshToken extends Model {
 
   @ForeignKey(() => User)
   @Column({
-    type: DataType.STRING(50),
+    type: DataType.UUID,
   })
   declare userId: string;
 

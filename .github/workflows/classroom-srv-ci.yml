@@ -1,0 +1,41 @@
+name: classroom-srv-ci-workflow
+
+on:
+  push:
+    paths:
+      - "classroom-srv/**"
+      - "classroom-srv-ci-workflow.yml"
+  pull_request:
+    paths:
+      - "classroom-srv/**"
+      - "classroom-srv-ci-workflow.yml"
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+      - name: Install dependencies
+        run: npm install
+      - name: Lint
+        run: npm run lint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+      - name: Install dependencies
+        run: npm install
+      - name: Test
+        run: npm run test
