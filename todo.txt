@@ -1,0 +1,20 @@
+/**
+ * @TODO @yassa-alqess
+ * add validation to app layer, we shouldn't depend only on the DBMS.
+ * auth middleware
+ * generalize error response
+ * error hadler and not found handler (middlewaares)
+ * handle constants in a more organized way
+ * place service & controller procedures in classes
+ * self certificate for https for all services
+ * handle cors
+ * ci pipelines for all services
+ * jest configration for all services
+ * husky configuration for all services
+ * logs dir has some problems, fix it (bind a volume to have logs and node_modules only on localhost in the dev mode)
+ * setup multer for file upload
+ * setup swagger for all services
+ * setup redis (caching layer)
+ * setup kafka (message broker)
+ * setup sms service
+ */
