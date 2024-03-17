@@ -1,6 +1,0 @@
-services:
-  auth-srv:
-    build:
-      context: .
-    ports:
-      - 8085:8085

@@ -1,28 +1,34 @@
 import { Sequelize } from 'sequelize-typescript';
+import { ConfigService } from '@nestjs/config';
 import logger from '../logger';
 
-const sequelize = new Sequelize(process.env.DATABASE_URL as string, {
+const syncDatabase = async (configService: ConfigService) => {
+  const sequelize = new Sequelize(configService.get<string>('database.url'), {
+    models: [__dirname + '/../../shared/models/*.ts'],
+    logging: (query) => logger.info(query),
+  });
 
-  models: [__dirname + '/../../shared/models/*.ts'],
-  logging: (query) => logger.info(query),
-});
-
-export const syncDatabase = async () => {
   // propagate the error to the server, so we can catch it later
   // create schema if not exists
-  await sequelize.query(`CREATE SCHEMA IF NOT EXISTS ${process.env.SCHEMA}`);
+  await sequelize.query(
+    `CREATE SCHEMA IF NOT EXISTS ${configService.get<string>('database.schema')}`,
+  );
   await sequelize.sync({ alter: true, force: false });
-  logger.debug(`connected to ${process.env.DB_NAME} database`);
+  logger.debug(
+    `connected to ${configService.get<string>('database.name')} database`,
+  );
+
+  return sequelize;
 };
 
-export const ping = async () => {
+const ping = async (sequelize: Sequelize) => {
   await sequelize.authenticate();
   logger.debug('Connection has been established successfully.');
-}
+};
 
-export const closeConnection = async () => {
+const closeConnection = async (sequelize: Sequelize) => {
   await sequelize.close();
   logger.debug('Connection has been closed gracefully');
-}
+};
 
-export default sequelize;
+export { syncDatabase, ping, closeConnection };
