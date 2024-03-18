@@ -24,6 +24,8 @@ describe('syncDatabase', () => {
     // });
     expect(sequelize.sync).toHaveBeenCalledWith({ alter: true, force: false });
     expect(() => sequelize.sync).not.toThrow();
-    expect(logger.debug).toHaveBeenCalledWith(`connected to ${process.env.DB_NAME} database`); //testing hasn't debug logger, but it's fine, it will not fail.
+    expect(logger.debug).toHaveBeenCalledWith(
+      `connected to ${process.env.DB_NAME} database`,
+    ); //testing hasn't debug logger, but it's fine, it will not fail.
   });
 });

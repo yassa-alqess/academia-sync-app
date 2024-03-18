@@ -1,4 +1,11 @@
-import { Table, Model, Column, BelongsTo, ForeignKey, DataType } from 'sequelize-typescript';
+import {
+  Table,
+  Model,
+  Column,
+  BelongsTo,
+  ForeignKey,
+  DataType,
+} from 'sequelize-typescript';
 import User from './user';
 
 @Table({ schema: process.env.SCHEMA })

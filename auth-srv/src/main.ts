@@ -8,11 +8,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['error', 'warn', 'log', 'debug', 'verbose'],
   });
-  
-  const configService = app.get(ConfigService)
-  
+
+  const configService = app.get(ConfigService);
+
   // await syncDatabase(configService);
-  const port = configService.get('PORT')
+  const port = configService.get('PORT');
 
   // Set up Swagger documentation
   // http://localhost:${port}/swagger
@@ -24,7 +24,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
-  
+
   // Enable CORS
   app.enableCors();
 

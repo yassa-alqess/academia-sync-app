@@ -1,9 +1,15 @@
-import { Table, Model, Column, ForeignKey, BelongsTo, DataType } from 'sequelize-typescript';
+import {
+  Table,
+  Model,
+  Column,
+  ForeignKey,
+  BelongsTo,
+  DataType,
+} from 'sequelize-typescript';
 import User from './user';
 
 @Table({ schema: process.env.SCHEMA })
 class Preference extends Model {
-
   @Column({
     primaryKey: true,
     type: DataType.UUID,

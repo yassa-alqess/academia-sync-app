@@ -46,7 +46,6 @@ export class UsersController {
     };
   }
 
-
   @Put(':id')
   @ApiBody({ type: updateUserDto })
   @ApiResponse({
@@ -66,7 +65,6 @@ export class UsersController {
     };
   }
 
-
   @Delete(':id')
   async delete(@Param('id') id: number): Promise<CommonResponse<User>> {
     await this.usersService.delete(id);
@@ -75,7 +73,6 @@ export class UsersController {
       message: 'User deleted successfully',
     };
   }
-
 
   @ApiResponse({
     status: 200,
@@ -95,7 +92,4 @@ export class UsersController {
       data,
     };
   }
-
-
-  
 }

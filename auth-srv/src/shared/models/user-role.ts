@@ -1,4 +1,10 @@
-import { Table, Model, Column, ForeignKey, DataType } from 'sequelize-typescript';
+import {
+  Table,
+  Model,
+  Column,
+  ForeignKey,
+  DataType,
+} from 'sequelize-typescript';
 import Role from './role';
 import User from './user';
 
@@ -22,7 +28,6 @@ class UserRole extends Model {
     type: DataType.UUID,
   })
   declare userId: string;
-
 }
 
 export default UserRole;

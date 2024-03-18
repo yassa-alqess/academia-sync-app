@@ -13,7 +13,8 @@ import { configuration } from './config/env/index';
       envFilePath: '.env.dev',
       load: [configuration],
     }),
-    AuthModule, UsersModule
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

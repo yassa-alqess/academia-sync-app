@@ -33,10 +33,10 @@ export class UsersService {
         email: user.email,
       },
     });
-    user.hashedPassowrd = bcrypt.hashSync(user.hashedPassowrd, 10);
     if (exists) {
       throw new BadRequestException('User already exists');
     }
+    user.hashedPassowrd = bcrypt.hashSync(user.hashedPassowrd, 10);
     return await User.create({
       data: {
         ...user,
