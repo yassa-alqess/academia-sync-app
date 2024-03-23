@@ -1,5 +1,5 @@
 import { UsersService } from 'src/users/users.service';
-import Joi from 'Joi';
+import Joi from "joi";
 import { registerUserSchema } from '../dto/registerUser.dto';
 import IAuthStrategy from './IAuthStrategy';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
@@ -32,26 +32,28 @@ export default class UserAuthStrategy implements IAuthStrategy {
   }
 
   async login(
-    username: string,
+    email: string,
     password: string,
   ): Promise<Record<string, any>> {
-    const user = await this.userService.findOne(username);
+    const user = await this.userService.findByEmail(email);
     if (!user) {
-      throw new NotFoundException('Invalid username or password');
+      throw new NotFoundException('Invalid email or password');
     }
     const isMatch = await bcrypt.compare(password, user.hashedPassowrd);
     if (!isMatch) {
-      throw new NotFoundException('Invalid username or password');
+      throw new NotFoundException('Invalid email or password');
     }
     if (user.deletedAt) {
-      throw new NotFoundException('Invalid username or password');
+      throw new NotFoundException('Invalid email or password');
     }
+    console.log("user in login UserAuthStrategy", user)
     return user;
   }
 
   async register(user: Record<string, any>): Promise<Record<string, any>> {
     await this.validateRegister(user);
-    //verfication
-    return await this.userService.create(user as User);
+    const userr = await this.userService.create(user as User);
+    console.log("user in register UserAuthStrategy", userr)
+    return userr;
   }
 }

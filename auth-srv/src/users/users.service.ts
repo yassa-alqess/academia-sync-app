@@ -9,7 +9,7 @@ import bcrypt from 'bcrypt';
 @Injectable()
 export class UsersService {
   constructor() {}
-  async findOne(email: string): Promise<User> {
+  async findByEmail(email: string): Promise<User> {
     const user = await User.findOne({
       where: {
         email,
@@ -38,25 +38,21 @@ export class UsersService {
     }
     user.hashedPassowrd = bcrypt.hashSync(user.hashedPassowrd, 10);
     return await User.create({
-      data: {
-        ...user,
-      },
+      ...user,
     });
   }
 
-  async update(id: number, user: User): Promise<any> {
+  async update(id: string, user: User): Promise<any> {
     const exists = await User.findByPk(id);
     if (!exists) {
       throw new NotFoundException('User not Found');
     }
     return await exists.update({
-      data: {
-        ...user,
-      },
+      ...user,
     });
   }
 
-  async delete(id: number): Promise<User> {
+  async delete(id: string): Promise<User> {
     const user = await User.findByPk(id);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -66,7 +62,7 @@ export class UsersService {
     });
   }
 
-  async findUserById(id: number): Promise<User> {
+  async findUserById(id: string): Promise<User> {
     const user = await User.findByPk(id);
     if (!user) {
       throw new NotFoundException('User not Found');

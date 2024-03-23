@@ -14,7 +14,7 @@ import RefreshToken from './refresh-token';
 import ResetToken from './reset-token';
 import Role from './role';
 
-@Table({ schema: 'public' })
+@Table({ schema: process.env.SCHEMA })
 class User extends Model {
   @Column({
     primaryKey: true,
@@ -57,11 +57,13 @@ class User extends Model {
 
   @Column({
     type: DataType.BOOLEAN,
+    defaultValue: false
   })
   declare isLocked: boolean;
 
   @Column({
     type: DataType.BOOLEAN,
+    defaultValue: false
   })
   declare isDeleted: boolean;
 

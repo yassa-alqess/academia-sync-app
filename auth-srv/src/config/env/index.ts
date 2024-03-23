@@ -7,4 +7,6 @@ export const configuration = () => ({
     schema: process.env.SCHEMA,
   },
   log_level: process.env.LOG_LEVEL,
+  at_secret: process.env.AT_SECRET,
+  rt_secret: process.env.RT_SECRET,
 });

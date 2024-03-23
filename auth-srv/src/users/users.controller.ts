@@ -8,13 +8,13 @@ import {
   Get,
   UsePipes,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { createUserDto, createUserSchema } from './dto/createUser.dto';
 import { updateUserDto, updateUserSchema } from './dto/updateUser.dto';
 import { UsersService } from './users.service';
 import { JoiValidationPipe } from 'src/shared/joiValidations';
 import {
-  ApiBasicAuth,
   ApiBody,
   ApiResponse,
   ApiTags,
@@ -22,8 +22,8 @@ import {
 } from '@nestjs/swagger';
 import { CommonResponse } from 'src/shared/commonResponse';
 import User from 'src/shared/models/user';
+import { AccessTokenGuard } from 'src/auth/guards/access.token.guard';
 
-@ApiBasicAuth()
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
@@ -46,6 +46,7 @@ export class UsersController {
     };
   }
 
+  @UseGuards(AccessTokenGuard)
   @Put(':id')
   @ApiBody({ type: updateUserDto })
   @ApiResponse({
@@ -57,7 +58,7 @@ export class UsersController {
     @Param('id') id: string,
     @Body(new JoiValidationPipe(updateUserSchema)) user: updateUserDto,
   ): Promise<CommonResponse<User>> {
-    const data = await this.usersService.update(+id, { ...user } as User);
+    const data = await this.usersService.update(id, { ...user } as User);
     return {
       statusCode: HttpStatus.OK,
       message: 'User updated successfully',
@@ -66,7 +67,8 @@ export class UsersController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<CommonResponse<User>> {
+  @UseGuards(AccessTokenGuard)
+  async delete(@Param('id') id: string): Promise<CommonResponse<User>> {
     await this.usersService.delete(id);
     return {
       statusCode: HttpStatus.OK,
@@ -74,6 +76,7 @@ export class UsersController {
     };
   }
 
+  @UseGuards(AccessTokenGuard)
   @ApiResponse({
     status: 200,
     description: 'The found record',
@@ -84,12 +87,15 @@ export class UsersController {
     description: 'User not found',
   })
   @Get(':id')
-  async findOne(@Param('id') id: number): Promise<CommonResponse<User>> {
-    const data = await this.usersService.findUserById(+id);
+  async findUserById(@Param('id') id: string): Promise<CommonResponse<User>> {
+    console.log(id)
+    const data = await this.usersService.findUserById(id.trim());
     return {
       statusCode: HttpStatus.OK,
       message: 'User fetched successfully',
       data,
     };
   }
+
+
 }

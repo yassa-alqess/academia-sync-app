@@ -11,18 +11,18 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  // await syncDatabase(configService);
+  await syncDatabase(configService);
   const port = configService.get('PORT');
 
   // Set up Swagger documentation
   // http://localhost:${port}/swagger
-  const config = new DocumentBuilder()
+  const options  = new DocumentBuilder()
     .setTitle('Academia Auth API description')
     .addServer(`http://localhost:${port}`)
     .addBearerAuth()
     .build();
 
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('swagger', app, document);
 
   // Enable CORS
