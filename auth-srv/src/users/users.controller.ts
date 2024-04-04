@@ -23,6 +23,8 @@ import {
 import { CommonResponse } from 'src/shared/commonResponse';
 import User from 'src/shared/models/user';
 import { AccessTokenGuard } from 'src/auth/guards/access.token.guard';
+import { JwtPayload } from 'src/shared/types/jswtPayload.type';
+import { userDec } from 'src/shared/decorators/user.decorator';
 
 @ApiTags('users')
 @Controller('users')
@@ -88,7 +90,6 @@ export class UsersController {
   })
   @Get(':id')
   async findUserById(@Param('id') id: string): Promise<CommonResponse<User>> {
-    console.log(id)
     const data = await this.usersService.findUserById(id.trim());
     return {
       statusCode: HttpStatus.OK,
@@ -97,5 +98,46 @@ export class UsersController {
     };
   }
 
+  @UseGuards(AccessTokenGuard)
+  @Get('profile')
+  async profile(@userDec() user: JwtPayload): Promise<CommonResponse<User>> {
+    const data = await this.usersService.findUserById(user.sub);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'User fetched successfully',
+      data,
+    };
+  }
 
+  @UseGuards(AccessTokenGuard)
+  @Put('profile')
+  @ApiBody({ type: updateUserDto })
+  @ApiResponse({
+    status: 200,
+    description: 'User profile updated successfully',
+    type: User,
+  })
+  async updateProfile(
+    @userDec() payload: JwtPayload,
+    @Body() user: updateUserDto,
+  ): Promise<CommonResponse<User>> {
+    const data = await this.usersService.update(payload.sub, user as User);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'User profile updated successfully',
+      data,
+    };
+  }
+
+  @Delete('profile')
+  @UseGuards(AccessTokenGuard)
+  async deleteProfile(
+    @userDec() user: JwtPayload,
+  ): Promise<CommonResponse<void>> {
+    await this.usersService.delete(user.sub);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'User deleted successfully',
+    };
+  }
 }

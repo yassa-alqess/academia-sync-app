@@ -8,6 +8,7 @@ import {
   Get,
   Headers,
   Request,
+  UsePipes,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { loginDto, loginSchema } from './dto/loginUser.dto';
@@ -20,6 +21,9 @@ import { RefreshTokenGuard } from './guards/refresh.token.guard';
 import { AccessTokenGuard } from './guards/access.token.guard';
 import { UnauthorizedException } from '@nestjs/common';
 import { Tokens } from 'src/shared/types/tokens.type';
+import { Throttle } from '@nestjs/throttler';
+import { ResetPasswordDto, ResetPasswordSchema } from './dto/resetPassword.dto';
+
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
@@ -73,5 +77,56 @@ export class AuthController {
   async refreshTokens(@Body() refresh_token: string): Promise<Tokens> {
     const refreshToken = refresh_token;
     return this.authService.refreshTokens(refreshToken);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  // 2 requests per 30 seconds
+  @Throttle({ default: { limit: 2, ttl: 30 } })
+  @Post('sendotp')
+  async sendOtp(
+    @Body() sendOtpDto: Record<string, any>,
+  ): Promise<CommonResponse<void>> {
+    await this.authService.sendVerificationOtp(sendOtpDto.email);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'OTP sent successfully',
+    };
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('verifyotp')
+  async verifyotp(@Body() data: Record<string, any>): Promise<CommonResponse<void>> {
+    await this.authService.isOtpValidAndVerified(data.input);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Otp verified successfully',
+    };
+  }
+
+  @Post('forget')
+  async forgetPassword(
+    @Body() data: Record<string, any>,
+  ): Promise<CommonResponse<void>> {
+    await this.authService.forgetPassword(data.input);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Reset Password Link Sent Successfully',
+    };
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @UsePipes(new JoiValidationPipe(ResetPasswordSchema))
+  @ApiBody({
+    type: ResetPasswordDto,
+  })
+  @Post('Reset')
+  async resetPassword(
+    @Body() data: ResetPasswordDto,
+  ): Promise<CommonResponse<void>> {
+    await this.authService.resetPassword(data);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Password Reset successfully',
+    };
   }
 }

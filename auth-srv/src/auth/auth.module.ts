@@ -7,10 +7,10 @@ import { jwtConstants } from './constants';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import Verfication from 'src/shared/utils/verfication/Verfication';
-
+import { MailService } from 'src/mail/mail.service';
 @Module({
   imports: [UsersModule, JwtModule.register({})],
   controllers: [AuthController],
-  providers: [AuthService, Verfication],
+  providers: [AuthService, Verfication, MailService],
 })
 export class AuthModule {}

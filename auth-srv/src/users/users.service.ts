@@ -69,4 +69,17 @@ export class UsersService {
     }
     return user;
   }
+
+  async updateUserPassword(id: string, password: string): Promise<any> {
+    return await User.update(
+      {
+        hashedPassowrd: password,
+      },
+      {
+        where: {
+          userId: id,
+        },
+      },
+    );
+  }
 }

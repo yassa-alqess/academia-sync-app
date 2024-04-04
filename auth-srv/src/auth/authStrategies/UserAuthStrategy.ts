@@ -46,14 +46,12 @@ export default class UserAuthStrategy implements IAuthStrategy {
     if (user.deletedAt) {
       throw new NotFoundException('Invalid email or password');
     }
-    console.log("user in login UserAuthStrategy", user)
     return user;
   }
 
   async register(user: Record<string, any>): Promise<Record<string, any>> {
     await this.validateRegister(user);
     const userr = await this.userService.create(user as User);
-    console.log("user in register UserAuthStrategy", userr)
     return userr;
   }
 }

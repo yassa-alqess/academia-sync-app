@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { configuration } from './config/env/index';
 import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { PermissionsModule } from './permissions/permissions.module';
     UsersModule,
     RolesModule,
     PermissionsModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
