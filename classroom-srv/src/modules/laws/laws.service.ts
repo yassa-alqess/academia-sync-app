@@ -1,5 +1,5 @@
-import { LawAddPayload, LawResponse, LawUpdatePayload } from "@/src/shared/interfaces"
-import Law from '../../shared/models/law'
+import { LawAddPayload, LawResponse, LawUpdatePayload } from '@/shared/interfaces'
+import Law from '@/shared/models/law'
 
 export const addLaw = async (payload: LawAddPayload): Promise<LawResponse> => {
 

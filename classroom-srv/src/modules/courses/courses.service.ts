@@ -1,4 +1,4 @@
-import { CourseAddPayload, CourseResponse, CourseUpdatePayload } from "@/src/shared/interfaces"
+import { CourseAddPayload, CourseResponse, CourseUpdatePayload } from '@/shared/interfaces'
 import Course from '../../shared/models/course'
 
 export const addCourse = async (payload: CourseAddPayload): Promise<CourseResponse> => {
