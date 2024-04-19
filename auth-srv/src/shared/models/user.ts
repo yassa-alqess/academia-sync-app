@@ -78,9 +78,9 @@ class User extends Model {
   declare group: string;
 
   @Column({
-    type: DataType.BOOLEAN,
+    type: DataType.STRING,
   })
-  declare role: boolean;
+  declare role: string;
 
   @BelongsToMany(() => Role, () => UserRole)
   declare roles: Role[];

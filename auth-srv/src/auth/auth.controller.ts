@@ -16,7 +16,6 @@ import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { JoiValidationPipe } from 'src/shared/joiValidations';
 import { registerUserDto } from './dto/registerUser.dto';
 import { CommonResponse } from 'src/shared/commonResponse';
-import { Role } from 'src/shared/enums/role.enum';
 import { RefreshTokenGuard } from './guards/refresh.token.guard';
 import { AccessTokenGuard } from './guards/access.token.guard';
 import { UnauthorizedException } from '@nestjs/common';
@@ -24,7 +23,7 @@ import { Tokens } from 'src/shared/types/tokens.type';
 import { Throttle } from '@nestjs/throttler';
 import { ResetPasswordDto, ResetPasswordSchema } from './dto/resetPassword.dto';
 
-@ApiTags('Auth')
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -32,9 +31,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiBody({ type: loginDto })
   @Post('login')
-  async signIn(
-    @Body(new JoiValidationPipe(loginSchema)) signInDto: Record<string, any>,
-  ) {
+  async signIn(@Body(new JoiValidationPipe(loginSchema)) signInDto: loginDto) {
     const data = await this.authService.signIn(
       signInDto.email,
       signInDto.password,
@@ -50,7 +47,7 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
   async signUp(
-    @Body() signUpDto: Record<string, any>,
+    @Body() signUpDto: registerUserDto,
   ): Promise<CommonResponse<any>> {
     const data = await this.authService.register(signUpDto);
     return {
@@ -71,6 +68,13 @@ export class AuthController {
     return this.authService.logout(userId);
   }
 
+  @ApiBody({
+    schema: {
+      properties: {
+        token: { type: 'string' },
+      },
+    },
+  })
   @UseGuards(RefreshTokenGuard)
   @HttpCode(HttpStatus.OK)
   @Post('refresh')
@@ -79,35 +83,39 @@ export class AuthController {
     return this.authService.refreshTokens(refreshToken);
   }
 
-  @HttpCode(HttpStatus.OK)
-  // 2 requests per 30 seconds
-  @Throttle({ default: { limit: 2, ttl: 30 } })
-  @Post('sendotp')
-  async sendOtp(
-    @Body() sendOtpDto: Record<string, any>,
-  ): Promise<CommonResponse<void>> {
-    await this.authService.sendVerificationOtp(sendOtpDto.email);
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'OTP sent successfully',
-    };
-  }
-
+  
+  @ApiBody({
+    schema: {
+      properties: {
+        token: { type: 'string' },
+      },
+    },
+  })
   @HttpCode(HttpStatus.OK)
   @Post('verifyotp')
-  async verifyotp(@Body() data: Record<string, any>): Promise<CommonResponse<void>> {
-    await this.authService.isOtpValidAndVerified(data.input);
+  async verifyotp(
+    @Body() data: Record<string, any>,
+  ): Promise<CommonResponse<void>> {
+    await this.authService.isOtpValidAndVerified(data.email);
     return {
       statusCode: HttpStatus.OK,
       message: 'Otp verified successfully',
     };
   }
 
+
+  @ApiBody({
+    schema: {
+      properties: {
+        email: { type: 'string' },
+      },
+    },
+  })
   @Post('forget')
   async forgetPassword(
     @Body() data: Record<string, any>,
   ): Promise<CommonResponse<void>> {
-    await this.authService.forgetPassword(data.input);
+    await this.authService.forgetPassword(data.email);
     return {
       statusCode: HttpStatus.OK,
       message: 'Reset Password Link Sent Successfully',
@@ -126,7 +134,7 @@ export class AuthController {
     await this.authService.resetPassword(data);
     return {
       statusCode: HttpStatus.OK,
-      message: 'Password Reset successfully',
+      message: 'Password reseted successfully',
     };
   }
 }

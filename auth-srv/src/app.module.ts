@@ -8,6 +8,7 @@ import { configuration } from './config/env/index';
 import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { MailModule } from './mail/mail.module';
+import { PreferencesModule } from './preferences/preferences.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { MailModule } from './mail/mail.module';
     RolesModule,
     PermissionsModule,
     MailModule,
+    PreferencesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

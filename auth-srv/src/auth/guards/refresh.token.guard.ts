@@ -4,8 +4,6 @@ import {
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
-import RefreshToken from 'src/shared/models/refresh-token';
-import { Request } from 'express';
 import { AuthService } from '../auth.service';
 import { extractTokenFromHeader } from 'src/shared/utils/token-extractor';
 

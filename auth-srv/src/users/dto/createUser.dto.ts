@@ -25,6 +25,9 @@ export class createUserDto {
 
   @ApiProperty()
   group: string;
+
+  @ApiProperty()
+  role: string;
 }
 
 export const createUserSchema = Joi.object<createUserDto>({
@@ -45,4 +48,5 @@ export const createUserSchema = Joi.object<createUserDto>({
     ),
   departmentName: Joi.string().required(),
   group: Joi.string().required().max(2),
+  role: Joi.string().required(),
 });

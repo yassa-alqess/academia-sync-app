@@ -47,7 +47,7 @@ export class AuthService {
   }
 
   private async generateRefreshToken(userId: string, email: string) {
-    const jwtPayload: JwtPayload = { sub: userId, email };
+    const jwtPayload: JwtPayload = { sub: userId, email};
     let refreshToken = await RefreshToken.findOne({
       where: {
         userId: userId,
@@ -119,9 +119,6 @@ export class AuthService {
     return true;
   }
 
-  async sendVerificationOtp(user: User): Promise<void> {
-    await this.verficationProvider.sendEmailVerficationCode(user);
-  }
 
   public async forgetPassword(email: string): Promise<void> {
     const user = await this.userService.findByEmail(email);

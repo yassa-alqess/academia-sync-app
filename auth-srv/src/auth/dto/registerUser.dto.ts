@@ -25,6 +25,9 @@ export class registerUserDto {
 
   @ApiProperty()
   group: string;
+
+  @ApiProperty()
+  role: string;
 }
 
 export const registerUserSchema = Joi.object<registerUserDto>().keys({
@@ -45,4 +48,5 @@ export const registerUserSchema = Joi.object<registerUserDto>().keys({
     ),
   departmentName: Joi.string().required(),
   group: Joi.string().required().max(2),
+  role: Joi.string().required(),
 });

@@ -21,7 +21,7 @@ class RefreshToken extends Model {
     type: DataType.STRING(250),
   })
   declare token: string;
-
+  
   @Column({
     type: DataType.DATE,
   })

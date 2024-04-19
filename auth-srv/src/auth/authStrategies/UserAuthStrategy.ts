@@ -4,7 +4,7 @@ import { registerUserSchema } from '../dto/registerUser.dto';
 import IAuthStrategy from './IAuthStrategy';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import bcrypt from 'bcrypt';
-import User from 'src/shared/models/user';
+import { createUserDto } from 'src/users/dto/createUser.dto';
 
 export default class UserAuthStrategy implements IAuthStrategy {
   private registerSchema: Joi.ObjectSchema;
@@ -36,22 +36,19 @@ export default class UserAuthStrategy implements IAuthStrategy {
     password: string,
   ): Promise<Record<string, any>> {
     const user = await this.userService.findByEmail(email);
-    if (!user) {
-      throw new NotFoundException('Invalid email or password');
-    }
     const isMatch = await bcrypt.compare(password, user.hashedPassowrd);
     if (!isMatch) {
-      throw new NotFoundException('Invalid email or password');
+      throw new BadRequestException('Invalid email or password');
     }
     if (user.deletedAt) {
-      throw new NotFoundException('Invalid email or password');
+      throw new NotFoundException('User is not found');
     }
     return user;
   }
 
-  async register(user: Record<string, any>): Promise<Record<string, any>> {
+  async register(user: createUserDto): Promise<Record<string, any>> {
     await this.validateRegister(user);
-    const userr = await this.userService.create(user as User);
+    const userr = await this.userService.create(user);
     return userr;
   }
 }

@@ -19,19 +19,28 @@ import {
   ApiResponse,
   ApiTags,
   ApiNotFoundResponse,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { CommonResponse } from 'src/shared/commonResponse';
 import User from 'src/shared/models/user';
 import { AccessTokenGuard } from 'src/auth/guards/access.token.guard';
 import { JwtPayload } from 'src/shared/types/jswtPayload.type';
 import { userDec } from 'src/shared/decorators/user.decorator';
+import { rulesGuard } from 'src/auth/guards/roles.guard';
+import { PermissionGuard } from 'src/auth/guards/permissions.guard';
+import { Roles } from 'src/shared/decorators/role.decorator';
+import { Permissions } from 'src/shared/decorators/permission.decorator';
 
+@ApiBearerAuth()
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post('/')
+  @UseGuards(AccessTokenGuard, rulesGuard, PermissionGuard)
+  @Roles('Admin')
+  @Permissions('create')
+  @Post('AddUser')
   @UsePipes(new JoiValidationPipe(createUserSchema))
   @ApiBody({ type: createUserDto })
   @ApiResponse({
@@ -48,8 +57,10 @@ export class UsersController {
     };
   }
 
-  @UseGuards(AccessTokenGuard)
-  @Put(':id')
+  @UseGuards(AccessTokenGuard, rulesGuard, PermissionGuard)
+  @Roles('Admin')
+  @Permissions('update')
+  @Put('updateUser')
   @ApiBody({ type: updateUserDto })
   @ApiResponse({
     status: 200,
@@ -60,7 +71,7 @@ export class UsersController {
     @Param('id') id: string,
     @Body(new JoiValidationPipe(updateUserSchema)) user: updateUserDto,
   ): Promise<CommonResponse<User>> {
-    const data = await this.usersService.update(id, { ...user } as User);
+    const data = await this.usersService.update(id, { ...user });
     return {
       statusCode: HttpStatus.OK,
       message: 'User updated successfully',
@@ -68,17 +79,22 @@ export class UsersController {
     };
   }
 
-  @Delete(':id')
+  @UseGuards(AccessTokenGuard, rulesGuard, PermissionGuard)
+  @Roles('Admin')
+  @Permissions('update')
+  @Delete('deleteUser')
   @UseGuards(AccessTokenGuard)
-  async delete(@Param('id') id: string): Promise<CommonResponse<User>> {
-    await this.usersService.delete(id);
+  async delete(@Body('userId') userId: string): Promise<CommonResponse<User>> {
+    await this.usersService.delete(userId);
     return {
       statusCode: HttpStatus.OK,
       message: 'User deleted successfully',
     };
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, rulesGuard, PermissionGuard)
+  @Roles('Admin')
+  @Permissions('read')
   @ApiResponse({
     status: 200,
     description: 'The found record',
@@ -88,9 +104,11 @@ export class UsersController {
     status: 404,
     description: 'User not found',
   })
-  @Get(':id')
-  async findUserById(@Param('id') id: string): Promise<CommonResponse<User>> {
-    const data = await this.usersService.findUserById(id.trim());
+  @Get('oneUser')
+  async findUserById(
+    @Body('userId') userId: string,
+  ): Promise<CommonResponse<User>> {
+    const data = await this.usersService.findUserById(userId);
     return {
       statusCode: HttpStatus.OK,
       message: 'User fetched successfully',
@@ -98,7 +116,9 @@ export class UsersController {
     };
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, rulesGuard, PermissionGuard)
+  @Roles('Student')
+  @Permissions('update')
   @Get('profile')
   async profile(@userDec() user: JwtPayload): Promise<CommonResponse<User>> {
     const data = await this.usersService.findUserById(user.sub);
@@ -109,7 +129,9 @@ export class UsersController {
     };
   }
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(AccessTokenGuard, rulesGuard, PermissionGuard)
+  @Roles('Student')
+  @Permissions('update')
   @Put('profile')
   @ApiBody({ type: updateUserDto })
   @ApiResponse({
@@ -121,7 +143,7 @@ export class UsersController {
     @userDec() payload: JwtPayload,
     @Body() user: updateUserDto,
   ): Promise<CommonResponse<User>> {
-    const data = await this.usersService.update(payload.sub, user as User);
+    const data = await this.usersService.update(payload.sub, user);
     return {
       statusCode: HttpStatus.OK,
       message: 'User profile updated successfully',
@@ -129,8 +151,10 @@ export class UsersController {
     };
   }
 
+  @UseGuards(AccessTokenGuard, rulesGuard, PermissionGuard)
+  @Roles('Student')
+  @Permissions('delete')
   @Delete('profile')
-  @UseGuards(AccessTokenGuard)
   async deleteProfile(
     @userDec() user: JwtPayload,
   ): Promise<CommonResponse<void>> {

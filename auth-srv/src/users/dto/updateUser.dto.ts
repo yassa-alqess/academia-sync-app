@@ -16,6 +16,9 @@ export class updateUserDto {
 
   @ApiProperty()
   group: string;
+
+  @ApiProperty()
+  role: string;
 }
 
 export const updateUserSchema = Joi.object<updateUserDto>().keys({
@@ -30,6 +33,7 @@ export const updateUserSchema = Joi.object<updateUserDto>().keys({
         '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>_-]).{8,20}$',
       ),
     ),
-  departmentName: Joi.string().required(),
-  group: Joi.string().required().max(2),
+  departmentName: Joi.string().optional(),
+  group: Joi.string().optional().max(2),
+  role: Joi.string().optional()
 });
