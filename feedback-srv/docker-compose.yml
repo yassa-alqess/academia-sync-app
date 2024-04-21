@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # NestJS Application
+  nestjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8085"
+    depends_on:
+      - sql-db
+    environment:
+      NODE_ENV: dev
+      PORT: 8085
+      DATABASE_URL: postgresql://postgres:postgres@sql-db:5432/academia-sync
+      DB_NAME: academia-sync
+      SCHEMA: auth
+      LOG_LEVEL: debug
+
+
+  # PostgreSQL Database
+  sql-db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: academia-sync
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
