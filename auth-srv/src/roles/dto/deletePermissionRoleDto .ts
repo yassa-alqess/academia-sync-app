@@ -3,13 +3,23 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class deletePermissionRoleDto {
   @ApiProperty()
-  name: string;
+  roleId: string;
 
   @ApiProperty()
   permissionId: string;
 }
 
 export const deletePermissionRoleSchema = joi.object<deletePermissionRoleDto>({
-  name: joi.string().required(),
-  permissionId: joi.string().required(),
+  roleId: joi
+    .string()
+    .guid({
+      version: 'uuidv4',
+    })
+    .required(),
+  permissionId: joi
+    .string()
+    .guid({
+      version: 'uuidv4',
+    })
+    .required(),
 });

@@ -31,7 +31,7 @@ export class registerUserDto {
 }
 
 export const registerUserSchema = Joi.object<registerUserDto>().keys({
-  email: Joi.string().required(),
+  email: Joi.string().required().email(),
   academicId: Joi.string().required(),
   displayName: Joi.string().required(),
   arabicName: Joi.string().required(),

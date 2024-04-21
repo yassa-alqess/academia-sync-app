@@ -6,14 +6,26 @@ export class updateRoleDto {
   name: string;
 
   @ApiProperty()
-  roleId: string
+  roleId: string;
 
   @ApiProperty()
-  permissions: string[];
+  permissionsIds: string[];
 }
 
 export const updateRoleSchema = joi.object<updateRoleDto>({
   name: joi.string().optional(),
-  permissions: joi.array().items(joi.string().optional()),
-  roleId: joi.string().required(),
+  permissionsIds: joi.array().items(
+    joi
+      .string()
+      .guid({
+        version: 'uuidv4',
+      })
+      .optional(),
+  ),
+  roleId: joi
+    .string()
+    .guid({
+      version: 'uuidv4',
+    })
+    .required(),
 });

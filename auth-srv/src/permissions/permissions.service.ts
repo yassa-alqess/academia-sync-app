@@ -10,7 +10,7 @@ export class PermissionsService {
   }
 
   async getAll(): Promise<Permission[]> {
-    return Permission.findAll();
+    return await Permission.findAll();
   }
 
   async findOne(id: string): Promise<Permission> {

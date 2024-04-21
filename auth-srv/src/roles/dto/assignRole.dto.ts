@@ -10,6 +10,16 @@ export class assignRoleDto {
 }
 
 export const assignRoleSchema = joi.object<assignRoleDto>({
-  userId: joi.string().required(),
-  roleId: joi.string().required(),
+  userId: joi
+    .string()
+    .guid({
+      version: 'uuidv4',
+    })
+    .required(),
+  roleId: joi
+    .string()
+    .guid({
+      version: 'uuidv4',
+    })
+    .required(),
 });

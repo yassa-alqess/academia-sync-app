@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { loginDto, loginSchema } from './dto/loginUser.dto';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiHeader, ApiTags } from '@nestjs/swagger';
 import { JoiValidationPipe } from 'src/shared/joiValidations';
 import { registerUserDto } from './dto/registerUser.dto';
 import { CommonResponse } from 'src/shared/commonResponse';
@@ -68,6 +68,7 @@ export class AuthController {
     return this.authService.logout(userId);
   }
 
+
   @ApiBody({
     schema: {
       properties: {
@@ -78,9 +79,8 @@ export class AuthController {
   @UseGuards(RefreshTokenGuard)
   @HttpCode(HttpStatus.OK)
   @Post('refresh')
-  async refreshTokens(@Body() refresh_token: string): Promise<Tokens> {
-    const refreshToken = refresh_token;
-    return this.authService.refreshTokens(refreshToken);
+  async refreshTokens(@Body() data: Record<string, any>): Promise<Tokens> {
+    return this.authService.refreshTokens(data.token);
   }
 
   

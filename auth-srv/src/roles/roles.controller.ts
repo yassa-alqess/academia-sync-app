@@ -87,7 +87,7 @@ export class RolesController {
   async GrantRole(grantRoleDto: grantRoleDto): Promise<CommonResponse<Role>> {
     const data = await this.RolesService.grantRole(
       grantRoleDto.name,
-      grantRoleDto.permissions,
+      grantRoleDto.permissionIds,
     );
     return {
       message: 'Role grnated sucssefully',
@@ -109,7 +109,7 @@ export class RolesController {
     const data = await this.RolesService.update(
       RoleData.roleId,
       RoleData.name,
-      RoleData.permissions,
+      RoleData.permissionsIds,
     );
     return {
       statusCode: HttpStatus.OK,
@@ -128,7 +128,7 @@ export class RolesController {
   @UseGuards(AccessTokenGuard, rulesGuard, PermissionGuard)
   @Roles('Admin')
   @Permissions('read')
-  @Get('OneRole')
+  @Post('OneRole')
   async getOne(@Body('roleId') roleId: string): Promise<CommonResponse<Role>> {
     const data = await this.RolesService.findOne(roleId);
     return {
@@ -171,12 +171,7 @@ export class RolesController {
   }
 
   @ApiBody({
-    schema: {
-      properties: {
-        userId: { type: 'string' },
-        permissionId: { type: 'string' },
-      },
-    },
+    type: deletePermissionRoleDto
   })
   @UseGuards(AccessTokenGuard, rulesGuard, PermissionGuard)
   @Roles('Admin')

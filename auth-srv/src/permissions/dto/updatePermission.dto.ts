@@ -11,5 +11,7 @@ export class updatePermissionDto {
 
 export const updatePermissionSchema = joi.object<updatePermissionDto>({
   name: joi.string().optional(),
-  permissionId: joi.string().required(),
+  permissionId: joi.string().guid({
+    version: 'uuidv4',
+  }).required()
 });

@@ -14,15 +14,14 @@ import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
         transport: {
           host: configService.get<string>('mail_host'),
           port: parseInt(configService.get<string>('mail_port'), 10),
-          secure: false,
+          secure: true,
           auth: {
             user: configService.get<string>('mail_user'),
             pass: configService.get<string>('mail_password'),
           },
-          pool: true,
         },
         defaults: {
-          from: `"No reply" <${configService.get<string>('mail_user')}>`,
+          from: `No reply Graduation Project`,
         },
         template: {
           dir: join(__dirname, 'templates'),

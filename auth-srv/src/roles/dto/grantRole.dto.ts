@@ -6,10 +6,17 @@ export class grantRoleDto {
   name: string;
 
   @ApiProperty()
-  permissions: string[];
+  permissionIds: string[];
 }
 
 export const grantRoleSchema = joi.object<grantRoleDto>({
   name: joi.string().required(),
-  permissions: joi.array().items(joi.string()),
+  permissionIds: joi.array().items(
+    joi
+      .string()
+      .guid({
+        version: 'uuidv4',
+      })
+      .required(),
+  ),
 });

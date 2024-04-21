@@ -37,7 +37,6 @@ export default class Verfication {
         },
       },
     });
-    console.log(userCode)
     return !!userCode;
   }
 

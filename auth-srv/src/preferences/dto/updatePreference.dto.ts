@@ -21,5 +21,7 @@ export const updatePreferenceSchema = joi.object<updatePreferenceDto>({
   name: joi.string().optional(),
   value: joi.string().optional(),
   preferenceType: joi.string().optional(),
-  preferenceId: joi.string().required()
+  preferenceId: joi.string().guid({
+    version: 'uuidv4',
+  }).required()
 });
