@@ -1,63 +1,63 @@
 import { StatusCodes } from 'http-status-codes';
-import LawService from './laws.service';
+import RoomService from './rooms.service';
 import { Request, Response } from 'express';
 
-export default class LawController {
+export default class RoomController {
     constructor() { }
-    static async addLaw(req: Request, res: Response) {
+    static async addRoom(req: Request, res: Response) {
         try {
-            const law = await LawService.addLaw(req.body);
-            res.status(StatusCodes.CREATED).json(law);
+            const room = await RoomService.addRoom(req.body);
+            res.status(StatusCodes.CREATED).json(room);
             //eslint-disable-next-line
         } catch (error: any) {
             if (error?.original?.code === '23505') { //duplicate key value violates unique constraint
-                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Law already exists' });
+                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Room already exists' });
             }
             res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
             // next(error);
         }
     }
 
-    static async updateLaw(req: Request, res: Response) {
+    static async updateRoom(req: Request, res: Response) {
         try {
-            const law = await LawService.updateLaw(req.body);
-            res.status(StatusCodes.OK).json(law);
+            const room = await RoomService.updateRoom(req.body);
+            res.status(StatusCodes.OK).json(room);
             //eslint-disable-next-line
         } catch (error: any) {
             if (error?.original?.code == '22P02') { //invalid input syntax for type uuid
-                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid lawId' });
+                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid roomId' });
             }
             if (error?.original?.code === '23505') { //duplicate key value violates unique constraint
-                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Law already exists' });
+                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Room already exists' });
             }
             res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
         }
     }
 
-    static async getLaw(req: Request, res: Response) {
+    static async getRoom(req: Request, res: Response) {
         try {
-            const { lawId } = req.body;
-            const law = await LawService.getLaw(lawId);
-            res.status(StatusCodes.OK).json(law);
+            const { roomId } = req.body;
+            const room = await RoomService.getRoom(roomId);
+            res.status(StatusCodes.OK).json(room);
             //eslint-disable-next-line
         } catch (error: any) {
             if (error?.original?.code == '22P02') { //invalid input syntax for type uuid
-                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid lawId' });
+                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid roomId' });
             }
             res.status(StatusCodes.NOT_FOUND).json({ error: error.message });
         }
     }
 
 
-    static async removeLaw(req: Request, res: Response) {
+    static async removeRoom(req: Request, res: Response) {
         try {
-            const { lawId } = req.body;
-            await LawService.removeLaw(lawId);
-            res.status(StatusCodes.OK).json({ lawId });
+            const { roomId } = req.body;
+            await RoomService.removeRoom(roomId);
+            res.status(StatusCodes.OK).json({ roomId });
             //eslint-disable-next-line
         } catch (error: any) {
             if (error?.original?.code == '22P02') { //invalid input syntax for type uuid
-                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid lawId' });
+                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid roomId' });
             }
             res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
         }

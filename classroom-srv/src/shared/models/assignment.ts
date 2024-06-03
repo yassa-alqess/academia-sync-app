@@ -1,17 +1,17 @@
 import { Column, Table, Model, BelongsTo, HasMany, ForeignKey, DataType } from 'sequelize-typescript';
-import CourseWorkSubmission from './coursework-submission';
+import AssignmentSubmission from './assignment-submission';
 import Material from './material';
 import Room from './room';
 import User from './user';
 
 @Table({ schema: process.env.SCHEMA })
-class CourseWork extends Model {
+class Assignment extends Model {
   @Column({
     primaryKey: true,
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
   })
-  declare courseWorkId: string;
+  declare assignmentId: string;
 
   @Column({
     type: DataType.STRING(20),
@@ -66,8 +66,8 @@ class CourseWork extends Model {
   @HasMany(() => Material)
   declare materials: Material[];
 
-  @HasMany(() => CourseWorkSubmission)
-  declare courseWorkSubmissions: CourseWorkSubmission;
+  @HasMany(() => AssignmentSubmission)
+  declare assignmentSubmissions: AssignmentSubmission;
 }
 
-export default CourseWork;
+export default Assignment;

@@ -1,7 +1,7 @@
 import { Model, Column, Table, ForeignKey, BelongsTo, DataType } from 'sequelize-typescript';
-import CourseWorkSubmission from './coursework-submission';
+import AssignmentSubmission from './assignment-submission';
 import Announcment from './announcment';
-import CourseWork from './coursework';
+import Assignment from './assignment';
 
 @Table({ schema: process.env.SCHEMA })
 class Material extends Model {
@@ -12,57 +12,60 @@ class Material extends Model {
   })
   declare materialId: string;
 
-  @Column({
-    type: DataType.BOOLEAN,
-  })
-  declare type: boolean;
+  // @Column({
+  //   type: DataType.BOOLEAN,
+  // })
+  // declare type: boolean;
 
   @Column({
     type: DataType.STRING,
   })
-  declare value: string;
+  declare filePath: string;
 
-  @Column({
-    type: DataType.STRING(200),
-  })
-  declare title: string;
+  // @Column({
+  //   type: DataType.STRING(200),
+  // })
+  // declare title: string;
 
-  @Column({
-    type: DataType.STRING,
-  })
-  declare description: string;
+  // @Column({
+  //   type: DataType.STRING,
+  // })
+  // declare description: string;
 
   @Column({
     type: DataType.BOOLEAN,
   })
-  declare category: boolean;
+  declare category: number;
 
   @ForeignKey(() => Announcment)
   @Column({
     type: DataType.UUID,
+    allowNull: true,
   })
   declare announcmentId: string;
 
   @BelongsTo(() => Announcment, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   declare announcment: Announcment;
 
-  @ForeignKey(() => CourseWork)
+  @ForeignKey(() => Assignment)
   @Column({
     type: DataType.UUID,
+    allowNull: true,
   })
-  declare courseworkId: string;
+  declare assignmentId: string;
 
-  @BelongsTo(() => CourseWork, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  declare courseWork: CourseWork;
+  @BelongsTo(() => Assignment, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  declare assignment: Assignment;
 
-  @ForeignKey(() => CourseWorkSubmission)
+  @ForeignKey(() => AssignmentSubmission)
   @Column({
     type: DataType.UUID,
+    allowNull: true,
   })
-  declare courseworksubmissionId: string;
+  declare assignmentsubmissionId: string;
 
-  @BelongsTo(() => CourseWorkSubmission, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  declare courseWorkSubmission: CourseWorkSubmission;
+  @BelongsTo(() => AssignmentSubmission, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  declare assignmentSubmission: AssignmentSubmission;
 }
 
 export default Material;

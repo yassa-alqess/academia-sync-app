@@ -1,10 +1,10 @@
 import { Column, Table, Model, ForeignKey, BelongsTo, HasMany, DataType } from 'sequelize-typescript';
-import CourseWork from './coursework';
+import Assignment from './assignment';
 import Material from './material';
 import User from './user';
 
 @Table({ schema: process.env.SCHEMA })
-class CourseWorkSubmission extends Model {
+class AssignmentSubmission extends Model {
   @Column({
     primaryKey: true,
     type: DataType.UUID,
@@ -53,17 +53,17 @@ class CourseWorkSubmission extends Model {
   @BelongsTo(() => User, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   declare user: User;
 
-  @ForeignKey(() => CourseWork)
+  @ForeignKey(() => Assignment)
   @Column({
     type: DataType.UUID,
   })
-  declare courseworkId: string;
+  declare assignmentId: string;
 
-  @BelongsTo(() => CourseWork, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  declare courseWork: CourseWork;
+  @BelongsTo(() => Assignment, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  declare assignment: Assignment;
 
   @HasMany(() => Material)
   declare materials: Material[];
 }
 
-export default CourseWorkSubmission;
+export default AssignmentSubmission;

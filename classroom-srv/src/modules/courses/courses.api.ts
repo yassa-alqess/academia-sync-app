@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { add, get, remove, update } from "./courses.controller";
+import CourseController from "./courses.controller";
 
 const courseRouter = Router();
 
-courseRouter.post("/add", add);
-courseRouter.post("/getById", get);
-courseRouter.post("/updateById", update);
-courseRouter.post("/removeById", remove);
+courseRouter.post("/add", CourseController.addCourse);
+courseRouter.post("/getById", CourseController.getCourse);
+courseRouter.post("/updateById", CourseController.updateCourse);
+courseRouter.post("/removeById", CourseController.removeCourse);
 
 export default courseRouter;

@@ -1,6 +1,6 @@
 import { Column, Table, Model, ForeignKey, BelongsTo, HasMany, DataType, BelongsToMany } from 'sequelize-typescript';
 import Course from './course';
-import CourseWork from './coursework';
+import CourseWork from './assignment';
 import Announcment from './announcment';
 import User from './user';
 import UserRoom from './user-room';

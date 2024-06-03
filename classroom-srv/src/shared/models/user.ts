@@ -1,8 +1,8 @@
 import { Table, Model, Column, DataType, ForeignKey, BelongsTo, HasMany } from 'sequelize-typescript';
 import Law from './law';
 import Announcment from './announcment';
-import CourseWork from './coursework';
-import CourseWorkSubmission from './coursework-submission';
+import CourseWork from './assignment';
+import CourseWorkSubmission from './assignment-submission';
 
 @Table({ schema: 'public' })
 class User extends Model {
@@ -12,6 +12,27 @@ class User extends Model {
     defaultValue: DataType.UUIDV4,
   })
   declare userId: string;
+
+  @Column({
+    type: DataType.STRING(200),
+  })
+  declare displayName: string;
+
+  @Column({
+    type: DataType.STRING(200),
+  })
+  declare arabicName: string;
+
+  @Column({
+    type: DataType.STRING(200),
+    unique: true,
+  })
+  declare email: string;
+
+  @Column({
+    type: DataType.BOOLEAN,
+  })
+  declare role: boolean;
 
   @ForeignKey(() => Law)
   @Column({

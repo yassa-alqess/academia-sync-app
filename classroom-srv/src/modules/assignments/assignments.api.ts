@@ -1,0 +1,10 @@
+import upload from "@/config/storage/multer.config";
+import express from "express";
+import AssignmentController from "./assignments.controller";
+const assignmentRouter = express.Router();
+const assignmentController = new AssignmentController( );
+assignmentRouter.post("/addAssignment", upload("assignments")!.single("file"), assignmentController.addAssignment);
+assignmentRouter.post("/getAssignments", assignmentController.getAssignments);
+assignmentRouter.post("/updateAssignment", assignmentController.updateAssignment);
+assignmentRouter.post("/deleteAssignment", assignmentController.deleteAssignment);
+assignmentRouter.post("/getAssignments", assignmentController.getAssignments);
