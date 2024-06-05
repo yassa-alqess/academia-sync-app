@@ -4,11 +4,12 @@ import {
   DataType,
   BelongsToMany,
   HasMany,
-  Table
+  BelongsTo,
+  Table,
+  HasOne,
 } from 'sequelize-typescript';
-import ChatRoomUser from './chatRoom-user';
-import ChatRoom from './chatRoom';
 import Message from './message';
+import Participant from './participant';
 
 @Table({ schema: process.env.SCHEMA })
 class User extends Model {
@@ -19,11 +20,19 @@ class User extends Model {
   })
   declare userId: string;
 
-  @BelongsToMany(() => ChatRoom, () => ChatRoomUser)
-  declare chatRooms: ChatRoom[];
+  @Column({
+    type: DataType.STRING,
+  })
+  declare name: string;
 
-  @HasMany(()=> Message)
-  declare messages: Message[]
+  @Column({
+    type: DataType.UUID,
+    allowNull: true,
+  })
+  declare participantId: string;
+
+  @BelongsTo(() => Participant, { foreignKey: 'participantId' })
+  declare participant: Participant;
 }
 
 export default User;

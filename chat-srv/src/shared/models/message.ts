@@ -4,10 +4,10 @@ import {
   DataType,
   ForeignKey,
   BelongsTo,
-  Table
+  Table,
 } from 'sequelize-typescript';
-import ChatRoom from './chatRoom';
-import User from './user';
+import Conversation from './conversation';
+import Participant from './participant';
 
 @Table({ schema: process.env.SCHEMA })
 class Message extends Model {
@@ -23,17 +23,25 @@ class Message extends Model {
   })
   declare text: string;
 
-  @ForeignKey(() => ChatRoom)
-  declare chatRoomId: string;
+  @ForeignKey(() => Conversation)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  declare conversationId: string;
 
-  @BelongsTo(() => ChatRoom)
-  declare chatRoom: ChatRoom;
+  @BelongsTo(() => Conversation)
+  declare conversation: Conversation;
 
-  @ForeignKey(() => User)
-  declare userId: string;
+  @ForeignKey(() => Participant)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  declare participantId: string;
 
-  @BelongsTo(() => User)
-  declare user: User;
+  @BelongsTo(() => Participant)
+  declare participant: Participant;
 }
 
 export default Message;

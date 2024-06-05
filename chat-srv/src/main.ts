@@ -11,7 +11,7 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
 
-  await syncDatabase(configService)
+  await syncDatabase(configService);
 
   const port = configService.get('PORT');
 

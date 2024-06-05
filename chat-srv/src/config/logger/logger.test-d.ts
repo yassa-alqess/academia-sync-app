@@ -4,7 +4,9 @@ const { combine, timestamp, printf, json, colorize } = format;
 export const testLogger = createLogger({
   transports: [
     new transports.File({ filename: `.logs/test/test.log` }),
-    new transports.Console({ format: format.combine(colorize(), format.simple()) }),
+    new transports.Console({
+      format: format.combine(colorize(), format.simple()),
+    }),
   ],
   level: process.env.LOG_LEVEL || 'warn',
   format: combine(

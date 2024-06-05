@@ -1,10 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MessagesModule } from './messages/messages.module';
-import { ChatRoomsModule } from './chat-rooms/chat-rooms.module';
 import { configuration } from './config/env';
 import { ConfigModule } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
+import { ConversationsModule } from './conversations/conversations.module';
+import { ParticipantsModule } from './participants/participants.module';
+import { MessagesModule } from './messages/messages.module';
+import { GatewayModule } from './gateway/gateway.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -13,8 +17,12 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath: '.env.dev',
       load: [configuration],
     }),
+    UsersModule,
+    ConversationsModule,
+    ParticipantsModule,
     MessagesModule,
-    ChatRoomsModule,
+    GatewayModule,
+    EventEmitterModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],
