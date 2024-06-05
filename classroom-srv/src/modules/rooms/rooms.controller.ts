@@ -3,10 +3,10 @@ import RoomService from './rooms.service';
 import { Request, Response } from 'express';
 
 export default class RoomController {
-    constructor() { }
-    static async addRoom(req: Request, res: Response) {
+    constructor(private readonly roomService: RoomService) { }
+    public async addRoom(req: Request, res: Response) {
         try {
-            const room = await RoomService.addRoom(req.body);
+            const room = await this.roomService.addRoom(req.body);
             res.status(StatusCodes.CREATED).json(room);
             //eslint-disable-next-line
         } catch (error: any) {
@@ -18,9 +18,9 @@ export default class RoomController {
         }
     }
 
-    static async updateRoom(req: Request, res: Response) {
+    public async updateRoom(req: Request, res: Response) {
         try {
-            const room = await RoomService.updateRoom(req.body);
+            const room = await this.roomService.updateRoom(req.body);
             res.status(StatusCodes.OK).json(room);
             //eslint-disable-next-line
         } catch (error: any) {
@@ -34,10 +34,10 @@ export default class RoomController {
         }
     }
 
-    static async getRoom(req: Request, res: Response) {
+    public async getRoom(req: Request, res: Response) {
         try {
             const { roomId } = req.body;
-            const room = await RoomService.getRoom(roomId);
+            const room = await this.roomService.getRoom(roomId);
             res.status(StatusCodes.OK).json(room);
             //eslint-disable-next-line
         } catch (error: any) {
@@ -49,10 +49,10 @@ export default class RoomController {
     }
 
 
-    static async removeRoom(req: Request, res: Response) {
+    public async deleteRoom(req: Request, res: Response) {
         try {
             const { roomId } = req.body;
-            await RoomService.removeRoom(roomId);
+            await this.roomService.deleteRoom(roomId);
             res.status(StatusCodes.OK).json({ roomId });
             //eslint-disable-next-line
         } catch (error: any) {

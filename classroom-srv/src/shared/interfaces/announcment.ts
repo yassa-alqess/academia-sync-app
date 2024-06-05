@@ -1,9 +1,9 @@
 import Material from "../models/material";
 
 export interface AnnouncmentPayload {
-    text: string;
-    state: boolean;
-    assigneeMode: boolean;
+    text?: string;
+    // state: boolean;
+    // assigneeMode: boolean;
     roomId: string;
     userId: string;
 }
@@ -11,8 +11,8 @@ export interface AnnouncmentPayload {
 export interface AnnouncmentUpdatePayload {
     announcmentId: string;
     text?: string;
-    state?: boolean;
-    assigneeMode?: boolean;
+    // state?: boolean;
+    // assigneeMode?: boolean;
     roomId: string;
     userId: string;
 }
@@ -20,10 +20,10 @@ export interface AnnouncmentUpdatePayload {
 export interface AnnouncmentResponse {
     announcmentId: string;
     text: string;
-    state: boolean;
+    // state: boolean;
     updatedAt: Date;
     createdAt: Date;
-    assigneeMode: boolean;
+    // assigneeMode: boolean;
     // filePath?: string; // possible null
     materials: Material[];
     roomId: string;

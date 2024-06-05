@@ -24,6 +24,11 @@ class Assignment extends Model {
   declare description: string;
 
   @Column({
+    type: DataType.INTEGER,
+  })
+  declare assignedGrade: number;
+
+  @Column({
     type: DataType.DATE,
   })
   declare dueDate: Date;

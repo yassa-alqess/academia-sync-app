@@ -4,6 +4,7 @@ export interface AssignmentPayload {
 
     title: string;
     description: string;
+    assignedGrade: number;
     dueDate: Date;
     state: boolean;
     roomId: string;
@@ -15,6 +16,7 @@ export interface AssignmentUpdatePayload {
     assignmentId: string;
     title?: string;
     description?: string;
+    assignedGrade?: number;
     dueDate?: Date;
     state?: boolean;
     roomId: string;
@@ -25,6 +27,7 @@ export interface AssignmentResponse {
     assignmentId: string;
     title: string;
     description: string;
+    assignedGrade: number;
     dueDate: Date;
     state: boolean;
     updatedAt: Date;

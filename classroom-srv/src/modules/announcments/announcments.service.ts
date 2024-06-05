@@ -15,10 +15,10 @@ export default class AnnouncmentService {
         return {
             announcmentId: announcment.announcmentId,
             text: announcment.text,
-            state: announcment.state,
+            // state: announcment.state,
             updatedAt: announcment.updatedAt,
             createdAt: announcment.createdAt,
-            assigneeMode: announcment.assigneeMode,
+            // assigneeMode: announcment.assigneeMode,
             // filePath: path,
             materials: announcment.materials,
             roomId: announcment.roomId,
@@ -48,10 +48,10 @@ export default class AnnouncmentService {
         return {
             announcmentId: announcment.announcmentId,
             text: announcment.text,
-            state: announcment.state,
+            // state: announcment.state,
             updatedAt: announcment.updatedAt,
             createdAt: announcment.createdAt,
-            assigneeMode: announcment.assigneeMode,
+            // assigneeMode: announcment.assigneeMode,
             materials: announcment.materials,
             // filePath: path,
             roomId: announcment.roomId,
@@ -69,10 +69,10 @@ export default class AnnouncmentService {
         return announcments.map(announcment => ({
             announcmentId: announcment.announcmentId,
             text: announcment.text,
-            state: announcment.state,
+            // state: announcment.state,
             updatedAt: announcment.updatedAt,
             createdAt: announcment.createdAt,
-            assigneeMode: announcment.assigneeMode,
+            // assigneeMode: announcment.assigneeMode,
             materials: announcment.materials,
             // filePath: announcment.materials[0]?.filePath, // not full path yet
             roomId: announcment.roomId,
@@ -88,10 +88,10 @@ export default class AnnouncmentService {
         return {
             announcmentId: announcment.announcmentId,
             text: announcment.text,
-            state: announcment.state,
+            // state: announcment.state,
             updatedAt: announcment.updatedAt,
             createdAt: announcment.createdAt,
-            assigneeMode: announcment.assigneeMode,
+            // assigneeMode: announcment.assigneeMode,
             // filePath: announcment.materials[0]?.filePath, // not full path yet
             materials: announcment.materials,
             roomId: announcment.roomId,

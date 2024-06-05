@@ -2,8 +2,7 @@ import { RoomAddPayload, RoomResponse, RoomUpdatePayload } from '@/shared/interf
 import Room from '../../shared/models/room'
 
 export default class RoomService {
-    constructor() { }
-    static async addRoom(payload: RoomAddPayload): Promise<RoomResponse> {
+    public async addRoom(payload: RoomAddPayload): Promise<RoomResponse> {
 
         const room = await Room.create({ ...payload });
         return {
@@ -16,7 +15,7 @@ export default class RoomService {
         };
     }
 
-    static async getRoom(roomId: string): Promise<RoomResponse> {
+    public async getRoom(roomId: string): Promise<RoomResponse> {
         const room = await Room.findByPk(roomId)
         if (!room) throw new Error('Room not found')
 
@@ -30,7 +29,7 @@ export default class RoomService {
         };
     }
 
-    static async updateRoom(payload: RoomUpdatePayload): Promise<RoomResponse> {
+    public async updateRoom(payload: RoomUpdatePayload): Promise<RoomResponse> {
         const { roomId } = payload
         const room = await Room.findByPk(roomId)
         if (!room) throw new Error('Room not found')
@@ -45,7 +44,7 @@ export default class RoomService {
         };
     }
 
-    static async removeRoom(roomId: string): Promise<string> {
+    public async deleteRoom(roomId: string): Promise<string> {
         const room = await Room.findByPk(roomId)
         if (!room) throw new Error('Room not found')
         await room.destroy()

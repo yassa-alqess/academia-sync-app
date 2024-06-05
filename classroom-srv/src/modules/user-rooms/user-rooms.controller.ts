@@ -5,9 +5,10 @@ import UserRoomService from './user-rooms.service';
 
 
 export default class UserRoomController {
-    static async addRoomUser(req: Request, res: Response) {
+    constructor(private readonly userRoomService: UserRoomService) { }
+    public async addRoomUser(req: Request, res: Response) {
         try {
-            const userRoomId = await UserRoomService.addRoomUser(req.body);
+            const userRoomId = await this.userRoomService.addRoomUser(req.body);
             res.status(StatusCodes.CREATED).json({ userRoomId });
 
         }
@@ -20,9 +21,9 @@ export default class UserRoomController {
         }
     };
 
-    static async removeRoomUser(req: Request, res: Response) {
+    public async removeRoomUser(req: Request, res: Response) {
         try {
-            const userRoomId = await UserRoomService.removeRoomUser(req.body);
+            const userRoomId = await this.userRoomService.removeRoomUser(req.body);
             res.status(StatusCodes.OK).json({ userRoomId });
         }
         //eslint-disable-next-line
@@ -31,9 +32,9 @@ export default class UserRoomController {
         }
     };
 
-    static async getRoomUsers(req: Request, res: Response) {
+    public async getRoomUsers(req: Request, res: Response) {
         try {
-            const users = await UserRoomService.getRoomUsers(req.body);
+            const users = await this.userRoomService.getRoomUsers(req.body);
             res.status(StatusCodes.OK).json(users);
         }
         //eslint-disable-next-line
@@ -42,9 +43,9 @@ export default class UserRoomController {
         }
     };
 
-    static async getUserRooms(req: Request, res: Response) {
+    public async getUserRooms(req: Request, res: Response) {
         try {
-            const rooms = await UserRoomService.getUserRooms(req.body);
+            const rooms = await this.userRoomService.getUserRooms(req.body);
             res.status(StatusCodes.OK).json(rooms);
         }
         //eslint-disable-next-line
@@ -53,9 +54,9 @@ export default class UserRoomController {
         }
     }
 
-    static async bulkRemoveRoomUsers(req: Request, res: Response) {
+    public async bulkRemoveRoomUsers(req: Request, res: Response) {
         try {
-            const userRoomIds = await UserRoomService.bulkRemoveRoomUsers(req.body);
+            const userRoomIds = await this.userRoomService.bulkRemoveRoomUsers(req.body);
             res.status(StatusCodes.OK).json({ userRoomIds });
         }
         //eslint-disable-next-line
@@ -64,9 +65,9 @@ export default class UserRoomController {
         }
     }
 
-    static async bulkAddRoomUsers(req: Request, res: Response) {
+    public async bulkAddRoomUsers(req: Request, res: Response) {
         try {
-            const userRoomIds = await UserRoomService.bulkAddRoomUsers(req.body);
+            const userRoomIds = await this.userRoomService.bulkAddRoomUsers(req.body);
             res.status(StatusCodes.CREATED).json({ userRoomIds });
         }
         //eslint-disable-next-line

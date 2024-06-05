@@ -17,20 +17,20 @@ class AssignmentSubmission extends Model {
   })
   declare draftGrade: number;
 
-  @Column({
-    type: DataType.INTEGER,
-  })
-  declare assignedGrade: number;
-
-  @Column({
-    type: DataType.BOOLEAN,
-  })
-  declare state: boolean;
+  // @Column({
+  //   type: DataType.BOOLEAN,
+  // })
+  // declare state: boolean;
 
   @Column({
     type: DataType.BOOLEAN,
   })
   declare late: boolean;
+
+  @Column({
+    type: DataType.STRING,
+  })
+  declare text: string;
 
   @Column({
     type: DataType.DATE,

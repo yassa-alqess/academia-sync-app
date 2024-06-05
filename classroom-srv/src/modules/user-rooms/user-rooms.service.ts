@@ -5,9 +5,8 @@ import { RoomUsersGetResponse, RoomUsersListPayload, RoomUsersPayload, UserRooms
 import User from '@/shared/models/user'
 
 export default class UserRoomService {
-    constructor() { }
 
-    static async addRoomUser(payload: RoomUsersPayload): Promise<string> { //add user to room
+    public async addRoomUser(payload: RoomUsersPayload): Promise<string> { //add user to room
         const room = await Room.findByPk(payload.roomId)
         if (!room) throw new Error('Room not found')
         const user = await User.findByPk(payload.userId)
@@ -19,7 +18,7 @@ export default class UserRoomService {
         return record.userRoomId
     }
 
-    static async removeRoomUser(payload: RoomUsersPayload): Promise<string> { //remove user from room
+    public async removeRoomUser(payload: RoomUsersPayload): Promise<string> { //remove user from room
         const room = await Room.findByPk(payload.roomId)
         if (!room) throw new Error('Room not found')
         const user = await User.findByPk(payload.userId)
@@ -30,7 +29,7 @@ export default class UserRoomService {
         return record.userRoomId
     }
 
-    static async bulkRemoveRoomUsers(payload: RoomUsersListPayload): Promise<string> { // remove users from room
+    public async bulkRemoveRoomUsers(payload: RoomUsersListPayload): Promise<string> { // remove users from room
         const room = await Room.findByPk(payload.roomId)
         if (!room) throw new Error('Room not found')
 
@@ -47,7 +46,7 @@ export default class UserRoomService {
         return records.join(',')
     }
 
-    static async bulkAddRoomUsers(payload: RoomUsersListPayload): Promise<string> { // add users to room
+    public async bulkAddRoomUsers(payload: RoomUsersListPayload): Promise<string> { // add users to room
         const room = await Room.findByPk(payload.roomId)
         if (!room) throw new Error('Room not found')
 
@@ -65,7 +64,7 @@ export default class UserRoomService {
 
     }
 
-    static async getRoomUsers(payload: RoomUsersGetPayload): Promise<RoomUsersGetResponse> {
+    public async getRoomUsers(payload: RoomUsersGetPayload): Promise<RoomUsersGetResponse> {
         const room = await Room.findByPk(payload.roomId)
         if (!room) throw new Error('Room not found')
 
@@ -83,7 +82,7 @@ export default class UserRoomService {
         return { users }
     }
 
-    static async getUserRooms(payload: UserRoomsGetPayload): Promise<UserRoomsGetResponse> {
+    public async getUserRooms(payload: UserRoomsGetPayload): Promise<UserRoomsGetResponse> {
         const user = await User.findByPk(payload.userId)
         if (!user) throw new Error('User not found')
 

@@ -17,10 +17,10 @@ class Announcment extends Model {
   })
   declare text: string;
 
-  @Column({
-    type: DataType.BOOLEAN,
-  })
-  declare state: boolean;
+  // @Column({
+  //   type: DataType.BOOLEAN,
+  // })
+  // declare state: boolean;
 
   @Column({
     type: DataType.DATE,
@@ -34,10 +34,10 @@ class Announcment extends Model {
   })
   declare createdAt: Date;
 
-  @Column({
-    type: DataType.BOOLEAN,
-  })
-  declare assigneeMode: boolean;
+  // @Column({
+  //   type: DataType.BOOLEAN,
+  // })
+  // declare assigneeMode: boolean;
 
   @ForeignKey(() => Room)
   @Column({

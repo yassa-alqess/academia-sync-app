@@ -1,12 +1,14 @@
 import { Router } from "express";
 import UserRoomController from "./user-rooms.controller";
+import UserRoomService from "./user-rooms.service";
 
 const userRoomRouter = Router();
-userRoomRouter.post("/addUser", UserRoomController.addRoomUser);
-userRoomRouter.post("/removeUser", UserRoomController.removeRoomUser);
-userRoomRouter.post("/getRoomUsers", UserRoomController.getRoomUsers);
-userRoomRouter.post("/getUserRooms", UserRoomController.getUserRooms);
-userRoomRouter.post("/bulkRemove", UserRoomController.bulkRemoveRoomUsers);
-userRoomRouter.post("/bulkAdd", UserRoomController.bulkAddRoomUsers);
+const userRoomController = new UserRoomController(new UserRoomService());
+userRoomRouter.post("/addUser", userRoomController.addRoomUser);
+userRoomRouter.post("/removeUser", userRoomController.removeRoomUser);
+userRoomRouter.post("/getRoomUsers", userRoomController.getRoomUsers);
+userRoomRouter.post("/getUserRooms", userRoomController.getUserRooms);
+userRoomRouter.post("/bulkRemove", userRoomController.bulkRemoveRoomUsers);
+userRoomRouter.post("/bulkAdd", userRoomController.bulkAddRoomUsers);
 
 export default userRoomRouter;

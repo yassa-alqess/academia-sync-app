@@ -1,5 +1,7 @@
-export * from './course'
-export * from './law'
-export * from './room'
-export * from './material'
 export * from './announcment'
+export * from './assignment'
+export * from './material'
+export * from './room-users'
+export * from './room'
+export * from './submission'
+

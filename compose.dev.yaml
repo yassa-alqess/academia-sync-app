@@ -13,14 +13,14 @@ services:
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
 
-  kafka:
-    volumes:
-      - ./data/kafka:/var/run/docker.sock
+  # kafka:
+  #   volumes:
+  #     - ./data/kafka:/var/run/docker.sock
 
-  auth-srv:
-    extends:
-      file: auth-srv/compose.dev.yaml
-      service: auth-srv
+  # auth-srv:
+  #   extends:
+  #     file: auth-srv/compose.dev.yaml
+  #     service: auth-srv
 
   classroom-srv:
     extends:

@@ -4,8 +4,9 @@ import AnnouncmentController from "./announcments.controller";
 import AnnouncmentService from "./announcments.service";
 const announcmentRouter = express.Router();
 const announcmentController = new AnnouncmentController(new AnnouncmentService());
+
 announcmentRouter.post("/addAnnouncment", upload("announcments")!.single("file"), announcmentController.addAnnouncment);
 announcmentRouter.post("/getAnnouncments", announcmentController.getAnnouncments);
-announcmentRouter.post("/updateAnnouncment", announcmentController.updateAnnouncment);
+announcmentRouter.post("/updateAnnouncment", upload("announcments")!.single("file"), announcmentController.updateAnnouncment);
 announcmentRouter.post("/deleteAnnouncment", announcmentController.deleteAnnouncment);
 announcmentRouter.post("/getAnnouncments", announcmentController.getAnnouncments);
