@@ -14,3 +14,4 @@ submissionRouter.post("/getLateSubmissions", submissionController.getLateSubmiss
 submissionRouter.post("/deleteSubmission", submissionController.deleteSubmission);
 submissionRouter.post("/addGradeToSubmission", submissionController.addGradeToSubmission);
 
+export default submissionRouter;

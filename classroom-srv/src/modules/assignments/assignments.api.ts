@@ -10,3 +10,5 @@ assignmentRouter.post("/getAssignments", assignmentController.getAssignments);
 assignmentRouter.post("/getAssignments", assignmentController.getAssignments);
 assignmentRouter.post("/updateAssignment", upload("assignment")!.single("file"), assignmentController.updateAssignment);
 assignmentRouter.post("/deleteAssignment", assignmentController.deleteAssignment);
+
+export default assignmentRouter;

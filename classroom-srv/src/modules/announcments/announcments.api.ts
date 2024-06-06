@@ -10,3 +10,5 @@ announcmentRouter.post("/getAnnouncments", announcmentController.getAnnouncments
 announcmentRouter.post("/updateAnnouncment", upload("announcments")!.single("file"), announcmentController.updateAnnouncment);
 announcmentRouter.post("/deleteAnnouncment", announcmentController.deleteAnnouncment);
 announcmentRouter.post("/getAnnouncments", announcmentController.getAnnouncments);
+
+export default announcmentRouter;
