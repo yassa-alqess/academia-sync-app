@@ -1,0 +1,8 @@
+services:
+  admin-srv:
+    build:
+      context: .
+    environment:
+      NODE_ENV: dev
+    ports:
+      - 8087:8087
