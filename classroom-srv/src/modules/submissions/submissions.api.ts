@@ -13,4 +13,4 @@ submissionRouter.post("/getOnTimeSubmissions", submissionController.getOnTimeSub
 submissionRouter.post("/getLateSubmissions", submissionController.getLateSubmissions);
 submissionRouter.post("/deleteSubmission", submissionController.deleteSubmission);
 submissionRouter.post("/addGradeToSubmission", submissionController.addGradeToSubmission);
-// submissionRouter.post("/getSubmissionByStudent", submissionController.getSubmissionByStudent);
+

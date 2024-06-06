@@ -24,7 +24,7 @@ export interface AnnouncmentResponse {
     updatedAt: Date;
     createdAt: Date;
     // assigneeMode: boolean;
-    // filePath?: string; // possible null
+    filePath?: string; // possible null
     materials: Material[];
     roomId: string;
     userId: string;

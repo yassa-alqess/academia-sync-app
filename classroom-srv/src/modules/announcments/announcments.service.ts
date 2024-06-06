@@ -48,12 +48,12 @@ export default class AnnouncmentService {
         return {
             announcmentId: announcment.announcmentId,
             text: announcment.text,
-            // state: announcment.state,
             updatedAt: announcment.updatedAt,
             createdAt: announcment.createdAt,
+            // state: announcment.state,
             // assigneeMode: announcment.assigneeMode,
+            filePath: path,
             materials: announcment.materials,
-            // filePath: path,
             roomId: announcment.roomId,
             userId: announcment.userId
         };

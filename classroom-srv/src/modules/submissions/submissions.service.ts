@@ -115,7 +115,7 @@ export default class SubmissionService {
             include: [{
                 model: User,
                 attributes: ['displayName'],
-                as: 'user' // Make sure this matches the alias in your model associations
+                as: 'user' 
             }]
         });
 
@@ -129,7 +129,7 @@ export default class SubmissionService {
             userId: submission.userId,
             assignmentId: submission.assignmentId,
             materials: submission.materials,
-            displayName: submission.user.displayName // Include the displayName from the joined user
+            displayName: submission.user.displayName || ''
         }));
     }
 

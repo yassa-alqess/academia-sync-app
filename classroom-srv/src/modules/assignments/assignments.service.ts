@@ -57,7 +57,7 @@ export default class AssignmentService {
             updatedAt: assignment.updatedAt,
             createdAt: assignment.createdAt,
             materials: assignment.materials,
-            // filePath: path,
+            filePath: path,
             roomId: assignment.roomId,
             userId: assignment.userId
         };

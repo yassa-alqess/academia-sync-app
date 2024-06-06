@@ -4,6 +4,7 @@ import UserRoomService from "./user-rooms.service";
 
 const userRoomRouter = Router();
 const userRoomController = new UserRoomController(new UserRoomService());
+
 userRoomRouter.post("/addUser", userRoomController.addRoomUser);
 userRoomRouter.post("/removeUser", userRoomController.removeRoomUser);
 userRoomRouter.post("/getRoomUsers", userRoomController.getRoomUsers);
