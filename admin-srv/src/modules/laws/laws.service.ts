@@ -3,7 +3,7 @@ import Law from '@/shared/models/law'
 
 export default class LawService {
     constructor() { }
-    static async addLaw(payload: LawAddPayload): Promise<LawResponse> {
+    public async addLaw(payload: LawAddPayload): Promise<LawResponse> {
 
         const law = await Law.create({ ...payload });
         return {
@@ -15,7 +15,7 @@ export default class LawService {
         };
     }
 
-    static async getLaw(lawId: string): Promise<LawResponse> {
+    public async getLaw(lawId: string): Promise<LawResponse> {
         const law = await Law.findByPk(lawId)
         if (!law) throw new Error('law not found')
 
@@ -28,7 +28,7 @@ export default class LawService {
         };
     }
 
-    static async updateLaw(payload: LawUpdatePayload): Promise<LawResponse> {
+    public async updateLaw(payload: LawUpdatePayload): Promise<LawResponse> {
         const { lawId } = payload
         const law = await Law.findByPk(lawId)
         if (!law) throw new Error('law not found')
@@ -42,7 +42,7 @@ export default class LawService {
         };
     }
 
-    static async removeLaw(lawId: string): Promise<string> {
+    public async deleteLaw(lawId: string): Promise<string> {
         const law = await Law.findByPk(lawId)
         if (!law) throw new Error('law not found')
         await law.destroy()

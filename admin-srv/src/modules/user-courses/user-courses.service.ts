@@ -8,15 +8,23 @@ export default class UserCourseService {
     constructor() { }
 
     public async addCourseUser(payload: CourseUsersPayload): Promise<string> { //add user to course
-        const course = await Course.findByPk(payload.courseId)
+        // const course = await Course.findByPk(payload.courseId)
+        // if (!course) throw new Error('Course not found')
+        // const user = await User.findByPk(payload.userId)
+        // if (!user) throw new Error('User not found')
+        // if (await UserCourse.findOne({ where: { userId: payload.userId, courseId: payload.courseId } })) {
+        //     throw new Error('User already in course')
+        // }
+        // const record = await UserCourse.create({ userId: payload.userId, courseId: payload.courseId })
+        // return record.userCourseId
+        const { userId, courseId, role} = payload
+        const course = await Course.findByPk(courseId)
         if (!course) throw new Error('Course not found')
-        const user = await User.findByPk(payload.userId)
+        const user = await User.findByPk(userId)
         if (!user) throw new Error('User not found')
-        if (await UserCourse.findOne({ where: { userId: payload.userId, courseId: payload.courseId } })) {
-            throw new Error('User already in course')
-        }
-        const record = await UserCourse.create({ userId: payload.userId, courseId: payload.courseId })
-        return record.userCourseId
+
+        
+       
     }
 
     public async deleteCourseUser(payload: CourseUsersPayload): Promise<string> { //delete user from course

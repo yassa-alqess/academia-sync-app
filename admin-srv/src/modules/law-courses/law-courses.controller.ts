@@ -4,10 +4,10 @@ import LawCourseService from './law-courses.service';
 
 
 export default class LawCourseController {
-
-    public static async addLawCourse(req: Request, res: Response) {
+    constructor(private readonly lawCourseService: LawCourseService) { }
+    public addLawCourse = async (req: Request, res: Response) => {
         try {
-            const lawCourseId = await LawCourseService.addLawCourse(req.body);
+            const lawCourseId = await this.lawCourseService.addLawCourse(req.body);
             res.status(StatusCodes.CREATED).json({ lawCourseId });
 
         }
@@ -20,9 +20,9 @@ export default class LawCourseController {
         }
     }
 
-    public static async removeLawCourse(req: Request, res: Response) {
+    public deleteLawCourse = async (req: Request, res: Response) => {
         try {
-            const lawCourseId = await LawCourseService.removeLawCourse(req.body);
+            const lawCourseId = await this.lawCourseService.deleteLawCourse(req.body);
             res.status(StatusCodes.OK).json({ lawCourseId });
         }
         //eslint-disable-next-line
@@ -31,9 +31,9 @@ export default class LawCourseController {
         }
     }
 
-    public static async bulkRemoveLawCourses(req: Request, res: Response) {
+    public bulkDeleteLawCourses = async (req: Request, res: Response) => {
         try {
-            const lawCourseIds = await LawCourseService.bulkRemoveLawCourses(req.body);
+            const lawCourseIds = await this.lawCourseService.bulkDeleteLawCourses(req.body);
             res.status(StatusCodes.OK).json({ lawCourseIds });
         }
         //eslint-disable-next-line
@@ -42,9 +42,9 @@ export default class LawCourseController {
         }
     }
 
-    public static async bulkAddLawCourses(req: Request, res: Response) {
+    public bulkAddLawCourses = async (req: Request, res: Response) => {
         try {
-            const lawCourseIds = await LawCourseService.bulkAddLawCourses(req.body);
+            const lawCourseIds = await this.lawCourseService.bulkAddLawCourses(req.body);
             res.status(StatusCodes.OK).json({ lawCourseIds });
         }
         //eslint-disable-next-line
@@ -53,9 +53,9 @@ export default class LawCourseController {
         }
     }
 
-    public static async getLawCourses(req: Request, res: Response) {
+    public getLawCourses = async (req: Request, res: Response) => {
         try {
-            const lawCourses = await LawCourseService.getLawCourses(req.body);
+            const lawCourses = await this.lawCourseService.getLawCourses(req.body);
             res.status(StatusCodes.OK).json(lawCourses);
         }
         //eslint-disable-next-line

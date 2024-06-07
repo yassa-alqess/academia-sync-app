@@ -41,6 +41,7 @@ let server: Server | null = null;
     server = APP.listen(PORT, () => {
       logger.info(`⚡️[server]: Server is running at http://localhost:${PORT} in ${ENV} mode`);
     });
+
   } catch (error) {
     logger.error('Unable to connect,', error);
     process.exit(1);

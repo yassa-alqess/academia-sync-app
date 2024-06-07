@@ -3,6 +3,7 @@
 export interface CourseUsersPayload {
     userId: string;
     courseId: string;
+    role: number;
 }
 
 export interface CourseUsersListPayload {

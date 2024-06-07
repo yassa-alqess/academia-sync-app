@@ -76,4 +76,22 @@ export default class UserCourseController {
         }
     }
 
+    // get xlsx sheet and get all the courses from it and add them to the database (all required feilds should be present in the sheet)
+    public bulkAddCourseUsersBySheet = async (req: Request, res: Response) => {
+        try {
+            if (!req.file) {
+                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'No file uploaded' });
+            }
+            const { courseId } = req.body;
+            if (!courseId) {
+                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Course Id is required' });
+            }
+            const courses = this.userCourseService.bulkAddCourseUsersBySheet(req.file.path); // req.file.filename
+            res.status(StatusCodes.CREATED).json(courses);
+            //eslint-disable-next-line
+        } catch (error: any) {
+            res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+        }
+    }
+
 }

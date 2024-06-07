@@ -3,10 +3,10 @@ import LawService from './laws.service';
 import { Request, Response } from 'express';
 
 export default class LawController {
-    constructor() { }
-    static async addLaw(req: Request, res: Response) {
+    constructor(private readonly lawService: LawService) { }
+    public addLaw = async (req: Request, res: Response) => {
         try {
-            const law = await LawService.addLaw(req.body);
+            const law = await this.lawService.addLaw(req.body);
             res.status(StatusCodes.CREATED).json(law);
             //eslint-disable-next-line
         } catch (error: any) {
@@ -18,9 +18,9 @@ export default class LawController {
         }
     }
 
-    static async updateLaw(req: Request, res: Response) {
+    public updateLaw = async (req: Request, res: Response) => {
         try {
-            const law = await LawService.updateLaw(req.body);
+            const law = await this.lawService.updateLaw(req.body);
             res.status(StatusCodes.OK).json(law);
             //eslint-disable-next-line
         } catch (error: any) {
@@ -34,10 +34,10 @@ export default class LawController {
         }
     }
 
-    static async getLaw(req: Request, res: Response) {
+    public getLaw = async (req: Request, res: Response) => {
         try {
             const { lawId } = req.body;
-            const law = await LawService.getLaw(lawId);
+            const law = await this.lawService.getLaw(lawId);
             res.status(StatusCodes.OK).json(law);
             //eslint-disable-next-line
         } catch (error: any) {
@@ -49,10 +49,10 @@ export default class LawController {
     }
 
 
-    static async removeLaw(req: Request, res: Response) {
+    public deleteLaw = async (req: Request, res: Response) => {
         try {
             const { lawId } = req.body;
-            await LawService.removeLaw(lawId);
+            await this.lawService.deleteLaw(lawId);
             res.status(StatusCodes.OK).json({ lawId });
             //eslint-disable-next-line
         } catch (error: any) {

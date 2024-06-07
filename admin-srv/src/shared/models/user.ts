@@ -32,7 +32,7 @@ class User extends Model {
   @Column({
     type: DataType.BOOLEAN,
   })
-  declare role: number;
+  declare role: boolean;
 
   @ForeignKey(() => Law)
   @Column({

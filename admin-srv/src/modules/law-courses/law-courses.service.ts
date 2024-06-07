@@ -7,7 +7,7 @@ import Law from '@/shared/models/law'
 export default class LawCourseService {
     constructor() { }
 
-    static async addLawCourse(payload: LawCoursesPayload): Promise<string> { //add course to law
+    public async addLawCourse(payload: LawCoursesPayload): Promise<string> { //add course to law
         const course = await Course.findByPk(payload.courseId)
         if (!course) throw new Error('Course not found')
         const law = await Law.findByPk(payload.lawId)
@@ -19,7 +19,7 @@ export default class LawCourseService {
         return record.lawCourseId;
     }
 
-    static async removeLawCourse(payload: LawCoursesPayload): Promise<string> { //remove course from law
+    public async deleteLawCourse(payload: LawCoursesPayload): Promise<string> { //delete course from law
         const law = await Law.findByPk(payload.lawId)
         if (!law) throw new Error(' Law not found')
         const course = await Course.findByPk(payload.courseId)
@@ -32,7 +32,7 @@ export default class LawCourseService {
         return record.lawCourseId;
     }
 
-    static async bulkRemoveLawCourses(payload: LawCoursesListPayload): Promise<string> { // remove list of courses from law
+    public async bulkDeleteLawCourses(payload: LawCoursesListPayload): Promise<string> { // delete list of courses from law
         const law = await Law.findByPk(payload.lawId)
         if (!law) throw new Error('law not found')
 
@@ -49,7 +49,7 @@ export default class LawCourseService {
         return records.join(',')
     }
 
-    static async bulkAddLawCourses(payload: LawCoursesListPayload): Promise<string> { // add list of courses to law
+    public async bulkAddLawCourses(payload: LawCoursesListPayload): Promise<string> { // add list of courses to law
         const law = await Course.findByPk(payload.lawId)
         if (!law) throw new Error('law not found')
 
@@ -67,7 +67,7 @@ export default class LawCourseService {
 
     }
 
-    static async getLawCourses(payload: LawCoursesGetPayload): Promise<LawCoursesGetResponse> {
+    public async getLawCourses(payload: LawCoursesGetPayload): Promise<LawCoursesGetResponse> {
         const law = await Course.findByPk(payload.lawId)
         if (!law) throw new Error('law not found')
 
@@ -80,9 +80,9 @@ export default class LawCourseService {
                 name: course.name,
                 grades: course.grades,
                 creditHours: course.creditHours
-            } 
+            }
         }))
-        return  { courses }
+        return { courses }
     }
 
 }

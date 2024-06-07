@@ -13,22 +13,22 @@ services:
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
 
-  # kafka:
-  #   volumes:
-  #     - ./data/kafka:/var/run/docker.sock
+  kafka:
+    volumes:
+      - ./data/kafka:/var/run/docker.sock
 
   # auth-srv:
   #   extends:
   #     file: auth-srv/compose.dev.yaml
   #     service: auth-srv
 
-  classroom-srv:
-    extends:
-      file: classroom-srv/compose.dev.yaml
-      service: classroom-srv
-
-  # admin-srv:
+  # classroom-srv:
   #   extends:
-  #     file: admin-srv/compose.dev.yaml
-  #     service: admin-srv
+  #     file: classroom-srv/compose.dev.yaml
+  #     service: classroom-srv
+
+  admin-srv:
+    extends:
+      file: admin-srv/compose.dev.yaml
+      service: admin-srv
 # run: docker-compose -f compose.dev.yml up --build -d

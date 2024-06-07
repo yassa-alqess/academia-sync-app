@@ -1,11 +1,12 @@
 import { Router } from "express";
 import LawController from "./laws.controller";
+import LawService from "./laws.service";
 
 const lawRouter = Router();
-
-lawRouter.post("/add", LawController.addLaw);
-lawRouter.post("/getById", LawController.getLaw);
-lawRouter.post("/updateById", LawController.updateLaw);
-lawRouter.post("/removeById", LawController.removeLaw);
+const lawController = new LawController(new LawService());
+lawRouter.post("/addLaw", lawController.addLaw);
+lawRouter.post("/getLaw", lawController.getLaw);
+lawRouter.post("/updateLaw", lawController.updateLaw);
+lawRouter.post("/deleteLaw", lawController.deleteLaw);
 
 export default lawRouter;

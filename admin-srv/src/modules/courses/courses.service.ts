@@ -1,4 +1,3 @@
-import logger from '../../config/logger';
 import { CourseAddPayload, CourseResponse, CourseUpdatePayload } from '../../shared/interfaces/course'
 import Course from '../../shared/models/course'
 import { readXlsx } from '../../shared/utils/serializer'

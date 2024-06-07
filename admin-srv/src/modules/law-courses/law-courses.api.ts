@@ -1,11 +1,13 @@
 import { Router } from "express";
 import LawCourseController from "./law-courses.controller";
+import LawCourseService from "./law-courses.service";
 
 const lawCourseRouter = Router();
-lawCourseRouter.post("/addCourse", LawCourseController.addLawCourse);
-lawCourseRouter.post("/removeCourse", LawCourseController.removeLawCourse);
-lawCourseRouter.post("/getLawCourses", LawCourseController.getLawCourses);
-lawCourseRouter.post("/bulkRemove", LawCourseController.bulkRemoveLawCourses);
-lawCourseRouter.post("/bulkAdd", LawCourseController.bulkAddLawCourses);
+const lawCourseController = new LawCourseController(new LawCourseService());
+lawCourseRouter.post("/addCourse", lawCourseController.addLawCourse);
+lawCourseRouter.post("/deleteCourse", lawCourseController.deleteLawCourse);
+lawCourseRouter.post("/getLawCourses", lawCourseController.getLawCourses);
+lawCourseRouter.post("/bulkDeleteLawCourses", lawCourseController.bulkDeleteLawCourses);
+lawCourseRouter.post("/bulkAddLawCourses", lawCourseController.bulkAddLawCourses);
 
 export default lawCourseRouter;

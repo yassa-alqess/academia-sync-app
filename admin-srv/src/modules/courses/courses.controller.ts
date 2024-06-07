@@ -1,6 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import CourseService from './courses.service';
 import { Request, Response } from 'express';
+// import kafkaProducer from '../../producers/room-producer';
+
 
 export default class CourseController {
     constructor(private readonly courseService: CourseService) { }
@@ -9,6 +11,7 @@ export default class CourseController {
     public addCourse = async (req: Request, res: Response) => {
         try {
             const course = await this.courseService.addCourse(req.body);
+            // await kafkaProducer.sendMessage("notifications", req.body);
             res.status(StatusCodes.CREATED).json(course);
             //eslint-disable-next-line
         } catch (error: any) {

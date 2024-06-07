@@ -1,28 +1,28 @@
 version: "3.8"
 
 services:
-  # zookeeper:
-  #   image: wurstmeister/zookeeper
-  #   ports:
-  #     - ${ZOOKEEPER_PORT}:${ZOOKEEPER_PORT}
-  #   environment:
-  #     - ALLOW_ANONYMOUS_LOGIN=yes
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - ${ZOOKEEPER_PORT}:${ZOOKEEPER_PORT}
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
 
-  # kafka:
-  #   image: wurstmeister/kafka
-  #   container_name: kafka
-  #   ports:
-  #     - ${KAFKA_PORT}:${KAFKA_PORT}
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - ${KAFKA_PORT}:${KAFKA_PORT}
 
-  #   environment:
-  #     - KAFKA_BROKER_ID=1
-  #     - KAFKA_LISTENERS=PLAINTEXT://:${KAFKA_PORT}
-  #     - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:${KAFKA_PORT}
-  #     - KAFKA_ZOOKEEPER_CONNECT=${ZOOKEEPER_HOST}:${ZOOKEEPER_PORT}
-  #     - KAFKA_CREATE_TOPICS=notifications:1:1
-  #     - ALLOW_PLAINTEXT_LISTENER=yes
-  #   depends_on:
-  #     - zookeeper
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_LISTENERS=PLAINTEXT://:${KAFKA_PORT}
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:${KAFKA_PORT}
+      - KAFKA_ZOOKEEPER_CONNECT=${ZOOKEEPER_HOST}:${ZOOKEEPER_PORT}
+      - KAFKA_CREATE_TOPICS=notifications:1:1
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
 
   sql-db:
     image: postgres:latest
@@ -42,17 +42,17 @@ services:
   #     - sql-db
   #     # - kafka
 
-  classroom-srv:
-    extends:
-      file: classroom-srv/compose.yaml
-      service: classroom-srv
-    depends_on:
-      - sql-db
-      # - kafka
-  # admin-srv:
+  # classroom-srv:
   #   extends:
-  #     file: admin-srv/compose.yaml
-  #     service: admin-srv
+  #     file: classroom-srv/compose.yaml
+  #     service: classroom-srv
   #   depends_on:
   #     - sql-db
   #     # - kafka
+  admin-srv:
+    extends:
+      file: admin-srv/compose.yaml
+      service: admin-srv
+    depends_on:
+      - sql-db
+      - kafka
