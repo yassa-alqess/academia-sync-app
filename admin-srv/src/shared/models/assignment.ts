@@ -2,7 +2,7 @@ import { Column, Table, Model, BelongsTo, HasMany, ForeignKey, DataType } from '
 import AssignmentSubmission from './assignment-submission';
 import Material from './material';
 import Room from './room';
-import User from './user';
+import Instructor from './instructor';
 
 @Table({ schema: process.env.SCHEMA })
 class Assignment extends Model {
@@ -59,14 +59,14 @@ class Assignment extends Model {
   @BelongsTo(() => Room, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   declare room: Room;
 
-  @ForeignKey(() => User)
+  @ForeignKey(() => Instructor)
   @Column({
     type: DataType.UUID,
   })
-  declare userId: string;
+  declare instructorId: string;
 
-  @BelongsTo(() => User, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  declare user: User;
+  @BelongsTo(() => Instructor, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  declare instructor: Instructor;
 
   @HasMany(() => Material)
   declare materials: Material[];

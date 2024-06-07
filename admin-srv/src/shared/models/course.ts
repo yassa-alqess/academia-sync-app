@@ -2,8 +2,10 @@ import { Column, Table, Model, HasOne, DataType, BelongsToMany } from 'sequelize
 import Room from './room';
 import LawCourse from './law-course';
 import UserCourse from './user-course';
-import User from './user';
+// import User from './user';
 import Law from './law';
+import Instructor from './instructor';
+import Student from './student';
 
 @Table({ schema: 'public' })
 class Course extends Model {
@@ -36,11 +38,14 @@ class Course extends Model {
   @HasOne(() => Room)
   declare room: Room;
 
-  @BelongsToMany(() => User, () => UserCourse)
-  declare users: User[];
+  @BelongsToMany(() => Instructor, () => UserCourse)
+  declare instructors: Instructor[];
+
+  @BelongsToMany(() => Student, () => UserCourse)
+  declare students: Student[];
 
   @BelongsToMany(() => Law, () => LawCourse)
-  declare laws: User[];
+  declare laws: Law[];
 
 }
 

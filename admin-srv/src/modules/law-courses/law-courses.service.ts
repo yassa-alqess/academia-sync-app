@@ -1,8 +1,8 @@
 
 import Course from '../../shared/models/course'
-import LawCourse from '@/shared/models/law-course'
-import { LawCoursesGetPayload, LawCoursesGetResponse, LawCoursesListPayload, LawCoursesPayload } from '@/shared/interfaces/law-courses'
-import Law from '@/shared/models/law'
+import LawCourse from '../../shared/models/law-course'
+import { LawCoursesGetPayload, LawCoursesGetResponse, LawCoursesListPayload, LawCoursesPayload } from '../../shared/interfaces/law-courses'
+import Law from '../../shared/models/law'
 
 export default class LawCourseService {
     constructor() { }

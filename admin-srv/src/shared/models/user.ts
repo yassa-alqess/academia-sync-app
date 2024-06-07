@@ -1,8 +1,9 @@
-import { Table, Model, Column, DataType, ForeignKey, BelongsTo, HasMany } from 'sequelize-typescript';
+import { Table, Model, Column, DataType, ForeignKey, BelongsTo, HasOne } from 'sequelize-typescript';
 import Law from './law';
-import Announcment from './announcment';
-import CourseWork from './assignment';
-import CourseWorkSubmission from './assignment-submission';
+import Instructor from './instructor';
+import Student from './student';
+
+
 
 @Table({ schema: 'public' })
 class User extends Model {
@@ -27,12 +28,18 @@ class User extends Model {
     type: DataType.STRING(200),
     unique: true,
   })
+  declare academicId: string;
+
+  @Column({
+    type: DataType.STRING(200),
+    unique: true,
+  })
   declare email: string;
 
   @Column({
     type: DataType.BOOLEAN,
   })
-  declare role: boolean;
+  declare role: number;
 
   @ForeignKey(() => Law)
   @Column({
@@ -43,14 +50,11 @@ class User extends Model {
   @BelongsTo(() => Law)
   declare law: Law;
 
-  @HasMany(() => Announcment)
-  declare announcments: Announcment[];
+  @HasOne(() => Student)
+  declare student: Student;
 
-  @HasMany(() => CourseWork)
-  declare courseWorks: CourseWork[];
-
-  @HasMany(() => CourseWorkSubmission)
-  declare courseWorkSubmissions: CourseWorkSubmission[];
+  @HasOne(() => Instructor)
+  declare instructor: Instructor;
 }
 
 export default User;

@@ -8,8 +8,7 @@ const userController = new UserController(new UserService());
 userRouter.post("/addUser", userController.addUser); //specify role
 userRouter.post("/updateUser", userController.updateUser);
 userRouter.post("/deleteUser", userController.deleteUser);
-userRouter.post("/bulkAddStudents", upload("users")!.single("file"), userController.bulkAddStudents);
-userRouter.post("/bulkAddAssistants", upload("users")!.single("file"), userController.bulkAddAssistants);
-userRouter.post("/bulkAddDoctors", upload("users")!.single("file"), userController.bulkAddDoctors);
+userRouter.post("/bulkAddUsers", upload("users")!.single("file"), userController.bulkAddUsers);
+
 
 export default userRouter;

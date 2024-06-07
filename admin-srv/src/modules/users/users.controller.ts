@@ -3,13 +3,13 @@ import UserService from './users.service';
 import { Request, Response } from 'express';
 
 export default class UserController {
-    constructor(private readonly courseService: UserService) { }
+    constructor(private readonly userService: UserService) { }
 
 
     public addUser = async (req: Request, res: Response) => {
         try {
-            const course = await this.courseService.addUser(req.body);
-            res.status(StatusCodes.CREATED).json(course);
+            const user = await this.userService.addUser(req.body);
+            res.status(StatusCodes.CREATED).json(user);
             //eslint-disable-next-line
         } catch (error: any) {
             if (error?.original?.code === '23505') { //duplicate key value violates unique constraint
@@ -20,40 +20,15 @@ export default class UserController {
         }
     }
 
-    // get xlsx sheet and get all the courses from it and add them to the database (all required feilds should be present in the sheet)
-    public bulkAddStudents = async (req: Request, res: Response) => {
+    // get xlsx sheet and get all the users from it and add them to the database (all required feilds should be present in the sheet)
+    public bulkAddUsers = async (req: Request, res: Response) => {
         try {
             if (!req.file) {
                 return res.status(StatusCodes.BAD_REQUEST).json({ error: 'No file uploaded' });
             }
-            const courses = this.courseService.bulkAddStudents(req.file.path); // req.file.filename
-            res.status(StatusCodes.CREATED).json(courses);
-            //eslint-disable-next-line
-        } catch (error: any) {
-            res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
-        }
-    }
-
-    public bulkAddAssistants = async (req: Request, res: Response) => {
-        try {
-            if (!req.file) {
-                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'No file uploaded' });
-            }
-            const courses = this.courseService.bulkAddAssistants(req.file.path); // req.file.filename
-            res.status(StatusCodes.CREATED).json(courses);
-            //eslint-disable-next-line
-        } catch (error: any) {
-            res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
-        }
-    }
-
-    public bulkAddDoctors = async (req: Request, res: Response) => {
-        try {
-            if (!req.file) {
-                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'No file uploaded' });
-            }
-            const courses = this.courseService.bulkAddDoctors(req.file.path); // req.file.filename
-            res.status(StatusCodes.CREATED).json(courses);
+            const { role } = req.body;
+            const users = this.userService.bulkAddUsers(req.file.path, role); // req.file.filename
+            res.status(StatusCodes.CREATED).json(users);
             //eslint-disable-next-line
         } catch (error: any) {
             res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
@@ -62,12 +37,12 @@ export default class UserController {
 
     public updateUser = async (req: Request, res: Response) => {
         try {
-            const course = await this.courseService.updateUser(req.body);
-            res.status(StatusCodes.OK).json(course);
+            const user = await this.userService.updateUser(req.body);
+            res.status(StatusCodes.OK).json(user);
             //eslint-disable-next-line
         } catch (error: any) {
             if (error?.original?.code == '22P02') { //invalid input syntax for type uuid
-                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid courseId' });
+                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid userId' });
             }
             if (error?.original?.code === '23505') { //duplicate key value violates unique constraint
                 return res.status(StatusCodes.BAD_REQUEST).json({ error: 'User already exists' });
@@ -78,13 +53,13 @@ export default class UserController {
 
     public getUser = async (req: Request, res: Response) => {
         try {
-            const { courseId } = req.body;
-            const course = await this.courseService.getUser(courseId);
-            res.status(StatusCodes.OK).json(course);
+            const { userId } = req.body;
+            const user = await this.userService.getUser(userId);
+            res.status(StatusCodes.OK).json(user);
             //eslint-disable-next-line
         } catch (error: any) {
             if (error?.original?.code == '22P02') { //invalid input syntax for type uuid
-                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid courseId' });
+                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid userId' });
             }
             res.status(StatusCodes.NOT_FOUND).json({ error: error.message });
         }
@@ -93,13 +68,13 @@ export default class UserController {
 
     public deleteUser = async (req: Request, res: Response) => {
         try {
-            const { courseId } = req.body;
-            await this.courseService.deleteUser(courseId);
-            res.status(StatusCodes.OK).json({ courseId });
+            const { userId, role } = req.body;
+            await this.userService.deleteUser(userId, role);
+            res.status(StatusCodes.OK).json({ userId });
             //eslint-disable-next-line
         } catch (error: any) {
             if (error?.original?.code == '22P02') { //invalid input syntax for type uuid
-                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid courseId' });
+                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid userId' });
             }
             res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
         }

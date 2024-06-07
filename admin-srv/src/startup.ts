@@ -34,7 +34,7 @@ let server: Server | null = null;
 
 (async () => {
   try {
-    // await syncDatabase(); // sync db & catch errors
+    await syncDatabase(); // sync db & catch errors
     APP.get('/', (_, res: Response) => {
       res.sendStatus(200);
     });

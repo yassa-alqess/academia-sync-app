@@ -1,6 +1,6 @@
 export interface UserAddPayload {
     email?: string;
-    academicId?: string;
+    academicId: string; //required
     displayName: string; // required
     arabicName?: string;
     gender?: boolean;
@@ -16,7 +16,7 @@ export interface UserAddPayload {
 export interface UserResponse {
     userId: string;
     email?: string;
-    academicId?: string;
+    academicId: string;
     displayName: string;
     arabicName?: string;
     gender?: boolean;

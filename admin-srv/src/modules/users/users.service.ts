@@ -1,7 +1,9 @@
-import logger from '../../config/logger';
+import Student from '../../shared/models/student';
+import { Role } from '../../shared/enums/role';
 import { UserAddPayload, UserResponse, UserUpdatePayload } from '../../shared/interfaces/user'
 import User from '../../shared/models/user'
 import { readXlsx } from '../../shared/utils/serializer'
+import Instructor from '../../shared/models/instructor';
 
 export default class UserService {
     constructor() { }
@@ -9,114 +11,103 @@ export default class UserService {
     public async addUser(payload: UserAddPayload): Promise<UserResponse> {
 
         const user = await User.create({ ...payload });
-        return {
-            userId : user.userId,
-            email: user.email,
-            academicId: user.academicId,
+        const { role, displayName } = payload;
+        if (role == Role.Student) {
+            Student.create({ displayName, userId: user.userId })
         }
-
-        
+        else if (role == Role.Doctor || role == Role.Assisstant) {
+            Instructor.create({ displayName, userId: user.userId })
+        }
+        return {
+            userId: user.userId,
+            academicId: user.academicId,
+            displayName: user.displayName,
+            role: user.role,
+        }
     }
 
-    public async bulkAddStudents(filePath: string): Promise<UserResponse[]> {
+    public async bulkAddUsers(filePath: string, role: number): Promise<UserResponse[]> {
 
         const data = readXlsx(filePath);
         //eslint-disable-next-line
-        const courses = data.map((course: any) => {
+        const users = data.map((user: any) => {
             return {
-                name: course.name,
-                grades: course.grades,
-                creditHours: course.creditHours
+                academicId: user.academicId,
+                displayName: user.displayName,
+                role
             }
         });
 
-        const coursesResponse = await User.bulkCreate(courses);
-        return coursesResponse.map(course => {
-            return {
-                courseId: course.courseId,
-                name: course.name,
-                grades: course.grades,
-                creditHours: course.creditHours
+        const usersResponse = await User.bulkCreate(users);
+        await Promise.all(usersResponse.map(async user => {
+            const { role, displayName } = user;
+            if (role == Role.Student) {
+                Student.create({ displayName, userId: user.userId })
             }
-        });
-    }
-
-    public async bulkAddAssistants(filePath: string): Promise<UserResponse[]> {
-
-        const data = readXlsx(filePath);
-        //eslint-disable-next-line
-        const courses = data.map((course: any) => {
-            return {
-                name: course.name,
-                grades: course.grades,
-                creditHours: course.creditHours
+            else if (role == Role.Doctor || role == Role.Assisstant) {
+                Instructor.create({ displayName, userId: user.userId })
             }
-        });
+        }))
 
-        const coursesResponse = await User.bulkCreate(courses);
-        return coursesResponse.map(course => {
+        return usersResponse.map(user => {
             return {
-                courseId: course.courseId,
-                name: course.name,
-                grades: course.grades,
-                creditHours: course.creditHours
+                userId: user.userId,
+                academicId: user.academicId,
+                displayName: user.displayName,
+                role: user.role,
             }
         });
     }
 
-    public async bulkAddDoctors(filePath: string): Promise<UserResponse[]> {
 
-        const data = readXlsx(filePath);
-        //eslint-disable-next-line
-        const courses = data.map((course: any) => {
-            return {
-                name: course.name,
-                grades: course.grades,
-                creditHours: course.creditHours
-            }
-        });
-
-        const coursesResponse = await User.bulkCreate(courses);
-        return coursesResponse.map(course => {
-            return {
-                courseId: course.courseId,
-                name: course.name,
-                grades: course.grades,
-                creditHours: course.creditHours
-            }
-        });
-    }
-
-    public async getUser(courseId: string): Promise<UserResponse> {
-        const course = await User.findByPk(courseId)
-        if (!course) throw new Error('User not found')
+    public async getUser(userId: string): Promise<UserResponse> {
+        const user = await User.findByPk(userId)
+        if (!user) throw new Error('User not found')
 
         return {
-            courseId: course.courseId,
-            name: course.name,
-            grades: course.grades,
-            creditHours: course.creditHours
-        };
+            userId: user.userId,
+            academicId: user.academicId,
+            displayName: user.displayName,
+            role: user.role
+        }
     }
 
     public async updateUser(payload: UserUpdatePayload): Promise<UserResponse> {
-        const { courseId } = payload
-        const course = await User.findByPk(courseId)
-        if (!course) throw new Error('User not found')
-        await course.update(payload)
+        const { userId, role } = payload
+        const user = await User.findByPk(userId)
+        if (!user) throw new Error('User not found')
+        await user.update(payload)
+
+        if (role == Role.Student) {
+            const student = await Student.findOne({ where: { userId } })
+            if (student) await student.update({ displayName: payload.displayName })
+        }
+        else if (role == Role.Doctor || role == Role.Assisstant) {
+            const instructor = await Instructor.findOne({ where: { userId } })
+            if (instructor) await instructor.update({ displayName: payload.displayName })
+        }
+
         return {
-            courseId: course.courseId,
-            name: course.name,
-            grades: course.grades,
-            creditHours: course.creditHours
-        };
+            userId: user.userId,
+            academicId: user.academicId,
+            displayName: user.displayName,
+            role: user.role
+        }
     }
 
-    public async deleteUser(courseId: string): Promise<string> {
-        const course = await User.findByPk(courseId)
-        if (!course) throw new Error('User not found')
-        await course.destroy()
-        return courseId
+    public async deleteUser(userId: string, role: number): Promise<string> {
+        const user = await User.findByPk(userId)
+        if (!user) throw new Error('User not found')
+        await user.destroy()
+        if (role == Role.Student) {
+            const student = await Student.findOne({ where: { userId } })
+            if (student) await student.destroy()
+        }
+        else if (role == Role.Doctor || role == Role.Assisstant) {
+            const instructor = await Instructor.findOne({ where: { userId } })
+            if (instructor) await instructor.destroy()
+        }
+        return userId
 
     }
 }

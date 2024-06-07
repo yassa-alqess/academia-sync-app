@@ -10,10 +10,12 @@ export interface CourseUsersListPayload {
 
     userIds: string[];
     courseId: string;
+    role: number;
 }
 
 export interface UserCoursesGetPayload {
     userId: string;
+    role: number;
 }
 
 export interface UserCoursesGetResponse {
@@ -22,6 +24,7 @@ export interface UserCoursesGetResponse {
 
 export interface CourseUsersGetPayload {
     courseId: string;
+    role: number;
 }
 
 export interface CourseUsersGetResponse {

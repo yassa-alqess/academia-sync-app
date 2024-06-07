@@ -2,8 +2,10 @@ import { Column, Table, Model, ForeignKey, BelongsTo, HasMany, DataType, Belongs
 import Course from './course';
 import CourseWork from './assignment';
 import Announcment from './announcment';
-import User from './user';
+// import User from './user';
 import UserRoom from './user-room';
+import Instructor from './instructor';
+import Student from './student';
 
 @Table({ schema: process.env.SCHEMA })
 class Room extends Model {
@@ -51,8 +53,11 @@ class Room extends Model {
   @HasMany(() => Announcment)
   declare announcments: Announcment[];
 
-  @BelongsToMany(() => User, () => UserRoom)
-  declare users: User[];
+  @BelongsToMany(() => Instructor, () => UserRoom)
+  declare instructors: Instructor[];
+
+  @BelongsToMany(() => Student, () => UserRoom)
+  declare students: Student[];
 }
 
 export default Room;
