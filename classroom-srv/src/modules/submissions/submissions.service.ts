@@ -1,8 +1,8 @@
-import { materialCategory } from "@/shared/enums";
-import { SubmissionAddPayload, SubmissionResponse, SubmissionUpdatePayload } from "@/shared/interfaces";
-import Submission from "@/shared/models/assignment-submission";
-import Material from "@/shared/models/material";
-import User from "@/shared/models/user";
+import { materialCategory } from "../../shared/enums";
+import { SubmissionAddPayload, SubmissionResponse, SubmissionUpdatePayload } from "../../shared/interfaces";
+import Submission from "../../shared/models/assignment-submission";
+import Material from "../../shared/models/material";
+import User from "../../shared/models/user";
 export default class SubmissionService {
     public async addSubmission(submission: SubmissionAddPayload, path?: string): Promise<SubmissionResponse> {
         const newSubmission = await Submission.create({ ...submission });

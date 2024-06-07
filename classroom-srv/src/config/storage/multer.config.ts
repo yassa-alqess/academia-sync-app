@@ -8,6 +8,7 @@ const getStorage = (folder: unknown) => {
 		const folderPath = `./upload/${folder}`;
 		if (!fs.existsSync(folderPath)) {
 			fs.mkdirSync(folderPath, { recursive: true });
+			fs.chmodSync(folderPath, '777');
 		}
 		return multer.diskStorage({
 			destination: (req, file, cb) => {

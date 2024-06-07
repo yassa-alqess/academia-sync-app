@@ -1,8 +1,8 @@
 
 import Room from '../../shared/models/room'
-import UserRoom from '@/shared/models/user-room'
-import { RoomUsersGetResponse, RoomUsersListPayload, RoomUsersPayload, UserRoomsGetPayload, UserResponse, UserRoomsGetResponse, RoomUsersGetPayload } from '@/shared/interfaces/room-users'
-import User from '@/shared/models/user'
+import UserRoom from '../../shared/models/user-room'
+import { RoomUsersGetResponse, RoomUsersListPayload, RoomUsersPayload, UserRoomsGetPayload, UserResponse, UserRoomsGetResponse, RoomUsersGetPayload } from '../../shared/interfaces/room-users'
+import User from '../../shared/models/user'
 
 export default class UserRoomService {
 

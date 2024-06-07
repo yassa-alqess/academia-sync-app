@@ -1,7 +1,7 @@
-import { AssignmentPayload, AssignmentResponse, AssignmentUpdatePayload } from "@/shared/interfaces/assignment";
-import Assignment from "@/shared/models/assignment";
-import Material from "@/shared/models/material";
-import { materialCategory } from "@/shared/enums";
+import { AssignmentPayload, AssignmentResponse, AssignmentUpdatePayload } from "../../shared/interfaces/assignment";
+import Assignment from "../../shared/models/assignment";
+import Material from "../../shared/models/material";
+import { materialCategory } from "../../shared/enums";
 export default class AssignmentService {
     public async addAssignment(assignmentPayload: AssignmentPayload, path: string): Promise<AssignmentResponse> {
         const assignment = await Assignment.create({ ...assignmentPayload });

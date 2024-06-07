@@ -3,7 +3,7 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import SubmissionService from './submissions.service';
-import { SubmissionAddPayload, SubmissionUpdatePayload } from '@/shared/interfaces';
+import { SubmissionAddPayload, SubmissionUpdatePayload } from '../../shared/interfaces';
 
 export default class SubmissionController {
     constructor(private readonly submissionService: SubmissionService) { }
@@ -11,7 +11,11 @@ export default class SubmissionController {
     public addSubmission = async (req: Request, res: Response) => {
         try {
             const submissionPayload: SubmissionAddPayload = req.body;
-            const path = req.file ? req.file.filename : '';
+            const path = req.file ? req.file.path : '';
+            if (!submissionPayload.late || !submissionPayload.userId || !submissionPayload.assignmentId) {
+                res.status(StatusCodes.BAD_REQUEST).json({ message: 'data are missing' });
+                return;
+            }
             const submission = await this.submissionService.addSubmission(submissionPayload, path); // path may be empty string
             res.status(StatusCodes.CREATED).json(submission);
             //eslint-disable-next-line

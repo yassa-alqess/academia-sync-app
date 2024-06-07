@@ -27,7 +27,7 @@ APP.set('trust proxy', 1); // trust nginx
 
 
 // map the app routes
-APP.use('/api/v0.1', restRouter);
+APP.use('/api/v0.1/classroom', restRouter);
 
 // startup script
 let server: Server | null = null;

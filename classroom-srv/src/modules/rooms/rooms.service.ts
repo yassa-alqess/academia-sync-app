@@ -1,4 +1,4 @@
-import { RoomAddPayload, RoomResponse, RoomUpdatePayload } from '@/shared/interfaces'
+import { RoomAddPayload, RoomResponse, RoomUpdatePayload } from '../../shared/interfaces'
 import Room from '../../shared/models/room'
 
 export default class RoomService {

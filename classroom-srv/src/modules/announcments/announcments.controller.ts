@@ -1,5 +1,5 @@
 
-import { AnnouncmentPayload, AnnouncmentUpdatePayload } from '@/shared/interfaces/announcment';
+import { AnnouncmentPayload, AnnouncmentUpdatePayload } from '../../shared/interfaces/announcment';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import AnnouncmentService from './announcments.service';
@@ -9,7 +9,12 @@ export default class AnnouncmentController {
     public addAnnouncment = async (req: Request, res: Response) => {
         try {
             const announcmentPayload: AnnouncmentPayload = req.body;
-            const path = req.file ? req.file.filename : '';
+            const path = req.file ? req.file.path : '';
+
+            if (!announcmentPayload.userId || !announcmentPayload.roomId) {
+                res.status(StatusCodes.BAD_REQUEST).json({ message: 'data are missing' });
+                return;
+            }
             const announcment = await this.announcmentService.addAnnouncment(announcmentPayload, path); // path may be empty string
             res.status(StatusCodes.CREATED).json(announcment);
             //eslint-disable-next-line

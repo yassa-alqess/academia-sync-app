@@ -3,7 +3,7 @@ import Material from "../models/material";
 export interface AssignmentPayload {
 
     title: string;
-    description: string;
+    description?: string;
     assignedGrade: number;
     dueDate: Date;
     state: boolean;

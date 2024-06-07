@@ -1,4 +1,4 @@
-import upload from "@/config/storage/multer.config";
+import upload from "../../config/storage/multer.config";
 import express from "express";
 import SubmissionController from "./submissions.controller";
 import SubmissionService from "./submissions.service";

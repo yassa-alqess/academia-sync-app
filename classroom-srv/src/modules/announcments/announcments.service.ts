@@ -1,7 +1,7 @@
-import { AnnouncmentPayload, AnnouncmentResponse, AnnouncmentUpdatePayload } from "@/shared/interfaces/announcment";
-import Announcment from "@/shared/models/announcment";
-import Material from "@/shared/models/material";
-import { materialCategory } from "@/shared/enums";
+import { AnnouncmentPayload, AnnouncmentResponse, AnnouncmentUpdatePayload } from "../../shared/interfaces";
+import Announcment from "../../shared/models/announcment";
+import Material from "../../shared/models/material";
+import { materialCategory } from "../../shared/enums";
 export default class AnnouncmentService {
     public async addAnnouncment(announcmentPayload: AnnouncmentPayload, path: string): Promise<AnnouncmentResponse> {
         const announcment = await Announcment.create({ ...announcmentPayload });

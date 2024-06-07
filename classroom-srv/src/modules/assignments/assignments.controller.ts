@@ -9,7 +9,13 @@ export default class AssignmentController {
     public addAssignment = async (req: Request, res: Response) => {
         try {
             const assignmentPayload: AssignmentPayload = req.body;
-            const path = req.file ? req.file.filename : '';
+            const path = req.file ? req.file.path : '';
+
+            if (!assignmentPayload.title || !assignmentPayload.assignedGrade || !assignmentPayload.userId || !assignmentPayload.roomId) {
+                res.status(StatusCodes.BAD_REQUEST).json({ message: 'data are missing' });
+                return;
+            }
+
             const assignment = await this.assignmentService.addAssignment(assignmentPayload, path); // path may be empty string
             res.status(StatusCodes.CREATED).json(assignment);
             //eslint-disable-next-line

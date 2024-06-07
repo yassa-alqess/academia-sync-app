@@ -1,4 +1,4 @@
-import upload from "@/config/storage/multer.config";
+import upload from "../../config/storage/multer.config";
 import express from "express";
 import AnnouncmentController from "./announcments.controller";
 import AnnouncmentService from "./announcments.service";
