@@ -8,7 +8,7 @@ export interface AssignmentPayload {
     dueDate: Date;
     state: boolean;
     roomId: string;
-    userId: string;
+    instructorId: string;
 
 }
 
@@ -20,7 +20,7 @@ export interface AssignmentUpdatePayload {
     dueDate?: Date;
     state?: boolean;
     roomId: string;
-    userId: string;
+    instructorId: string;
 }
 
 export interface AssignmentResponse {
@@ -33,7 +33,7 @@ export interface AssignmentResponse {
     updatedAt: Date;
     createdAt: Date;
     roomId: string;
-    userId: string;
+    instructorId: string;
     filePath?: string; // possible null
     materials: Material[];
     // assignmentSubmissions: any;

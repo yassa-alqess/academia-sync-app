@@ -70,7 +70,7 @@ export default class UserRoomService {
 
         const records = await UserRoom.findAll({ where: { roomId: payload.roomId } })
         const users = await Promise.all(records.map(async record => {
-            const user = await User.findByPk(record.userId) as User // possible null
+            const user = await User.findByPk(record.studentId) as User // possible null
             return {
                 userId: user.userId,
                 email: user.email,

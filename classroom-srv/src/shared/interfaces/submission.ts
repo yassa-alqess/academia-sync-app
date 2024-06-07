@@ -3,7 +3,7 @@ import Material from "../models/material";
 export interface SubmissionAddPayload {
     late: boolean;
     text?: string;
-    userId: string;
+    studentId: string;
     assignmentId: string;
 }
 
@@ -11,7 +11,7 @@ export interface SubmissionUpdatePayload {
     submissionId: string;
     late?: boolean;
     text?: string;
-    userId: string;
+    studentId: string;
     assignmentId: string;
 }
 
@@ -22,10 +22,16 @@ export interface SubmissionResponse {
     text?: string;
     updatedAt: Date;
     createdAt: Date;
-    userId: string;
+    studentId: string;
     displayName: string;
     assignmentId: string;
     materials: Material[];
+}
+
+export interface MissingSubmissionResponse {
+    studentId: string;
+    displayName: string;
+
 }
 
 

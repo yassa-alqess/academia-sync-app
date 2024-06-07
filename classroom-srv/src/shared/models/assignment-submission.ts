@@ -1,7 +1,7 @@
 import { Column, Table, Model, ForeignKey, BelongsTo, HasMany, DataType } from 'sequelize-typescript';
 import Assignment from './assignment';
 import Material from './material';
-import User from './user';
+import Student from './student';
 
 @Table({ schema: process.env.SCHEMA })
 class AssignmentSubmission extends Model {
@@ -44,14 +44,14 @@ class AssignmentSubmission extends Model {
   })
   declare updatedAt: Date;
 
-  @ForeignKey(() => User)
+  @ForeignKey(() => Student)
   @Column({
     type: DataType.UUID,
   })
-  declare userId: string;
+  declare studentId: string;
 
-  @BelongsTo(() => User, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  declare user: User;
+  @BelongsTo(() => Student, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  declare student: Student;
 
   @ForeignKey(() => Assignment)
   @Column({

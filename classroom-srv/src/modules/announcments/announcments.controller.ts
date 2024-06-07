@@ -11,7 +11,7 @@ export default class AnnouncmentController {
             const announcmentPayload: AnnouncmentPayload = req.body;
             const path = req.file ? req.file.path : '';
 
-            if (!announcmentPayload.userId || !announcmentPayload.roomId) {
+            if (!announcmentPayload.instructorId || !announcmentPayload.roomId) {
                 res.status(StatusCodes.BAD_REQUEST).json({ message: 'data are missing' });
                 return;
             }
@@ -25,7 +25,8 @@ export default class AnnouncmentController {
 
     public getAnnouncments = async (req: Request, res: Response) => {
         try {
-            const announcments = await this.announcmentService.getAnnouncments();
+            const {roomId} = req.body;
+            const announcments = await this.announcmentService.getAnnouncments(roomId);
             res.status(200).json(announcments);
             //eslint-disable-next-line
         } catch (error: any) {

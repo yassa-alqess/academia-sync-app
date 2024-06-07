@@ -1,6 +1,6 @@
 import { Model, Column, Table, HasMany, ForeignKey, BelongsTo, DataType } from 'sequelize-typescript';
 import Room from './room';
-import User from './user';
+import Instructor from './instructor';
 import Material from './material';
 
 @Table({ schema: process.env.SCHEMA })
@@ -48,14 +48,14 @@ class Announcment extends Model {
   @BelongsTo(() => Room, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   declare room: Room;
 
-  @ForeignKey(() => User)
+  @ForeignKey(() => Instructor)
   @Column({
     type: DataType.UUID,
   })
-  declare userId: string;
+  declare instructorId: string;
 
-  @BelongsTo(() => User, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
-  declare user: User;
+  @BelongsTo(() => Instructor, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
+  declare instructor: Instructor;
 
   @HasMany(() => Material)
   declare materials: Material[];

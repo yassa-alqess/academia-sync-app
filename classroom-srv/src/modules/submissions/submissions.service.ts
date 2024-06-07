@@ -1,8 +1,10 @@
 import { materialCategory } from "../../shared/enums";
-import { SubmissionAddPayload, SubmissionResponse, SubmissionUpdatePayload } from "../../shared/interfaces";
+import { MissingSubmissionResponse, SubmissionAddPayload, SubmissionResponse, SubmissionUpdatePayload } from "../../shared/interfaces";
 import Submission from "../../shared/models/assignment-submission";
 import Material from "../../shared/models/material";
-import User from "../../shared/models/user";
+import Student from "../../shared/models/student";
+import UserRoom from "../../shared/models/user-room";
+import { Op } from "sequelize";
 export default class SubmissionService {
     public async addSubmission(submission: SubmissionAddPayload, path?: string): Promise<SubmissionResponse> {
         const newSubmission = await Submission.create({ ...submission });
@@ -13,8 +15,8 @@ export default class SubmissionService {
                 assignmentsubmissionId: newSubmission.submissionId
             });
         }
-        const user = await User.findByPk(newSubmission.userId);
-        const displayName = user ? user.displayName : '';
+        const student = await Student.findByPk(newSubmission.studentId);
+        const displayName = student ? student.displayName : '';
         return {
             submissionId: newSubmission.submissionId,
             draftGrade: newSubmission.draftGrade,
@@ -22,7 +24,7 @@ export default class SubmissionService {
             text: newSubmission.text,
             updatedAt: newSubmission.updatedAt,
             createdAt: newSubmission.createdAt,
-            userId: newSubmission.userId,
+            studentId: newSubmission.studentId,
             displayName,
             assignmentId: newSubmission.assignmentId,
             materials: newSubmission.materials
@@ -48,8 +50,8 @@ export default class SubmissionService {
                 });
             }
         }
-        const user = await User.findByPk(submissionInstance.userId);
-        const displayName = user ? user.displayName : '';
+        const student = await Student.findByPk(submissionInstance.studentId);
+        const displayName = student ? student.displayName : '';
         return {
             submissionId: submissionInstance.submissionId,
             draftGrade: submissionInstance.draftGrade,
@@ -57,7 +59,7 @@ export default class SubmissionService {
             text: submissionInstance.text,
             updatedAt: submissionInstance.updatedAt,
             createdAt: submissionInstance.createdAt,
-            userId: submissionInstance.userId,
+            studentId: submissionInstance.studentId,
             displayName,
             assignmentId: submissionInstance.assignmentId,
             materials: submissionInstance.materials
@@ -69,8 +71,8 @@ export default class SubmissionService {
         if (!submissionInstance) {
             throw new Error('Submission not found');
         }
-        const user = await User.findByPk(submissionInstance.userId);
-        const displayName = user ? user.displayName : '';
+        const student = await Student.findByPk(submissionInstance.studentId);
+        const displayName = student ? student.displayName : '';
         return {
             submissionId: submissionInstance.submissionId,
             draftGrade: submissionInstance.draftGrade,
@@ -78,7 +80,7 @@ export default class SubmissionService {
             text: submissionInstance.text,
             updatedAt: submissionInstance.updatedAt,
             createdAt: submissionInstance.createdAt,
-            userId: submissionInstance.userId,
+            studentId: submissionInstance.studentId,
             displayName,
             assignmentId: submissionInstance.assignmentId,
             materials: submissionInstance.materials
@@ -89,9 +91,9 @@ export default class SubmissionService {
         const submissions = await Submission.findAll({
             where: { assignmentId, late: false },
             include: [{
-                model: User,
+                model: Student,
                 attributes: ['displayName'],
-                as: 'user' // alias for the User model
+                as: 'student' // alias for the Student model
             }]
         });
 
@@ -102,10 +104,10 @@ export default class SubmissionService {
             text: submission.text,
             updatedAt: submission.updatedAt,
             createdAt: submission.createdAt,
-            userId: submission.userId,
+            studentId: submission.studentId,
             assignmentId: submission.assignmentId,
             materials: submission.materials,
-            displayName: submission.user.displayName || ''
+            displayName: submission.student.displayName || ''
         }));
     }
 
@@ -113,9 +115,9 @@ export default class SubmissionService {
         const submissions = await Submission.findAll({
             where: { assignmentId, late: true },
             include: [{
-                model: User,
+                model: Student,
                 attributes: ['displayName'],
-                as: 'user' 
+                as: 'student'
             }]
         });
 
@@ -126,12 +128,76 @@ export default class SubmissionService {
             text: submission.text,
             updatedAt: submission.updatedAt,
             createdAt: submission.createdAt,
-            userId: submission.userId,
+            studentId: submission.studentId,
             assignmentId: submission.assignmentId,
             materials: submission.materials,
-            displayName: submission.user.displayName || ''
+            displayName: submission.student.displayName || ''
         }));
     }
+
+    public async getMissingSubmissions(assignmentId: string, roomId: string): Promise<MissingSubmissionResponse[]> {
+        /**
+         *  // Fetch all students in the room
+          const allStudents = await UserRoom.findAll({
+              where: { roomId },
+              include: [{
+                  model: Student,
+                  attributes: ['studentId', 'displayName'],
+                  as: 'student'
+              }]
+          });
+  
+          // Fetch all students who have submitted the assignment (either late or on time)
+          const submittedStudents = await Submission.findAll({
+              where: { assignmentId },
+              attributes: ['studentId']
+          });
+  
+          const submittedStudentIds = submittedStudents.map(submission => submission.studentId);
+  
+          // Find students who haven't submitted the assignment
+          const missingStudents = allStudents
+              .filter(userRoom => !submittedStudentIds.includes(userRoom.student.studentId))
+              .map(userRoom => ({
+                  studentId: userRoom.student.studentId,
+                  displayName: userRoom.student.displayName
+              }));
+  
+          return missingStudents;
+         */
+
+
+        // Fetch all students who have submitted the assignment
+        const submittedStudents = await Submission.findAll({
+            where: { assignmentId },
+            attributes: ['studentId']
+        });
+
+        const submittedStudentIds = submittedStudents.map(submission => submission.studentId);
+
+        // Fetch students in the room who have not submitted the assignment
+        const missingStudents = await UserRoom.findAll({
+            where: {
+                roomId,
+                studentId: {
+                    [Op.notIn]: submittedStudentIds
+                }
+            },
+            include: [{
+                model: Student,
+                attributes: ['studentId', 'displayName'],
+                as: 'student'
+            }]
+        });
+
+        // Map to the desired format
+        return missingStudents.map(userRoom => ({
+            studentId: userRoom.student.studentId,
+            displayName: userRoom.student.displayName
+        }));
+    }
+
+
 
     public async deleteSubmission(submissionId: string): Promise<void> {
         const submissionInstance = await Submission.findByPk(submissionId);
@@ -147,8 +213,8 @@ export default class SubmissionService {
             throw new Error('Submission not found');
         }
         await submissionInstance.update({ draftGrade: grade });
-        const user = await User.findByPk(submissionInstance.userId);
-        const displayName = user ? user.displayName : '';
+        const student = await Student.findByPk(submissionInstance.studentId);
+        const displayName = student ? student.displayName : '';
         return {
             submissionId: submissionInstance.submissionId,
             draftGrade: submissionInstance.draftGrade,
@@ -156,7 +222,7 @@ export default class SubmissionService {
             text: submissionInstance.text,
             updatedAt: submissionInstance.updatedAt,
             createdAt: submissionInstance.createdAt,
-            userId: submissionInstance.userId,
+            studentId: submissionInstance.studentId,
             displayName,
             assignmentId: submissionInstance.assignmentId,
             materials: submissionInstance.materials

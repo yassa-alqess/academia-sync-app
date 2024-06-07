@@ -12,7 +12,7 @@ export default class SubmissionController {
         try {
             const submissionPayload: SubmissionAddPayload = req.body;
             const path = req.file ? req.file.path : '';
-            if (!submissionPayload.late || !submissionPayload.userId || !submissionPayload.assignmentId) {
+            if (!submissionPayload.late || !submissionPayload.studentId || !submissionPayload.assignmentId) {
                 res.status(StatusCodes.BAD_REQUEST).json({ message: 'data are missing' });
                 return;
             }

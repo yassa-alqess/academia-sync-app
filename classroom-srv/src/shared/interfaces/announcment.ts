@@ -5,7 +5,7 @@ export interface AnnouncmentPayload {
     // state: boolean;
     // assigneeMode: boolean;
     roomId: string;
-    userId: string;
+    instructorId: string;
 }
 
 export interface AnnouncmentUpdatePayload {
@@ -14,7 +14,7 @@ export interface AnnouncmentUpdatePayload {
     // state?: boolean;
     // assigneeMode?: boolean;
     roomId: string;
-    userId: string;
+    instructorId: string;
 }
 
 export interface AnnouncmentResponse {
@@ -27,5 +27,5 @@ export interface AnnouncmentResponse {
     filePath?: string; // possible null
     materials: Material[];
     roomId: string;
-    userId: string;
+    instructorId: string;
 }

@@ -1,8 +1,9 @@
-import { Table, Model, Column, DataType, ForeignKey, BelongsTo, HasMany } from 'sequelize-typescript';
+import { Table, Model, Column, DataType, ForeignKey, BelongsTo, HasOne } from 'sequelize-typescript';
 import Law from './law';
-import Announcment from './announcment';
-import CourseWork from './assignment';
-import CourseWorkSubmission from './assignment-submission';
+import Instructor from './instructor';
+import Student from './student';
+
+
 
 @Table({ schema: 'public' })
 class User extends Model {
@@ -43,14 +44,16 @@ class User extends Model {
   @BelongsTo(() => Law)
   declare law: Law;
 
-  @HasMany(() => Announcment)
-  declare announcments: Announcment[];
 
-  @HasMany(() => CourseWork)
-  declare courseWorks: CourseWork[];
 
-  @HasMany(() => CourseWorkSubmission)
-  declare courseWorkSubmissions: CourseWorkSubmission[];
+
+
+
+  @HasOne(() => Student)
+  declare student: Student;
+
+  @HasOne(() => Instructor)
+  declare instructor: Instructor;
 }
 
 export default User;

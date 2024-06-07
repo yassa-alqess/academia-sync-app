@@ -22,7 +22,7 @@ export default class AnnouncmentService {
             // filePath: path,
             materials: announcment.materials,
             roomId: announcment.roomId,
-            userId: announcment.userId
+            instructorId: announcment.instructorId
         };
     }
 
@@ -55,13 +55,14 @@ export default class AnnouncmentService {
             filePath: path,
             materials: announcment.materials,
             roomId: announcment.roomId,
-            userId: announcment.userId
+            instructorId: announcment.instructorId
         };
     }
 
-    public async getAnnouncments(): Promise<AnnouncmentResponse[]> {
+    public async getAnnouncments(roomId: string): Promise<AnnouncmentResponse[]> {
         //get all announcments with their materials orderd by date desc
         const announcments = await Announcment.findAll({
+            where: { roomId },
             include: Material,
             order: [['createdAt', 'DESC']]
         });
@@ -76,7 +77,7 @@ export default class AnnouncmentService {
             materials: announcment.materials,
             // filePath: announcment.materials[0]?.filePath, // not full path yet
             roomId: announcment.roomId,
-            userId: announcment.userId
+            instructorId: announcment.instructorId
         }));
     }
 
@@ -95,7 +96,7 @@ export default class AnnouncmentService {
             // filePath: announcment.materials[0]?.filePath, // not full path yet
             materials: announcment.materials,
             roomId: announcment.roomId,
-            userId: announcment.userId
+            instructorId: announcment.instructorId
         };
     }
 

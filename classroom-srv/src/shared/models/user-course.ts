@@ -1,6 +1,8 @@
-import { Column, Table, Model, ForeignKey, DataType } from 'sequelize-typescript';
+import { Column, Table, Model, ForeignKey, DataType, BelongsTo } from 'sequelize-typescript';
 import Course from './course';
-import User from './user';
+// import User from './user';
+import Instructor from './instructor';
+import Student from './student';
 
 @Table({ schema: 'public' })
 class UserCourse extends Model {
@@ -17,11 +19,29 @@ class UserCourse extends Model {
   })
   declare courseId: string;
 
-  @ForeignKey(() => User)
+  @BelongsTo(() => Course)
+  declare course: Course;
+
+  @ForeignKey(() => Student)
   @Column({
     type: DataType.UUID,
   })
-  declare userId: string;
+  declare studentId: string;
+
+  @BelongsTo(() => Student, 'studentId')
+  declare student: Student;
+
+  @ForeignKey(() => Instructor)
+  @Column({
+    type: DataType.UUID,
+  })
+  declare instructorId: string;
+
+  @BelongsTo(() => Instructor, 'instructorId')
+  declare instructor: Instructor;
+
+
+
 }
 
 export default UserCourse;
