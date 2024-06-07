@@ -27,14 +27,14 @@ APP.set('trust proxy', 1); // trust nginx
 
 
 // map the app routes
-APP.use('/api/v0.1', restRouter);
+APP.use('/api/v0.1/admin/', restRouter);
 
 // startup script
 let server: Server | null = null;
 
 (async () => {
   try {
-    await syncDatabase(); // sync db & catch errors
+    // await syncDatabase(); // sync db & catch errors
     APP.get('/', (_, res: Response) => {
       res.sendStatus(200);
     });

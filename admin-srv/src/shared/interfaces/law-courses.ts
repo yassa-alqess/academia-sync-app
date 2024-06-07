@@ -1,3 +1,5 @@
+import { CourseResponse } from "./course";
+
 export interface LawCoursesPayload {
     lawId: string;
     courseId: string;
@@ -14,12 +16,5 @@ export interface LawCoursesGetPayload {
 }
 
 export interface LawCoursesGetResponse {
-    courses: Course[];
-}
-
-export interface Course {
-    courseId: string;
-    name: string;
-    grades: number;
-    creditHours: number;
+    courses: CourseResponse[];
 }

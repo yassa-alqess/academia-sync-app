@@ -5,9 +5,10 @@ import UserCourseService from './user-courses.service';
 
 
 export default class UserCourseController {
-    static async addCourseUser(req: Request, res: Response) {
+    constructor(private userCourseService: UserCourseService) { }
+    public addCourseUser = async (req: Request, res: Response) => {
         try {
-            const userCourseId = await UserCourseService.addCourseUser(req.body);
+            const userCourseId = await this.userCourseService.addCourseUser(req.body);
             res.status(StatusCodes.CREATED).json({ userCourseId });
 
         }
@@ -20,9 +21,9 @@ export default class UserCourseController {
         }
     };
 
-    static async removeCourseUser(req: Request, res: Response) {
+    public deleteCourseUser = async (req: Request, res: Response) => {
         try {
-            const userCourseId = await UserCourseService.removeCourseUser(req.body);
+            const userCourseId = await this.userCourseService.deleteCourseUser(req.body);
             res.status(StatusCodes.OK).json({ userCourseId });
         }
         //eslint-disable-next-line
@@ -31,9 +32,9 @@ export default class UserCourseController {
         }
     };
 
-    static async getCourseUsers(req: Request, res: Response) {
+    public getCourseUsers = async (req: Request, res: Response) => {
         try {
-            const users = await UserCourseService.getCourseUsers(req.body);
+            const users = await this.userCourseService.getCourseUsers(req.body);
             res.status(StatusCodes.OK).json(users);
         }
         //eslint-disable-next-line
@@ -42,9 +43,9 @@ export default class UserCourseController {
         }
     };
 
-    static async getUserCourses(req: Request, res: Response) {
+    public getUserCourses = async (req: Request, res: Response) => {
         try {
-            const rooms = await UserCourseService.getUserCourses(req.body);
+            const rooms = await this.userCourseService.getUserCourses(req.body);
             res.status(StatusCodes.OK).json(rooms);
         }
         //eslint-disable-next-line
@@ -53,9 +54,9 @@ export default class UserCourseController {
         }
     }
 
-    static async bulkRemoveCourseUsers(req: Request, res: Response) {
+    public bulkDeleteCourseUsers = async (req: Request, res: Response) => {
         try {
-            const userCourseIds = await UserCourseService.bulkRemoveCourseUsers(req.body);
+            const userCourseIds = await this.userCourseService.bulkDeleteCourseUsers(req.body);
             res.status(StatusCodes.OK).json({ userCourseIds });
         }
         //eslint-disable-next-line
@@ -64,9 +65,9 @@ export default class UserCourseController {
         }
     }
 
-    static async bulkAddCourseUsers(req: Request, res: Response) {
+    public bulkAddCourseUsers = async (req: Request, res: Response) => {
         try {
-            const userCourseIds = await UserCourseService.bulkAddCourseUsers(req.body);
+            const userCourseIds = await this.userCourseService.bulkAddCourseUsers(req.body);
             res.status(StatusCodes.CREATED).json({ userCourseIds });
         }
         //eslint-disable-next-line

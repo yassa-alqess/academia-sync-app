@@ -1,3 +1,5 @@
+// import { UserResponse } from "./user";
+
 export interface CourseUsersPayload {
     userId: string;
     courseId: string;
@@ -22,15 +24,16 @@ export interface CourseUsersGetPayload {
 }
 
 export interface CourseUsersGetResponse {
-    users: UserResponse[];
+    // users: Partial<UserResponse>[];
+    users: PartialUserResponse[];
 }
 
-export interface UserResponse {
+export interface PartialUserResponse {
     userId: string;
     email: string;
     displayName: string;
     arabicName: string;
-    role: boolean;
+    role: number;
 
 }
 

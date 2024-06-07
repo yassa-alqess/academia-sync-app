@@ -1,8 +1,8 @@
-// import courseRouter from "./courses/courses.api";
-// import { Router } from "express";
+import { Router } from "express";
+import courseRouter from "./courses/courses.api";
 
 
-// const restRouter = Router();
-// restRouter.use("/admin", adminRouter);
+const restRouter = Router();
+restRouter.use("/courses", courseRouter);
 
-// export default restRouter;
+export default restRouter;

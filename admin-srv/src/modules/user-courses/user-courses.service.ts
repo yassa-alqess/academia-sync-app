@@ -1,13 +1,13 @@
 
 import Course from '../../shared/models/course'
-import UserCourse from '@/shared/models/user-course'
-import { CourseUsersGetResponse, CourseUsersListPayload, CourseUsersPayload, UserCoursesGetPayload, UserResponse, UserCoursesGetResponse, CourseUsersGetPayload } from '@/shared/interfaces/course-users'
-import User from '@/shared/models/user'
+import UserCourse from '../../shared/models/user-course'
+import { CourseUsersGetResponse, CourseUsersListPayload, CourseUsersPayload, UserCoursesGetPayload, UserCoursesGetResponse, CourseUsersGetPayload, PartialUserResponse } from '../../shared/interfaces/course-users'
+import User from '../../shared/models/user'
 
 export default class UserCourseService {
     constructor() { }
 
-    static async addCourseUser(payload: CourseUsersPayload): Promise<string> { //add user to course
+    public async addCourseUser(payload: CourseUsersPayload): Promise<string> { //add user to course
         const course = await Course.findByPk(payload.courseId)
         if (!course) throw new Error('Course not found')
         const user = await User.findByPk(payload.userId)
@@ -19,7 +19,7 @@ export default class UserCourseService {
         return record.userCourseId
     }
 
-    static async removeCourseUser(payload: CourseUsersPayload): Promise<string> { //remove user from course
+    public async deleteCourseUser(payload: CourseUsersPayload): Promise<string> { //delete user from course
         const course = await Course.findByPk(payload.courseId)
         if (!course) throw new Error('Course not found')
         const user = await User.findByPk(payload.userId)
@@ -30,7 +30,7 @@ export default class UserCourseService {
         return record.userCourseId
     }
 
-    static async bulkRemoveCourseUsers(payload: CourseUsersListPayload): Promise<string> { // remove users from course
+    public async bulkDeleteCourseUsers(payload: CourseUsersListPayload): Promise<string> { // delete users from course
         const course = await Course.findByPk(payload.courseId)
         if (!course) throw new Error('Course not found')
 
@@ -47,7 +47,7 @@ export default class UserCourseService {
         return records.join(',')
     }
 
-    static async bulkAddCourseUsers(payload: CourseUsersListPayload): Promise<string> { // add users to course
+    public async bulkAddCourseUsers(payload: CourseUsersListPayload): Promise<string> { // add users to course
         const course = await Course.findByPk(payload.courseId)
         if (!course) throw new Error('Course not found')
 
@@ -65,7 +65,7 @@ export default class UserCourseService {
 
     }
 
-    static async getCourseUsers(payload: CourseUsersGetPayload): Promise<CourseUsersGetResponse> {
+    public async getCourseUsers(payload: CourseUsersGetPayload): Promise<CourseUsersGetResponse> {
         const course = await Course.findByPk(payload.courseId)
         if (!course) throw new Error('Course not found')
 
@@ -78,12 +78,12 @@ export default class UserCourseService {
                 displayName: user.displayName,
                 arabicName: user.arabicName,
                 role: user.role
-            } as UserResponse
+            } as PartialUserResponse
         }))
         return { users }
     }
 
-    static async getUserCourses(payload: UserCoursesGetPayload): Promise<UserCoursesGetResponse> {
+    public async getUserCourses(payload: UserCoursesGetPayload): Promise<UserCoursesGetResponse> {
         const user = await User.findByPk(payload.userId)
         if (!user) throw new Error('User not found')
 

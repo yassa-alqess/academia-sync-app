@@ -1,12 +1,16 @@
 import { Router } from "express";
 import UserCourseController from "./user-courses.controller";
+import UserCourseService from "./user-courses.service";
 
 const userCourseRouter = Router();
-userCourseRouter.post("/addUser", UserCourseController.addCourseUser);
-userCourseRouter.post("/removeUser", UserCourseController.removeCourseUser);
-userCourseRouter.post("/getCourseUsers", UserCourseController.getCourseUsers);
-userCourseRouter.post("/getUserCourses", UserCourseController.getUserCourses);
-userCourseRouter.post("/bulkRemove", UserCourseController.bulkRemoveCourseUsers);
-userCourseRouter.post("/bulkAdd", UserCourseController.bulkAddCourseUsers);
+const userCourseController = new UserCourseController(new UserCourseService());
+userCourseRouter.post("/addUser", userCourseController.addCourseUser);
+userCourseRouter.post("/deleteUser", userCourseController.deleteCourseUser);
+userCourseRouter.post("/getCourseUsers", userCourseController.getCourseUsers);
+userCourseRouter.post("/getUserCourses", userCourseController.getUserCourses);
+userCourseRouter.post("/bulkDeleteCourseUsers", userCourseController.bulkDeleteCourseUsers);
+userCourseRouter.post("/bulkAddCourseUsers", userCourseController.bulkAddCourseUsers);
+// userCourseRouter.post("/bulkAddCourseUsersBySheet", userCourseController.bulkAddCourseUsersBySheet);
+// userCourseRouter.post("/bulkAddUserCoursesBySheet", userCourseController.bulkAddUserCoursesBySheet);
 
 export default userCourseRouter;

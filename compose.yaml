@@ -40,7 +40,7 @@ services:
   #     service: auth-srv
   #   depends_on:
   #     - sql-db
-  #     - kafka
+  #     # - kafka
 
   classroom-srv:
     extends:
@@ -49,3 +49,10 @@ services:
     depends_on:
       - sql-db
       # - kafka
+  # admin-srv:
+  #   extends:
+  #     file: admin-srv/compose.yaml
+  #     service: admin-srv
+  #   depends_on:
+  #     - sql-db
+  #     # - kafka
