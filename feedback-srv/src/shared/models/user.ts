@@ -1,10 +1,4 @@
-import {
-  Table,
-  Model,
-  Column,
-  HasMany,
-  DataType,
-} from 'sequelize-typescript';
+import { Table, Model, Column, HasMany, DataType } from 'sequelize-typescript';
 import Feedback from './feedback';
 
 @Table({ schema: process.env.SCHEMA })
@@ -16,8 +10,11 @@ class User extends Model {
   })
   declare userId: string;
 
-  @HasMany(() => Feedback)
-  declare feedbacks: Feedback[];
+  @HasMany(() => Feedback, 'professor_id')
+  declare receivedFeedbacks: Feedback[];
+
+  @HasMany(() => Feedback, 'student_id')
+  declare submittedFeedbacks: Feedback[];
 }
 
 export default User;

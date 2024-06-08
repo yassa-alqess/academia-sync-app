@@ -1,9 +1,9 @@
-import { FeedbacksService } from './feedbacks.service';
 import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
-import { createFeedbackDto } from './dto/createFeedback.dto';
+import { ApiBody, ApiTags, ApiResponse } from '@nestjs/swagger';
+import { CreateFeedbackDto } from './dto/createFeedback.dto';
+import { FeedbacksService } from './feedbacks.service';
 import { CommonResponse } from 'src/shared/commonResponse';
 import Feedback from 'src/shared/models/feedback';
-import { ApiBody, ApiTags, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('Feedback')
 @Controller('feedbacks')
@@ -12,19 +12,17 @@ export class FeedbacksController {
 
   @ApiResponse({
     status: 201,
-    description: 'Feedback submitted succesfully',
+    description: 'Feedback submitted successfully',
     type: Feedback,
   })
-  @ApiBody({
-    type: createFeedbackDto,
-  })
-  @Post('craeteFeedback')
+  @ApiBody({ type: CreateFeedbackDto })
+  @Post('createFeedback')
   async create(
-    @Body() createFeedbackDto: createFeedbackDto,
+    @Body() createFeedbackDto: CreateFeedbackDto,
   ): Promise<CommonResponse<Feedback>> {
     const data = await this.feedbacksService.create(createFeedbackDto);
     return {
-      message: 'Feedback submitted succesfully',
+      message: 'Feedback submitted successfully',
       statusCode: HttpStatus.CREATED,
       data,
     };
@@ -33,19 +31,17 @@ export class FeedbacksController {
   @ApiBody({
     schema: {
       properties: {
-        userId: {
-          type: 'string',
-        },
+        professorId: { type: 'string' },
       },
     },
   })
   @Post('getFeedbacks')
   async get(
-    @Body('userId') userId: string,
+    @Body('professorId') professorId: string,
   ): Promise<CommonResponse<Feedback[]>> {
-    const data = await this.feedbacksService.get(userId);
+    const data = await this.feedbacksService.get(professorId);
     return {
-      message: 'Feedbacks fetched succesfully',
+      message: 'Feedbacks fetched successfully',
       statusCode: HttpStatus.OK,
       data,
     };

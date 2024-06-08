@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import joi from 'joi';
-
-export class createFeedbackDto {
+export class CreateFeedbackDto {
   @ApiProperty()
   comment: string;
 
@@ -10,10 +9,18 @@ export class createFeedbackDto {
 
   @ApiProperty()
   rate: number;
+
+  @ApiProperty()
+  professor_id: string;
+
+  @ApiProperty()
+  student_id: string; 
 }
 
-export const createFeedbackSchema = joi.object<createFeedbackDto>({
+export const createFeedbackSchema = joi.object<CreateFeedbackDto>({
   comment: joi.string().required(),
   submitted_at: joi.date().required(),
   rate: joi.number().min(1).max(5).required(),
+  professor_id: joi.string().guid({ version: 'uuidv4' }).required(),
+  student_id: joi.string().guid({ version: 'uuidv4' }).required(), 
 });
