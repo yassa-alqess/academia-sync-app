@@ -25,6 +25,7 @@ class UserRoom extends Model {
   @ForeignKey(() => Student)
   @Column({
     type: DataType.UUID,
+    allowNull: true,
   })
   declare studentId: string;
 
@@ -34,6 +35,7 @@ class UserRoom extends Model {
   @ForeignKey(() => Instructor)
   @Column({
     type: DataType.UUID,
+    allowNull: true,
   })
   declare instructorId: string;
 

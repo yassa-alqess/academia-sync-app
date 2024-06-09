@@ -37,7 +37,7 @@ class User extends Model {
   declare email: string;
 
   @Column({
-    type: DataType.BOOLEAN,
+    type: DataType.INTEGER,
   })
   declare role: number;
 
