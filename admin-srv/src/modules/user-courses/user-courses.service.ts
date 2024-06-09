@@ -117,6 +117,8 @@ export default class UserCourseService {
         ))
     }
 
+
+    
     public async getCourseUsers(payload: CourseUsersGetPayload): Promise<CourseUsersGetResponse> {
         const { courseId, role } = payload
         const course = await Course.findByPk(courseId)

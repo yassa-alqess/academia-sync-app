@@ -15,7 +15,13 @@ import restRouter from './modules/routes';
 const APP = express();
 APP.use(express.json());
 APP.use(express.urlencoded({ extended: true })); // no need for body-parser
-APP.use(cors());
+APP.use(cors(
+  {
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization, Origin, X-Requested-With, Accept',
+  },
+));
 APP.use(helmet());
 APP.use(
   rateLimit({

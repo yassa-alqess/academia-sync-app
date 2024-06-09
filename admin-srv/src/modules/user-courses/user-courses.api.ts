@@ -3,6 +3,7 @@ import UserCourseController from "./user-courses.controller";
 import UserCourseService from "./user-courses.service";
 import upload from "../../config/storage/multer.config";
 
+
 const userCourseRouter = Router();
 const userCourseController = new UserCourseController(new UserCourseService());
 userCourseRouter.post("/addUser", userCourseController.addCourseUser);
