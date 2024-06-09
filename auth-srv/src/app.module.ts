@@ -9,6 +9,8 @@ import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { MailModule } from './mail/mail.module';
 import { PreferencesModule } from './preferences/preferences.module';
+import https from 'https';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -16,6 +18,13 @@ import { PreferencesModule } from './preferences/preferences.module';
       isGlobal: true,
       envFilePath: '.env.dev',
       load: [configuration],
+    }),
+    HttpModule.registerAsync({
+      useFactory: async () => ({
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false, // This will ignore SSL certificate errors
+        }),
+      }),
     }),
     AuthModule,
     UsersModule,

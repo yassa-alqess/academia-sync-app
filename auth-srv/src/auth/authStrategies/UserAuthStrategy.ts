@@ -16,25 +16,24 @@ export default class UserAuthStrategy implements IAuthStrategy {
     try {
       const { error } = await this.registerSchema.validateAsync(user);
       if (error) {
-        throw new BadRequestException(
-          `Validation failed: ${error.details.map((x) => x.message.join(', '))}`,
-        );
+        const errorMessage = error.details
+          ? error.details.map((x) => x.message).join(', ')
+          : error.message;
+        throw new BadRequestException(`Validation failed: ${errorMessage}`);
       }
     } catch (error) {
       if (error.isJoi) {
-        throw new BadRequestException(
-          `Validation failed: ${error.details.map((x) => x.message.join(', '))}`,
-        );
+        const errorMessage = error.details
+          ? error.details.map((x) => x.message).join(', ')
+          : error.message;
+        throw new BadRequestException(`Validation failed: ${errorMessage}`);
       } else {
         throw new BadRequestException(`Validation failed: ${error.message}`);
       }
     }
   }
 
-  async login(
-    email: string,
-    password: string,
-  ): Promise<Record<string, any>> {
+  async login(email: string, password: string): Promise<Record<string, any>> {
     const user = await this.userService.findByEmail(email);
     const isMatch = await bcrypt.compare(password, user.hashedPassowrd);
     if (!isMatch) {

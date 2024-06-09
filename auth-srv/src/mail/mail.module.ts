@@ -19,6 +19,9 @@ import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
             user: configService.get<string>('mail_user'),
             pass: configService.get<string>('mail_password'),
           },
+          tls: {
+            rejectUnauthorized: false, // disable SSL verification 
+          },
         },
         defaults: {
           from: `No reply Graduation Project`,
