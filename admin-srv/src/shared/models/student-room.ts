@@ -1,11 +1,10 @@
 import { Column, Table, Model, ForeignKey, DataType, BelongsTo } from 'sequelize-typescript';
 import Room from './room';
-// import User from './user';
 import Student from './student';
-import Instructor from './instructor';
+
 
 @Table({ schema: process.env.SCHEMA })
-class UserRoom extends Model {
+class StudentRoom extends Model {
   @Column({
     primaryKey: true,
     type: DataType.UUID,
@@ -25,24 +24,13 @@ class UserRoom extends Model {
   @ForeignKey(() => Student)
   @Column({
     type: DataType.UUID,
-    allowNull: true,
+    
   })
   declare studentId: string;
 
   @BelongsTo(() => Student, 'studentId')
   declare student: Student;
 
-  @ForeignKey(() => Instructor)
-  @Column({
-    type: DataType.UUID,
-    allowNull: true,
-  })
-  declare instructorId: string;
-
-  @BelongsTo(() => Instructor, 'instructorId')
-  declare instructor: Instructor;
-
-
 }
 
-export default UserRoom;
+export default StudentRoom;

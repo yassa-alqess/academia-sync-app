@@ -2,7 +2,9 @@ import { BelongsTo, BelongsToMany, Column, DataType, ForeignKey, HasMany, Model,
 import User from "./user";
 import AssignmentSubmission from "./assignment-submission";
 import Room from "./room";
-import UserRoom from "./user-room";
+import Course from "./course";
+import StudentRoom from "./student-room";
+import StudentCourse from "./student-course";
 
 @Table({ schema: 'public' })
 class Student extends Model {
@@ -30,8 +32,11 @@ class Student extends Model {
     @HasMany(() => AssignmentSubmission)
     declare assignmentSubmissions: AssignmentSubmission[];
 
-    @BelongsToMany(() => Room, () => UserRoom)
+    @BelongsToMany(() => Room, () => StudentRoom)
     declare rooms: Room[];
+
+    @BelongsToMany(() => Course, () => StudentCourse)
+    declare courses: Room[];
 }
 
 export default Student;

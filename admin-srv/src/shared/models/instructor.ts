@@ -1,7 +1,9 @@
-import { BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table } from "sequelize-typescript";
+import { BelongsTo, BelongsToMany, Column, DataType, ForeignKey, HasMany, Model, Table } from "sequelize-typescript";
 import User from "./user";
 import Announcment from "./announcment";
 import Assignment from "./assignment";
+import Course from "./course";
+import InstructorCourse from "./instructor-course";
 
 @Table({ schema: 'public' })
 class Instructor extends Model {
@@ -18,9 +20,9 @@ class Instructor extends Model {
     declare displayName: string;
 
     @Column({
-        type: DataType.BOOLEAN,
+        type: DataType.INTEGER,
     })
-    declare role: boolean;
+    declare role: number;
 
     @ForeignKey(() => User)
     @Column({
@@ -36,6 +38,9 @@ class Instructor extends Model {
 
     @HasMany(() => Assignment)
     declare assignments: Assignment[];
+
+    @BelongsToMany(() => Course, () => InstructorCourse)
+    declare courses: Course[];
 }
 
 export default Instructor;

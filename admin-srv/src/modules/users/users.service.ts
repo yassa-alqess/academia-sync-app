@@ -12,17 +12,40 @@ export default class UserService {
 
         const user = await User.create({ ...payload });
         const { role, displayName } = payload;
+        let response = null;
         if (role == Role.Student) {
-            Student.create({ displayName, userId: user.userId })
+            response = await Student.create({ displayName, userId: user.userId })
+            // return {
+            //     userId: user.userId,
+            //     studentId: student?.studentId,
+            //     academicId: user.academicId,
+            //     displayName: user.displayName,
+            //     role: user.role
+            // }
         }
         else if (role == Role.Doctor || role == Role.Assisstant) {
-            Instructor.create({ displayName, userId: user.userId })
+            response = await Instructor.create({ displayName, userId: user.userId })
+
+            // return {
+            //     userId: user.userId,
+            //     instructorId: instructor?.instructorId,
+            //     academicId: user.academicId,
+            //     displayName: user.displayName,
+            //     role: user.role
+            // }
         }
-        return {
+        return (response instanceof Student) ? {
             userId: user.userId,
+            studentId: response?.studentId,
             academicId: user.academicId,
             displayName: user.displayName,
-            role: user.role,
+            role: user.role
+        } : {
+            userId: user.userId,
+            instructorId: response?.instructorId,
+            academicId: user.academicId,
+            displayName: user.displayName,
+            role: user.role
         }
     }
 

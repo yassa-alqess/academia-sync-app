@@ -54,9 +54,9 @@ export default class UserCourseController {
         }
     }
 
-    public bulkDeleteCourseStudents = async (req: Request, res: Response) => {
+    public bulkDeleteCourseUsers = async (req: Request, res: Response) => {
         try {
-            const userCourseIds = await this.userCourseService.bulkDeleteCourseStudents(req.body);
+            const userCourseIds = await this.userCourseService.bulkDeleteCourseUsers(req.body);
             res.status(StatusCodes.OK).json({ userCourseIds });
         }
         //eslint-disable-next-line
@@ -65,9 +65,9 @@ export default class UserCourseController {
         }
     }
 
-    public bulkAddCourseStudents = async (req: Request, res: Response) => {
+    public bulkAddCourseUsers = async (req: Request, res: Response) => {
         try {
-            const userCourseIds = await this.userCourseService.bulkAddCourseStudents(req.body);
+            const userCourseIds = await this.userCourseService.bulkAddCourseUsers(req.body);
             res.status(StatusCodes.CREATED).json({ userCourseIds });
         }
         //eslint-disable-next-line
@@ -77,16 +77,12 @@ export default class UserCourseController {
     }
 
     // get xlsx sheet and get all the courses from it and add them to the database (all required feilds should be present in the sheet)
-    public bulkAddCourseStudentsBySheet = async (req: Request, res: Response) => {
+    public bulkAddCourseUsersBySheet = async (req: Request, res: Response) => {
         try {
             if (!req.file) {
                 return res.status(StatusCodes.BAD_REQUEST).json({ error: 'No file uploaded' });
             }
-            const { courseId } = req.body;
-            if (!courseId) {
-                return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Course Id is required' });
-            }
-            const courses = this.userCourseService.bulkAddCourseStudentsBySheet(req.file.path, courseId); // req.file.filename
+            const courses = this.userCourseService.bulkAddCourseUsersBySheet(req.file.path, req.body); // req.file.filename
             res.status(StatusCodes.CREATED).json(courses);
             //eslint-disable-next-line
         } catch (error: any) {

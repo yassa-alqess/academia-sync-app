@@ -10,9 +10,9 @@ userCourseRouter.post("/addUser", userCourseController.addCourseUser);
 userCourseRouter.post("/deleteUser", userCourseController.deleteCourseUser);
 userCourseRouter.post("/getCourseUsers", userCourseController.getCourseUsers);
 userCourseRouter.post("/getUserCourses", userCourseController.getUserCourses);
-userCourseRouter.post("/bulkDeleteCourseStudents", userCourseController.bulkDeleteCourseStudents);
-userCourseRouter.post("/bulkAddCourseStudents", userCourseController.bulkAddCourseStudents);
-userCourseRouter.post("/bulkAddCourseStudentsBySheet", upload("courseUsers")!.single("file"), userCourseController.bulkAddCourseStudentsBySheet);
+userCourseRouter.post("/bulkDeleteCourseUsers", userCourseController.bulkDeleteCourseUsers);
+userCourseRouter.post("/bulkAddCourseUsers", userCourseController.bulkAddCourseUsers);
+userCourseRouter.post("/bulkAddCourseUsersBySheet", upload("courseUsers")!.single("file"), userCourseController.bulkAddCourseUsersBySheet);
 // userCourseRouter.post("/bulkAddUserCoursesBySheet", userCourseController.bulkAddUserCoursesBySheet);
 
 export default userCourseRouter;

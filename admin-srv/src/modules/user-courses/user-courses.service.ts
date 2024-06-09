@@ -1,101 +1,165 @@
 
 import Course from '../../shared/models/course'
-import UserCourse from '../../shared/models/user-course'
 import { CourseUsersGetResponse, CourseUsersListPayload, CourseUsersPayload, UserCoursesGetPayload, UserCoursesGetResponse, CourseUsersGetPayload } from '../../shared/interfaces/course-users'
-import User from '../../shared/models/user'
 import { Role } from '../../shared/enums/role'
 import { readXlsx } from '../../shared/utils'
+import Student from '../../shared/models/student'
+import StudentCourse from '../../shared/models/student-course'
+import InstructorCourse from '../../shared/models/instructor-course'
+import Instructor from '../../shared/models/instructor'
 
 export default class UserCourseService {
     constructor() { }
 
     public async addCourseUser(payload: CourseUsersPayload): Promise<string> { //add user to course
-        // const course = await Course.findByPk(payload.courseId)
-        // if (!course) throw new Error('Course not found')
-        // const user = await User.findByPk(payload.userId)
-        // if (!user) throw new Error('User not found')
-        // if (await UserCourse.findOne({ where: { userId: payload.userId, courseId: payload.courseId } })) {
-        //     throw new Error('User already in course')
-        // }
-        // const record = await UserCourse.create({ userId: payload.userId, courseId: payload.courseId })
-        // return record.userCourseId
-        const { userId, courseId, role } = payload
-        const course = await Course.findByPk(courseId)
-        if (!course) throw new Error('Course not found')
-        const user = await User.findByPk(userId)
-        if (!user) throw new Error('User not found')
 
-        let record = null
+        const { courseId, studentId, instructorId, role } = payload
+        // if ((!studentId && !instructorId) || !courseId || !role ) throw new Error('Invalid payload')
+        console.log("payload", payload)
         if (role === Role.Student) {
-            if (await UserCourse.findOne({ where: { studentId: userId, courseId } })) {
-                throw new Error('student already in course')
-            }
-            record = await UserCourse.create({ studentId: userId, courseId })
-            return record.userCourseId
+            if (!studentId) throw new Error('payload must have studentId')
         }
         if (role === Role.Doctor || role === Role.Assisstant) {
-            if (await UserCourse.findOne({ where: { instructorId: userId, courseId } })) {
-                throw new Error('doctor already in course')
-            }
-            record = await UserCourse.create({ instructorId: userId, courseId })
-            return record.userCourseId
+            if (!instructorId) throw new Error('payload must have instructorId')
         }
-        throw new Error('Invalid role')
+
+        const course = await Course.findByPk(courseId)
+        if (!course) throw new Error('Course not found')
+
+        let record = "";
+        if (role === Role.Student) {
+            const student = await Student.findByPk(studentId)
+            if (!student) throw new Error('Student not found')
+
+            if (await StudentCourse.findOne({ where: { studentId, courseId } })) {
+                throw new Error('student already in course')
+            }
+            const result = await StudentCourse.create({ studentId, courseId })
+            record = result.studentCourseId
+
+        }
+        if (role === Role.Doctor || role === Role.Assisstant) {
+            const instructor = await Instructor.findByPk(instructorId)
+            if (!instructor) throw new Error('Instructor not found')
+
+            if (await InstructorCourse.findOne({ where: { instructorId, courseId } })) {
+                throw new Error('instructor already in course')
+            }
+            const result = await InstructorCourse.create({ instructorId, courseId })
+            record = result.instructorCourseId
+        }
+        return record;
+
+
     }
 
     public async deleteCourseUser(payload: CourseUsersPayload): Promise<string> { //delete user from course
-        const { userId, courseId, role } = payload
+        const { courseId, role, studentId, instructorId } = payload
+        if (role === Role.Student) {
+            if (!studentId) throw new Error('payload must have studentId')
+        }
+
+        if (role === Role.Doctor || role === Role.Assisstant) {
+            if (!instructorId) throw new Error('payload must have instructorId')
+        }
+
         const course = await Course.findByPk(courseId)
         if (!course) throw new Error('Course not found')
-        const user = await User.findByPk(userId)
-        if (!user) throw new Error('User not found')
-        // const record = await UserCourse.findOne({ where: { userId: payload.userId, courseId: payload.courseId } })
 
-        let record = null
+        let result = "";
         if (role === Role.Student) {
-            record = await UserCourse.findOne({ where: { studentId: payload.userId, courseId: payload.courseId } })
-        }
-        if (role === Role.Doctor || role === Role.Assisstant) {
-            record = await UserCourse.findOne({ where: { instructorId: payload.userId, courseId: payload.courseId } })
-        }
-        if (!record) throw new Error('User not in course already')
-        await record.destroy()
-        return record.userCourseId
-    }
+            const student = await Student.findByPk(studentId)
+            if (!student) throw new Error('Student not found')
 
-    public async bulkDeleteCourseStudents(payload: CourseUsersListPayload): Promise<void> { // delete users from course
-        const course = await Course.findByPk(payload.courseId)
-        if (!course) throw new Error('Course not found')
-
-        const users = await User.findAll({ where: { userId: payload.userIds } }) //array of users
-        if (users.length !== payload.userIds.length) throw new Error('Some users not found')
-
-        await Promise.all(payload.userIds.map(async userId => {
-            const record = await UserCourse.findOne({ where: { studentId: userId, courseId: payload.courseId } })
+            const record = await StudentCourse.findOne({ where: { studentId, courseId } })
             if (!record) throw new Error('student not in course already')
             await record.destroy()
-            return record.userCourseId
+            result = record.studentCourseId
         }
-        ))
+
+        if (role === Role.Doctor || role === Role.Assisstant) {
+            const instructor = await Instructor.findByPk(instructorId)
+            if (!instructor) throw new Error('Instructor not found')
+
+            const record = await InstructorCourse.findOne({ where: { instructorId, courseId } })
+            if (!record) throw new Error('instructor not in course already')
+            await record.destroy()
+            result = record.instructorCourseId
+        }
+        return result;
+
     }
 
-    public async bulkAddCourseStudents(payload: CourseUsersListPayload): Promise<void> { // add users to course
-        const course = await Course.findByPk(payload.courseId)
+    public async bulkDeleteCourseUsers(payload: CourseUsersListPayload): Promise<void> { // delete users from course
+        const { courseId, role, studentIds, instructorIds } = payload
+        const course = await Course.findByPk(courseId)
         if (!course) throw new Error('Course not found')
 
-        const users = await User.findAll({ where: { userId: payload.userIds } }) //array of users
-        if (users.length !== payload.userIds.length) throw new Error('Some users not found')
-
-        await Promise.all(payload.userIds.map(async userId => {
-            if (await UserCourse.findOne({ where: { userId, courseId: payload.courseId } })) {
-                throw new Error('student already in course')
-            }
-            return await UserCourse.create({ studentId: userId, courseId: payload.courseId })
+        if (role === Role.Student) {
+            if (!studentIds) throw new Error('payload must have studentIds')
         }
-        ))
+        if (role === Role.Doctor || role === Role.Assisstant) {
+            if (!instructorIds) throw new Error('payload must have instructorIds')
+        }
+
+        if (role === Role.Student) {
+            await Promise.all(studentIds!.map(async studentId => {
+                const student = await Student.findByPk(studentId)
+                if (!student) throw new Error('Student not found')
+                const record = await StudentCourse.findOne({ where: { studentId, courseId } })
+                if (!record) throw new Error('student not in course already')
+                await record.destroy()
+            }))
+        }
+
+        if (role === Role.Doctor || role === Role.Assisstant) {
+            await Promise.all(instructorIds!.map(async instructorId => {
+                const instructor = await Instructor.findByPk(instructorId)
+                if (!instructor) throw new Error('Instructor not found')
+                const record = await InstructorCourse.findOne({ where: { instructorId, courseId } })
+                if (!record) throw new Error('instructor not in course already')
+                await record.destroy()
+            }))
+        }
     }
 
-    public async bulkAddCourseStudentsBySheet(filePath: string, courseId: string) {
+    public async bulkAddCourseUsers(payload: CourseUsersListPayload): Promise<void> { // add users to course
+        const { courseId, role, studentIds, instructorIds } = payload
+        const course = await Course.findByPk(courseId)
+        if (!course) throw new Error('Course not found')
+
+        if (role === Role.Student) {
+            if (!studentIds) throw new Error('payload must have studentIds')
+        }
+        if (role === Role.Doctor || role === Role.Assisstant) {
+            if (!instructorIds) throw new Error('payload must have instructorIds')
+        }
+
+        if (role === Role.Student) {
+            await Promise.all(studentIds!.map(async studentId => {
+                const student = await Student.findByPk(studentId)
+                if (!student) throw new Error('Student not found')
+                if (await StudentCourse.findOne({ where: { studentId, courseId } })) {
+                    throw new Error('student already in course')
+                }
+                return await StudentCourse.create({ studentId, courseId })
+            }))
+        }
+
+        if (role === Role.Doctor || role === Role.Assisstant) {
+            await Promise.all(instructorIds!.map(async instructorId => {
+                const instructor = await Instructor.findByPk(instructorId)
+                if (!instructor) throw new Error('Instructor not found')
+                if (await InstructorCourse.findOne({ where: { instructorId, courseId } })) {
+                    throw new Error('instructor already in course')
+                }
+                return await InstructorCourse.create({ instructorId, courseId })
+            }))
+        }
+    }
+
+    public async bulkAddCourseUsersBySheet(filePath: string, payload: { courseId: string, role: number }): Promise<void> {
+        const { courseId, role } = payload
         const course = await Course.findByPk(courseId)
         if (!course) throw new Error('Course not found')
 
@@ -108,62 +172,112 @@ export default class UserCourseService {
             }
         });
 
-        await Promise.all(users.map(async user => {
-            if (await UserCourse.findOne({ where: { userId: user.id, courseId } })) {
-                throw new Error('student already in course')
-            }
-            return await UserCourse.create({ studentId: user.id, courseId })
+        if (role === Role.Student) {
+            //eslint-disable-next-line
+            await Promise.all(users.map(async (user: any) => {
+                const student = await Student.findOne({ where: { studentId: user.id } })
+                if (!student) throw new Error('Student not found')
+                if (await StudentCourse.findOne({ where: { studentId: student.id, courseId } })) {
+                    throw new Error('student already in course')
+                }
+                return await StudentCourse.create({ studentId: student.id, courseId })
+            }))
         }
-        ))
+
+        if (role === Role.Doctor || role === Role.Assisstant) {
+            //eslint-disable-next-line
+            await Promise.all(users.map(async (user: any) => {
+                const instructor = await Instructor.findOne({ where: { instructorId: user.id } })
+                if (!instructor) throw new Error('Instructor not found')
+                if (await InstructorCourse.findOne({ where: { instructorId: instructor.id, courseId } })) {
+                    throw new Error('instructor already in course')
+                }
+                return await InstructorCourse.create({ instructorId: instructor.id, courseId })
+            }))
+        }
     }
 
 
-    
+
     public async getCourseUsers(payload: CourseUsersGetPayload): Promise<CourseUsersGetResponse> {
         const { courseId, role } = payload
         const course = await Course.findByPk(courseId)
         if (!course) throw new Error('Course not found')
 
-        const records = await UserCourse.findAll({ where: { courseId: courseId } })
+        let records = null;
+        if (role === Role.Student) {
+            records = await StudentCourse.findAll({ where: { courseId } })
+        }
+        if (role === Role.Doctor || role === Role.Assisstant) {
+            records = await InstructorCourse.findAll({ where: { courseId } })
+        }
+        if (!records) throw new Error('No records found')
 
-        const users = await Promise.all(records.map(async record => {
+        const users = await Promise.all(records!.map(async record => {
             let result = null;
-            if (role === Role.Student) {
-                result = await User.findByPk(record.studentId) as User // possible null
+            if (role === Role.Student && record instanceof StudentCourse) {
+                result = await Student.findByPk(record.studentId) as Student // possible null
             }
-            if (role === Role.Doctor || role === Role.Assisstant) {
-                result = await User.findByPk(record.instructorId) as User // possible null
+            if ((role === Role.Doctor || role === Role.Assisstant) && record instanceof InstructorCourse) {
+                result = await Instructor.findByPk(record.instructorId) as Instructor // possible null
             }
             if (!result) throw new Error('User not found')
-            return {
-                userId: result?.userId,
-                email: result?.email,
-                displayName: result?.displayName,
-                arabicName: result?.arabicName,
+            return (result instanceof Student) ? {
+                studentId: result.studentId,
+                // InstructorId: null,
+                displayName: result.displayName,
+                role
+            } : {
+                instructorId: result.instructorId,
+                // studentId: null,
+                displayName: result.displayName,
                 role
             }
         }));
-
         return { users }
+
+        // const records = await UserCourse.findAll({ where: { courseId: courseId } })
+
+        // const users = await Promise.all(records.map(async record => {
+        //     let result = null;
+        //     if (role === Role.Student) {
+        //         result = await User.findByPk(record.studentId) as User // possible null
+        //     }
+        //     if (role === Role.Doctor || role === Role.Assisstant) {
+        //         result = await User.findByPk(record.instructorId) as User // possible null
+        //     }
+        //     if (!result) throw new Error('User not found')
+        //     return {
+        //         userId: result?.userId,
+        //         email: result?.email,
+        //         displayName: result?.displayName,
+        //         arabicName: result?.arabicName,
+        //         role
+        //     }
+        // }));
+
+        // return { users }
 
     }
 
     public async getUserCourses(payload: UserCoursesGetPayload): Promise<UserCoursesGetResponse> {
-        const { role, userId } = payload
-        const user = await User.findByPk(userId)
-        if (!user) throw new Error('User not found')
-
-        let records = null;
+        const { role, studentId, instructorId } = payload
 
         if (role === Role.Student) {
-            records = await UserCourse.findAll({ where: { studentId: userId } })
+            if (!studentId) throw new Error('payload must have studentId')
         }
-        else if (role === Role.Doctor || role === Role.Assisstant) {
-            records = await UserCourse.findAll({ where: { instructorId: userId } })
+        if (role === Role.Doctor || role === Role.Assisstant) {
+            if (!instructorId) throw new Error('payload must have instructorId')
         }
-        else {
-            throw new Error('Invalid role')
+
+        let records = null;
+        if (role === Role.Student) {
+            records = await StudentCourse.findAll({ where: { studentId } })
         }
+        if (role === Role.Doctor || role === Role.Assisstant) {
+            records = await InstructorCourse.findAll({ where: { instructorId } })
+        }
+        if (!records) throw new Error('No records found')
 
         const courses = await Promise.all(records!.map(async record => {
             const course = await Course.findByPk(record.courseId) as Course // possible null

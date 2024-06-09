@@ -1,11 +1,11 @@
 import { Column, Table, Model, HasOne, DataType, BelongsToMany } from 'sequelize-typescript';
 import Room from './room';
 import LawCourse from './law-course';
-import UserCourse from './user-course';
-// import User from './user';
 import Law from './law';
 import Instructor from './instructor';
 import Student from './student';
+import InstructorCourse from './instructor-course';
+import StudentCourse from './student-course';
 
 @Table({ schema: 'public' })
 class Course extends Model {
@@ -38,10 +38,10 @@ class Course extends Model {
   @HasOne(() => Room)
   declare room: Room;
 
-  @BelongsToMany(() => Instructor, () => UserCourse)
+  @BelongsToMany(() => Instructor, () => InstructorCourse)
   declare instructors: Instructor[];
 
-  @BelongsToMany(() => Student, () => UserCourse)
+  @BelongsToMany(() => Student, () => StudentCourse)
   declare students: Student[];
 
   @BelongsToMany(() => Law, () => LawCourse)

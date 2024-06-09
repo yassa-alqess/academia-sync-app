@@ -15,6 +15,8 @@ export interface UserAddPayload {
 
 export interface UserResponse {
     userId: string;
+    studentId?: string;
+    instructorId?: string;
     email?: string;
     academicId: string;
     displayName: string;

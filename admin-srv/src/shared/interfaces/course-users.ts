@@ -1,20 +1,23 @@
 // import { UserResponse } from "./user";
 
 export interface CourseUsersPayload {
-    userId: string;
     courseId: string;
+    studentId?: string;
+    instructorId?: string;
     role: number;
 }
 
 export interface CourseUsersListPayload {
 
-    userIds: string[];
+    studentIds?: string[];
+    instructorIds?: string[];
     courseId: string;
     role: number;
 }
 
 export interface UserCoursesGetPayload {
-    userId: string;
+    studentId?: string;
+    instructorId?: string;
     role: number;
 }
 
@@ -33,10 +36,10 @@ export interface CourseUsersGetResponse {
 }
 
 export interface PartialUserResponse {
-    userId: string;
-    email: string;
+    studentId?: string | null;
+    instructorId?: string | null;
     displayName: string;
-    arabicName: string;
+
     role: number;
 
 }
