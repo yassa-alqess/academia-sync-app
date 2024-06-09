@@ -1,29 +1,22 @@
 import { Sequelize } from 'sequelize-typescript';
 import { ConfigService } from '@nestjs/config';
 import logger from '../logger';
-import * as path from 'path';
+import path from 'path';
 
 export const sequelize = (configService: ConfigService) => {
   const modelsPath = path.join(__dirname, '..', '..', 'shared', 'models');
-  return new Sequelize(
-    process.env.DATABASE_NAME,
-    process.env.DATABASE_USER,
-    process.env.DATABASE_PASSWORD,
-    {
-      host: 'localhost',
-      dialect: 'postgres',
-      models: [modelsPath],
-    },
-  );
+  return new Sequelize(configService.get<string>('database.url'), {
+    models: [modelsPath],
+  });
 };
 
 const syncDatabase = async (configService: ConfigService) => {
   const db = sequelize(configService);
-
+  
   await db.query(
     `CREATE SCHEMA IF NOT EXISTS ${configService.get<string>('database.schema')}`,
   );
-  await db.sync({ alter: true, force: false });
+  await db.sync({ alter: true, force: false});
   logger.debug(
     `connected to ${configService.get<string>('database.name')} database`,
   );

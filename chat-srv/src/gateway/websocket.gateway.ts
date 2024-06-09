@@ -12,7 +12,7 @@ import { Server, Socket } from 'socket.io';
 @WebSocketGateway({
   cors: {
     //the front end
-    origin: ['http://localhost:8085'],
+    origin: ['http://localhost:8081'],
   },
 })
 export class MessagingGateway implements OnGatewayConnection {
