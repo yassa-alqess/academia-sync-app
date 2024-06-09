@@ -1,8 +1,25 @@
 services:
   admin-srv:
+    image: iscoadms/admin-srv:latest
     build:
-      context: .
+      target: development
+      args:
+        - NODE_ENV=dev
     environment:
-      NODE_ENV: dev
+      - NODE_ENV=dev
     ports:
       - 8087:8087
+    depends_on:
+      - sql-db
+
+  sql-db:
+    image: postgres:latest
+    restart: always
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=academia-sync
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
